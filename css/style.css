@@ -800,6 +800,111 @@ main {
 /* ========== UTILITY ========== */
 .hidden { display: none !important; }
 
+/* ========== ABOUT BUTTON ========== */
+.about-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gray-300);
+  background: none;
+  color: var(--gray-500);
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--font);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all .15s;
+  margin-left: 8px;
+}
+
+.about-btn:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: var(--blue-light);
+}
+
+/* ========== ABOUT MODAL ========== */
+.about-modal { max-width: 480px; }
+
+.about-features {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.about-feature {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.about-feature-icon {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.about-feature-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 3px;
+}
+
+.about-feature-desc {
+  font-size: 13px;
+  color: var(--gray-500);
+  line-height: 1.55;
+}
+
+.about-note {
+  font-size: 12px;
+  color: var(--gray-400);
+  padding-top: 16px;
+  border-top: 1px solid var(--gray-100);
+}
+
+/* ========== FOOTER ========== */
+footer {
+  border-top: 1px solid var(--gray-200);
+  background: var(--white);
+  padding: 16px 24px;
+}
+
+.footer-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--gray-400);
+}
+
+.footer-name {
+  font-weight: 600;
+  color: var(--gray-600);
+}
+
+.footer-sep {
+  color: var(--gray-300);
+}
+
+.footer-link {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 600px) {
   .header-inner { gap: 16px; height: 56px; }
@@ -809,4 +914,6 @@ main {
   .cards-grid { grid-template-columns: 1fr; }
   .flows-grid { grid-template-columns: 1fr; }
   .decode-header { flex-direction: column; gap: 8px; }
+  .footer-inner { gap: 6px; }
+  .footer-desc { display: none; }
 }

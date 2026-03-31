@@ -22,6 +22,7 @@
       <button class="tab-btn" data-tab="decode">Decode</button>
       <button class="tab-btn" data-tab="flows">Flows</button>
     </nav>
+    <button id="about-btn" class="about-btn" aria-label="About SAP Navigator">?</button>
   </div>
 </header>
 
@@ -32,15 +33,15 @@
   <div id="find" class="tab-panel active">
     <div class="page-header">
       <h1>Find a Transaction</h1>
-      <p>Describe a task, object, or area and get the right starting point.</p>
+      <p>Type a task, area, or transaction code — get the right place to start.</p>
     </div>
 
     <div class="search-wrap">
       <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
-      <input id="find-input" type="text" placeholder="e.g. check cost center, test odata service, display purchase order…" autocomplete="off" spellcheck="false">
-      <button class="clear-btn" id="find-clear" title="Clear">✕</button>
+      <input id="find-input" type="text" placeholder="e.g. display purchase order, check cost center, post GL document…" autocomplete="off" spellcheck="false">
+      <button class="clear-btn" id="find-clear" title="Clear search">✕</button>
     </div>
 
     <div class="suggestions">
@@ -63,7 +64,7 @@
     <div id="find-empty" class="empty-state">
       <div class="empty-icon">🧭</div>
       <div class="empty-title">What are you trying to do?</div>
-      <div class="empty-text">Type a task, object, or transaction code above to get started.</div>
+      <div class="empty-text">Describe the task, or enter a transaction code directly.</div>
     </div>
   </div>
 
@@ -71,15 +72,15 @@
   <div id="decode" class="tab-panel">
     <div class="page-header">
       <h1>Decode a Problem</h1>
-      <p>Describe a symptom, error, or issue and get likely next steps.</p>
+      <p>Describe what's going wrong — get a likely cause, a starting transaction, and next steps.</p>
     </div>
 
     <div class="search-wrap">
       <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/>
       </svg>
-      <input id="decode-input" type="text" placeholder="e.g. user has no access, service not found, transport imported but change not visible…" autocomplete="off" spellcheck="false">
-      <button class="clear-btn" id="decode-clear" title="Clear">✕</button>
+      <input id="decode-input" type="text" placeholder="e.g. user has no access, payment run missing invoices, service not found…" autocomplete="off" spellcheck="false">
+      <button class="clear-btn" id="decode-clear" title="Clear search">✕</button>
     </div>
 
     <div class="suggestions">
@@ -100,8 +101,8 @@
 
     <div id="decode-empty" class="empty-state">
       <div class="empty-icon">🔬</div>
-      <div class="empty-title">What's the symptom?</div>
-      <div class="empty-text">Describe the error, issue, or unexpected behavior and get likely next steps.</div>
+      <div class="empty-title">What's going wrong?</div>
+      <div class="empty-text">Describe the symptom or error in plain language — no exact wording needed.</div>
     </div>
   </div>
 
@@ -109,12 +110,60 @@
   <div id="flows" class="tab-panel">
     <div class="page-header">
       <h1>Troubleshooting Flows</h1>
-      <p>Step-by-step guides for common SAP tasks and issues. Star a flow to pin it to the top.</p>
+      <p>Step-by-step process guides for common SAP tasks and support issues. Star a flow to keep it at the top.</p>
     </div>
     <div id="flows-container"></div>
   </div>
 
 </main>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-name">SAP Navigator</span>
+    <span class="footer-sep">·</span>
+    <span class="footer-desc">Find transactions, decode issues, and follow step-by-step troubleshooting flows.</span>
+    <span class="footer-sep">·</span>
+    <a class="footer-link" href="https://github.com/your-username/sap-navigator" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</footer>
+
+<!-- ========== ABOUT MODAL ========== -->
+<div id="about-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-label="About SAP Navigator">
+  <div class="modal about-modal">
+    <div class="modal-header">
+      <button id="about-close-btn" class="modal-close" aria-label="Close">✕</button>
+      <div class="modal-title">SAP Navigator</div>
+      <div class="modal-subtitle">A quick reference for SAP support, administration, and navigation.</div>
+    </div>
+    <div class="modal-body">
+      <div class="about-features">
+        <div class="about-feature">
+          <div class="about-feature-icon">🔍</div>
+          <div>
+            <div class="about-feature-title">Find</div>
+            <div class="about-feature-desc">Describe a task or area in plain language — get the right transaction to start from, with related alternatives and a clear reason for each match.</div>
+          </div>
+        </div>
+        <div class="about-feature">
+          <div class="about-feature-icon">🔬</div>
+          <div>
+            <div class="about-feature-title">Decode</div>
+            <div class="about-feature-desc">Describe a symptom or error — get the likely category, a starting transaction, and numbered next steps to work through.</div>
+          </div>
+        </div>
+        <div class="about-feature">
+          <div class="about-feature-icon">📋</div>
+          <div>
+            <div class="about-feature-title">Flows</div>
+            <div class="about-feature-desc">Browse step-by-step process guides organised by module. Star the flows you return to often — they stay pinned at the top.</div>
+          </div>
+        </div>
+      </div>
+      <p class="about-note">Everything runs locally — no backend, no tracking, no account needed.</p>
+    </div>
+  </div>
+</div>
 
 <!-- ========== FLOW DETAIL MODAL ========== -->
 <div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true">

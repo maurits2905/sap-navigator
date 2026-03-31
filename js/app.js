@@ -184,7 +184,7 @@ function renderFind(query) {
       <div class="empty-state">
         <div class="empty-icon">🔍</div>
         <div class="empty-title">No results found</div>
-        <div class="empty-text">Try different keywords, a transaction code, or a task description.</div>
+        <div class="empty-text">Try a different keyword, enter a transaction code directly, or rephrase the task.</div>
       </div>`;
     return;
   }
@@ -538,8 +538,12 @@ function openFlowModal(flowId) {
 }
 
 function closeModal() {
-  const overlay = document.getElementById('modal-overlay');
-  overlay.classList.remove('open');
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeAbout() {
+  document.getElementById('about-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
 
@@ -623,14 +627,26 @@ async function init() {
   // Flows tab
   renderFlows();
 
-  // Modal
+  // Flow detail modal
   const overlay = document.getElementById('modal-overlay');
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) closeModal();
   });
   document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+
+  // About modal
+  const aboutOverlay = document.getElementById('about-overlay');
+  document.getElementById('about-btn').addEventListener('click', () => {
+    aboutOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('about-close-btn').addEventListener('click', closeAbout);
+  aboutOverlay.addEventListener('click', (e) => {
+    if (e.target === aboutOverlay) closeAbout();
+  });
+
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Escape') { closeModal(); closeAbout(); }
   });
 
   // Initial empty states
