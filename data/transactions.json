@@ -588,5 +588,115 @@
     "category": "Workflow",
     "seeAlso": ["SWI5"],
     "relatedFlow": null
+  },
+  {
+    "id": "WE02",
+    "code": "WE02",
+    "name": "IDoc List",
+    "description": "Display and analyze IDocs by status, message type, partner, and date. Standard starting point for investigating interface processing issues.",
+    "tags": ["IDoc", "interface", "integration", "ALE", "EDI", "message", "IDoc error", "failed IDoc", "IDoc status", "inbound IDoc", "outbound IDoc", "WE02"],
+    "category": "Technical",
+    "seeAlso": ["WE05", "BD87"],
+    "relatedFlow": "flow-idoc-issue"
+  },
+  {
+    "id": "WE05",
+    "code": "WE05",
+    "name": "IDoc List by Message Type",
+    "description": "Display IDocs with flexible selection by basic type, message type, partner, and status. Often used together with WE02 for deeper filtering.",
+    "tags": ["IDoc", "interface", "message type", "ALE", "EDI", "integration", "IDoc monitor", "IDoc status", "WE05"],
+    "category": "Technical",
+    "seeAlso": ["WE02", "BD87"],
+    "relatedFlow": "flow-idoc-issue"
+  },
+  {
+    "id": "BD87",
+    "code": "BD87",
+    "name": "Status Monitor for ALE Messages",
+    "description": "Reprocess failed IDocs after the root cause has been fixed. Used when an inbound or outbound IDoc is in an error status and needs to be retried.",
+    "tags": ["IDoc", "reprocess IDoc", "ALE", "EDI", "retry interface", "failed message", "BD87", "retrigger IDoc", "status monitor"],
+    "category": "Technical",
+    "seeAlso": ["WE02", "WE05"],
+    "relatedFlow": "flow-idoc-issue"
+  },
+  {
+    "id": "SM13",
+    "code": "SM13",
+    "name": "Update Requests",
+    "description": "Display failed or pending SAP update requests. Essential for diagnosing transactions that appeared to save but were not committed to the database.",
+    "tags": ["update terminated", "update request", "update error", "SM13", "save failed", "data not saved", "commit failed", "update task", "V1 update", "V2 update"],
+    "category": "Technical",
+    "seeAlso": ["SM21", "ST22"],
+    "relatedFlow": "flow-update-failure"
+  },
+  {
+    "id": "ME29N",
+    "code": "ME29N",
+    "name": "Release Purchase Order",
+    "description": "Approve or release a purchase order according to the configured release strategy. Used when a PO is blocked from further processing pending approval.",
+    "tags": ["release PO", "approve PO", "purchase order approval", "release strategy", "ME29N", "PO not released", "procurement approval"],
+    "category": "Logistics",
+    "seeAlso": ["ME23N", "ME22N"],
+    "relatedFlow": "flow-po-release"
+  },
+  {
+    "id": "MRBR",
+    "code": "MRBR",
+    "name": "Release Blocked Invoices",
+    "description": "Release invoices blocked for payment due to quantity or price variance after the underlying issue has been resolved.",
+    "tags": ["blocked invoice", "release invoice", "invoice block", "MRBR", "LIV block", "payment block", "invoice variance", "vendor invoice blocked"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["MIRO", "FBL1N"],
+    "relatedFlow": "flow-blocked-invoice"
+  },
+  {
+    "id": "BP",
+    "code": "BP",
+    "name": "Business Partner",
+    "description": "Create, change, and display Business Partner master data. Central object in S/4HANA for customers, vendors, and other partner roles.",
+    "tags": ["business partner", "BP", "vendor master", "customer master", "partner", "supplier", "customer", "master data", "display BP", "change BP", "create BP"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["FBL1N", "FBL5N"],
+    "relatedFlow": null
+  },
+  {
+    "id": "SBWP",
+    "code": "SBWP",
+    "name": "SAP Business Workplace",
+    "description": "Open the SAP inbox to process workflow workitems, notifications, and business documents assigned to the user.",
+    "tags": ["workflow inbox", "inbox", "approval inbox", "workitem", "SBWP", "workflow item", "approve request", "workflow task"],
+    "category": "Workflow",
+    "seeAlso": ["SWI5", "SWIA"],
+    "relatedFlow": "flow-workflow-inbox"
+  },
+  {
+    "id": "MM01",
+    "code": "MM01",
+    "name": "Create Material Master",
+    "description": "Create a new material master record across required views such as Basic Data, Purchasing, MRP, and Accounting.",
+    "tags": ["create material", "new material", "material master", "MM01", "material creation", "material record", "new item master"],
+    "category": "Logistics",
+    "seeAlso": ["MM02", "MM03"],
+    "relatedFlow": null
+  },
+  {
+    "id": "MM02",
+    "code": "MM02",
+    "name": "Change Material Master",
+    "description": "Change an existing material master record. Update plant views, purchasing data, MRP settings, accounting data, and more.",
+    "tags": ["change material", "edit material", "material master", "MM02", "update material", "material record", "extend material"],
+    "category": "Logistics",
+    "seeAlso": ["MM01", "MM03"],
+    "relatedFlow": null
+  },
+  {
+    "id": "FB60",
+    "code": "FB60",
+    "name": "Enter Vendor Invoice",
+    "description": "Post a vendor invoice directly in Financial Accounting. Used for non-PO invoices or manual AP postings.",
+    "tags": ["vendor invoice", "AP invoice", "enter invoice", "FB60", "accounts payable", "manual invoice", "supplier invoice", "FI invoice"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["MIRO", "FBL1N", "FB03"],
+    "relatedFlow": null
   }
 ]

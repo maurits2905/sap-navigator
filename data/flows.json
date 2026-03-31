@@ -432,5 +432,216 @@
         "reason": "After correcting parameters or permissions, save the RFC destination and run both tests again to confirm end-to-end connectivity is restored."
       }
     ]
+  },
+  {
+    "id": "flow-idoc-issue",
+    "title": "Investigate a Failed IDoc",
+    "description": "Step-by-step approach for analyzing and reprocessing an inbound or outbound IDoc in error.",
+    "category": "Technical",
+    "module": "Technical",
+    "startingTransaction": "WE02",
+    "tags": ["IDoc", "interface", "ALE", "EDI", "WE02", "BD87", "failed message"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "WE02",
+        "action": "Find the IDoc by status, message type, partner, or date",
+        "reason": "WE02 is the best starting point when you know an interface failed but do not yet know the exact root cause."
+      },
+      {
+        "order": 2,
+        "transaction": "WE02",
+        "action": "Open the IDoc and review the current status record and error text",
+        "reason": "The status records usually show whether the problem is posting logic, master data, partner profile setup, or an application error."
+      },
+      {
+        "order": 3,
+        "transaction": "WE05",
+        "action": "Refine the search if needed by message type or partner profile",
+        "reason": "WE05 is useful when you need broader filtering across many IDocs or want to confirm whether the issue affects multiple messages."
+      },
+      {
+        "order": 4,
+        "transaction": null,
+        "action": "Fix the underlying cause before retrying",
+        "reason": "Do not reprocess until the real issue is resolved, otherwise the IDoc will simply fail again with the same status."
+      },
+      {
+        "order": 5,
+        "transaction": "BD87",
+        "action": "Reprocess the failed IDoc",
+        "reason": "BD87 is the standard transaction for retrying failed IDocs after the root cause has been corrected."
+      },
+      {
+        "order": 6,
+        "transaction": "WE02",
+        "action": "Confirm the IDoc reached a successful status",
+        "reason": "Always verify that the final status is successful and that any downstream business document was actually created."
+      }
+    ]
+  },
+  {
+    "id": "flow-po-release",
+    "title": "Investigate a Purchase Order Not Released",
+    "description": "How to diagnose and resolve a purchase order that is waiting for approval or not progressing through release strategy.",
+    "category": "Logistics",
+    "module": "Logistics",
+    "startingTransaction": "ME23N",
+    "tags": ["purchase order", "PO release", "approval", "ME29N", "release strategy", "procurement"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "ME23N",
+        "action": "Display the purchase order and review the current release status",
+        "reason": "Start by checking whether the PO is actually subject to release strategy and which release code or status is pending."
+      },
+      {
+        "order": 2,
+        "transaction": "ME23N",
+        "action": "Check whether the document was changed after an earlier release",
+        "reason": "Certain changes reset the release status and force the approval process to start again."
+      },
+      {
+        "order": 3,
+        "transaction": null,
+        "action": "Confirm the responsible approver or release code is correct",
+        "reason": "If the strategy determination is wrong, the issue is often with document values, organizational data, or release configuration."
+      },
+      {
+        "order": 4,
+        "transaction": "ME29N",
+        "action": "Release the purchase order if you have the correct authorization",
+        "reason": "ME29N is the standard transaction for approving a PO in a release strategy process."
+      },
+      {
+        "order": 5,
+        "transaction": "ME23N",
+        "action": "Re-display the PO and confirm the release status updated",
+        "reason": "Always confirm the PO is now released and available for follow-on processing."
+      }
+    ]
+  },
+  {
+    "id": "flow-blocked-invoice",
+    "title": "Investigate a Blocked Vendor Invoice",
+    "description": "Step-by-step process for analyzing and releasing a blocked invoice after quantity or price variances are resolved.",
+    "category": "Finance & Controlling",
+    "module": "Finance",
+    "startingTransaction": "FBL1N",
+    "tags": ["blocked invoice", "vendor invoice", "MRBR", "invoice block", "payment block", "LIV"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "FBL1N",
+        "action": "Locate the vendor invoice and confirm its current status",
+        "reason": "Start by confirming the invoice is open and identify whether it is blocked for payment or blocked due to invoice verification variances."
+      },
+      {
+        "order": 2,
+        "transaction": "MIRO",
+        "action": "Review the invoice details and compare against the PO and goods receipt",
+        "reason": "Most blocked invoices come from quantity or price mismatches between the invoice, PO, and GR."
+      },
+      {
+        "order": 3,
+        "transaction": null,
+        "action": "Correct the underlying variance if needed",
+        "reason": "Do not release the invoice until the business reason for the block has been resolved."
+      },
+      {
+        "order": 4,
+        "transaction": "MRBR",
+        "action": "Release the blocked invoice",
+        "reason": "MRBR is the standard transaction for releasing invoices blocked by invoice verification rules."
+      },
+      {
+        "order": 5,
+        "transaction": "FBL1N",
+        "action": "Confirm the invoice is now eligible for payment",
+        "reason": "Recheck the vendor line item to ensure the block is gone and the invoice can be picked up by payment processing."
+      }
+    ]
+  },
+  {
+    "id": "flow-workflow-inbox",
+    "title": "Investigate a Missing Workflow Item in Inbox",
+    "description": "How to diagnose why an approval or workitem is not appearing in the user's SAP inbox.",
+    "category": "Workflow",
+    "module": "Workflow",
+    "startingTransaction": "SBWP",
+    "tags": ["workflow", "inbox", "SBWP", "workitem", "approval", "missing task"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "SBWP",
+        "action": "Check whether the workitem is already present in the user's inbox",
+        "reason": "Sometimes the issue is simply that the user is checking the wrong folder or has not refreshed the inbox."
+      },
+      {
+        "order": 2,
+        "transaction": "SWI5",
+        "action": "Search for the workflow workitem by task, user, or status",
+        "reason": "SWI5 helps determine whether the workitem exists and whether it is assigned, completed, or stuck."
+      },
+      {
+        "order": 3,
+        "transaction": null,
+        "action": "Verify whether an agent was determined for the workitem",
+        "reason": "If no agent is assigned, the workflow cannot appear in anyone's inbox."
+      },
+      {
+        "order": 4,
+        "transaction": "SWIA",
+        "action": "Use administrative processing if the workflow must be unblocked",
+        "reason": "SWIA allows an administrator to forward, execute, or complete a stuck workitem when normal processing is not possible."
+      },
+      {
+        "order": 5,
+        "transaction": "SBWP",
+        "action": "Ask the user to refresh the inbox and confirm the item is visible",
+        "reason": "Once the assignment or workflow issue is fixed, the user should verify that the item is now available for action."
+      }
+    ]
+  },
+  {
+    "id": "flow-update-failure",
+    "title": "Investigate Data That Did Not Save",
+    "description": "How to diagnose a transaction that looked successful but did not actually commit data to the database.",
+    "category": "Technical",
+    "module": "Technical",
+    "startingTransaction": "SM13",
+    "tags": ["update terminated", "save failed", "SM13", "data not saved", "update task", "commit issue"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "SM13",
+        "action": "Search for failed update requests around the time of the issue",
+        "reason": "SM13 is the primary place to confirm whether the update task failed after the user saved the transaction."
+      },
+      {
+        "order": 2,
+        "transaction": "SM13",
+        "action": "Open the failed update and review the error details",
+        "reason": "The update record often points directly to the program, function module, or business object that failed."
+      },
+      {
+        "order": 3,
+        "transaction": "ST22",
+        "action": "Check for a related short dump",
+        "reason": "Many failed update requests also generate a dump, which gives more detailed technical information."
+      },
+      {
+        "order": 4,
+        "transaction": "SM21",
+        "action": "Review the system log around the same timestamp",
+        "reason": "SM21 may show update terminations, enqueue issues, or system-level errors not obvious from the business transaction."
+      },
+      {
+        "order": 5,
+        "transaction": null,
+        "action": "Fix the root cause and repeat the business transaction if appropriate",
+        "reason": "Once the technical or data issue is resolved, the original business action may need to be entered again."
+      }
+    ]
   }
 ]

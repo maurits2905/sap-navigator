@@ -245,5 +245,108 @@
       "For manual quota corrections, an HR admin can add or adjust quotas directly via PA30 (infotype 2006)."
     ],
     "linkedFlow": null
+  },
+  {
+    "id": "err-idoc-failed",
+    "pattern": ["idoc failed", "idoc error", "interface failed", "edi error", "ale error", "message failed", "inbound idoc error", "outbound idoc error", "idoc status 51", "idoc not processed"],
+    "title": "IDoc Failed or Stuck in Error",
+    "category": "Technical",
+    "description": "An inbound or outbound IDoc failed during processing. Common causes include missing master data, partner profile issues, or application posting errors.",
+    "primaryTransaction": "WE02",
+    "relatedTransactions": ["WE05", "BD87"],
+    "steps": [
+      "Open WE02 and locate the failed IDoc by status, message type, partner, or time range.",
+      "Review the status records and error text to identify the actual reason for failure.",
+      "Use WE05 if you need broader filtering across message types or partners.",
+      "Fix the root cause before retrying the message.",
+      "Reprocess the IDoc in BD87.",
+      "Confirm the IDoc reaches a successful final status and the expected business document is created."
+    ],
+    "linkedFlow": "flow-idoc-issue"
+  },
+  {
+    "id": "err-update-terminated",
+    "pattern": ["data not saved", "save failed", "update terminated", "update was terminated", "document not saved", "transaction saved but nothing happened", "commit failed", "update error", "sm13", "not committed"],
+    "title": "Update Task Failed / Data Not Saved",
+    "category": "Technical",
+    "description": "The transaction appeared to save, but the database update failed in the update task. This usually requires checking SM13 and related technical logs.",
+    "primaryTransaction": "SM13",
+    "relatedTransactions": ["ST22", "SM21"],
+    "steps": [
+      "Go to SM13 and search for failed update requests around the time of the issue.",
+      "Open the failed update request and review the error details.",
+      "If there is a related ABAP runtime error, inspect it in ST22.",
+      "Check SM21 for additional system-level information at the same timestamp.",
+      "Fix the underlying issue and repeat the business transaction if necessary."
+    ],
+    "linkedFlow": "flow-update-failure"
+  },
+  {
+    "id": "err-po-not-released",
+    "pattern": ["po not released", "purchase order not released", "cannot approve po", "po waiting for approval", "release strategy issue", "purchase order approval issue", "me29n", "po blocked for approval"],
+    "title": "Purchase Order Not Released",
+    "category": "Logistics",
+    "description": "A purchase order is waiting for approval or not progressing through the release strategy.",
+    "primaryTransaction": "ME23N",
+    "relatedTransactions": ["ME29N", "ME22N"],
+    "steps": [
+      "Open ME23N and check the current release status of the purchase order.",
+      "Verify whether the PO was changed after a previous approval, which may have reset the release.",
+      "Confirm the correct release strategy and approver are being determined.",
+      "Use ME29N to release the PO if you have the proper authority.",
+      "Re-display the document and confirm the release status has updated."
+    ],
+    "linkedFlow": "flow-po-release"
+  },
+  {
+    "id": "err-invoice-blocked",
+    "pattern": ["invoice blocked", "vendor invoice blocked", "blocked for payment", "invoice variance", "miro blocked", "mrbr", "invoice not released", "payment blocked invoice"],
+    "title": "Vendor Invoice Blocked",
+    "category": "Finance & Controlling",
+    "description": "A vendor invoice is blocked due to quantity or price variance, invoice verification rules, or payment restrictions.",
+    "primaryTransaction": "FBL1N",
+    "relatedTransactions": ["MIRO", "MRBR"],
+    "steps": [
+      "Find the invoice in FBL1N and confirm its current open and block status.",
+      "Review the invoice details in MIRO and compare them with the purchase order and goods receipt.",
+      "Resolve the underlying business variance first.",
+      "Release the blocked invoice in MRBR if appropriate.",
+      "Verify that the invoice is now eligible for payment."
+    ],
+    "linkedFlow": "flow-blocked-invoice"
+  },
+  {
+    "id": "err-workitem-missing-inbox",
+    "pattern": ["workflow item missing", "approval not in inbox", "workitem not in inbox", "task not in inbox", "approval missing", "sbwp empty", "workflow inbox missing item"],
+    "title": "Workflow Item Missing from Inbox",
+    "category": "Workflow",
+    "description": "A workflow workitem exists or should exist, but the user cannot see it in their SAP inbox.",
+    "primaryTransaction": "SBWP",
+    "relatedTransactions": ["SWI5", "SWIA"],
+    "steps": [
+      "Check SBWP to confirm the workitem is not already present in the user's inbox.",
+      "Use SWI5 to search for the workflow item by task, user, or status.",
+      "Verify whether an agent was assigned to the workitem.",
+      "If the item is stuck, use SWIA for administrative processing.",
+      "Ask the user to refresh the inbox and confirm visibility after the fix."
+    ],
+    "linkedFlow": "flow-workflow-inbox"
+  },
+  {
+    "id": "err-material-missing",
+    "pattern": ["material not found", "material does not exist", "material missing", "cannot find material", "material not extended", "mm03 no material", "material unavailable in plant"],
+    "title": "Material Missing or Not Extended",
+    "category": "Logistics",
+    "description": "A material cannot be found in the expected organizational level or required view. The record may not exist or may not be extended to the plant or storage-relevant views.",
+    "primaryTransaction": "MM03",
+    "relatedTransactions": ["MM01", "MM02", "MMBE"],
+    "steps": [
+      "Open MM03 and check whether the material exists at all.",
+      "Verify whether the required plant or view is maintained for the material.",
+      "If the material exists but lacks required data, extend or update it in MM02.",
+      "If the material does not exist, create it in MM01 according to business rules.",
+      "Re-test the original process once the material master is complete."
+    ],
+    "linkedFlow": null
   }
 ]
