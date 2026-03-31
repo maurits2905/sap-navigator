@@ -1078,5 +1078,85 @@
     "category": "HCM",
     "seeAlso": ["PA30", "CAT2", "PT50"],
     "relatedFlow": "flow-time-data-correction"
+  },
+  {
+    "id": "SM58",
+    "code": "SM58",
+    "name": "Transactional RFC Monitor",
+    "description": "Monitor transactional RFC (tRFC) calls that are waiting, failed, or not yet delivered to the target system. Useful when asynchronous RFC processing is delayed or stuck.",
+    "tags": ["tRFC", "SM58", "RFC queue", "transactional RFC", "failed RFC", "stuck RFC", "async RFC", "remote call waiting"],
+    "category": "Technical",
+    "seeAlso": ["SM59", "SMQ1", "SMQ2"],
+    "relatedFlow": "flow-trfc-issue"
+  },
+  {
+    "id": "SU24",
+    "code": "SU24",
+    "name": "Maintain Authorization Defaults",
+    "description": "Maintain authorization check indicators and default authorization proposals for transactions, reports, and services. Useful when building or correcting role content in PFCG.",
+    "tags": ["authorization defaults", "SU24", "auth proposal", "role proposal", "PFCG defaults", "transaction authorization", "check indicators"],
+    "category": "Security & Authorization",
+    "seeAlso": ["PFCG", "SU53", "ST01"],
+    "relatedFlow": null
+  },
+  {
+    "id": "ST01",
+    "code": "ST01",
+    "name": "System Trace",
+    "description": "Run a system trace for authorization checks, RFC calls, kernel operations, and more. Especially useful when SU53 is not enough to explain why access failed.",
+    "tags": ["system trace", "ST01", "authorization trace", "auth trace", "RFC trace", "trace access", "security trace", "failed authorization"],
+    "category": "Security & Authorization",
+    "seeAlso": ["SU53", "SU24", "ST05"],
+    "relatedFlow": "flow-authorization-trace"
+  },
+  {
+    "id": "SAT",
+    "code": "SAT",
+    "name": "ABAP Runtime Analysis",
+    "description": "Measure and analyze the runtime of ABAP programs, transactions, and function modules. Useful for identifying slow logic, expensive calls, and performance bottlenecks in custom code.",
+    "tags": ["runtime analysis", "SAT", "performance", "slow ABAP", "program runtime", "trace program", "ABAP performance", "response time"],
+    "category": "Technical",
+    "seeAlso": ["ST05", "ST22", "SE38"],
+    "relatedFlow": "flow-runtime-analysis"
+  },
+  {
+    "id": "SM30",
+    "code": "SM30",
+    "name": "View Maintenance",
+    "description": "Maintain table view contents through generated maintenance dialogs. Commonly used for configuration tables and custom control tables when direct IMG navigation is not available.",
+    "tags": ["table maintenance", "SM30", "maintain table", "view maintenance", "config table", "customizing table", "table view", "maintenance dialog"],
+    "category": "Technical",
+    "seeAlso": ["SE16N", "SPRO"],
+    "relatedFlow": "flow-table-maintenance"
+  },
+  {
+    "id": "VF04",
+    "code": "VF04",
+    "name": "Billing Due List",
+    "description": "Display billing-relevant sales and delivery documents that are due for invoicing. Useful when an invoice is expected but has not yet been created.",
+    "tags": ["billing due list", "VF04", "invoice due", "billing pending", "sales billing", "SD billing", "documents for billing", "invoice not created"],
+    "category": "Logistics",
+    "seeAlso": ["VF01", "VF03", "VL03N"],
+    "relatedFlow": "flow-billing-due-list"
+  },
+  {
+    "id": "STRUST",
+    "code": "STRUST",
+    "name": "Trust Manager",
+    "description": "Maintain SSL certificates and trust relationships used by SAP for HTTPS, web services, and secure outbound connections.",
+    "tags": ["certificate", "SSL", "STRUST", "trust", "HTTPS", "secure connection", "certificate error", "web service certificate"],
+    "category": "Connectivity & Services",
+    "seeAlso": ["SM59", "SICF"],
+    "relatedFlow": "flow-ssl-trust-issue"
+  },
+  {
+    "id": "OBYC",
+    "code": "OBYC",
+    "name": "Automatic Account Determination",
+    "description": "Maintain automatic G/L account determination for inventory postings in Materials Management. Used when goods movements or invoice-related postings fail due to missing account determination.",
+    "tags": ["OBYC", "account determination", "automatic posting", "inventory account", "MM FI integration", "G/L determination", "goods movement account", "valuation posting"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["MIGO", "MM03", "FB03"],
+    "relatedFlow": "flow-account-determination"
   }
 ]

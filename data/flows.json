@@ -1457,5 +1457,310 @@
         "reason": "Some corrections only take full effect after time evaluation processes the updated data."
       }
     ]
+  },
+  {
+    "id": "flow-trfc-issue",
+    "title": "Investigate a Stuck or Failed tRFC Call",
+    "description": "How to diagnose transactional RFC calls that are waiting, failing repeatedly, or not reaching the target system.",
+    "category": "Technical",
+    "module": "Technical",
+    "startingTransaction": "SM58",
+    "tags": ["tRFC", "SM58", "RFC", "failed call", "stuck RFC", "asynchronous processing"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "SM58",
+        "action": "Find the failed or waiting tRFC entry by date, user, or destination",
+        "reason": "SM58 is the standard place to see whether a transactional RFC call is waiting for retry, failed with an error, or blocked by communication issues."
+      },
+      {
+        "order": 2,
+        "transaction": "SM58",
+        "action": "Open the entry and review the exact error text and destination",
+        "reason": "The stored error usually tells you whether the issue is communication, logon, authorization, or an application problem in the target system."
+      },
+      {
+        "order": 3,
+        "transaction": "SM59",
+        "action": "Test the RFC destination used by the failed call",
+        "reason": "If the connection itself is broken, the tRFC entry will keep failing until the destination, credentials, or network path is corrected."
+      },
+      {
+        "order": 4,
+        "transaction": "SM21",
+        "action": "Check the system log around the same timestamp",
+        "reason": "SM21 often shows supporting technical information such as communication failures, logon problems, or system-side outages."
+      },
+      {
+        "order": 5,
+        "transaction": null,
+        "action": "Fix the underlying destination, authorization, or target-system issue",
+        "reason": "Do not just retry the entry blindly — the real cause must be resolved first, otherwise the call will fail again."
+      },
+      {
+        "order": 6,
+        "transaction": "SM58",
+        "action": "Repeat or reprocess the tRFC entry after correction",
+        "reason": "Once the cause is fixed, reprocessing confirms whether the call now reaches the target system successfully."
+      }
+    ]
+  },
+  {
+    "id": "flow-authorization-trace",
+    "title": "Trace an Authorization Failure When SU53 Is Not Enough",
+    "description": "How to capture a deeper authorization trace for access issues that cannot be explained clearly by SU53 alone.",
+    "category": "Security & Authorization",
+    "module": "Security",
+    "startingTransaction": "ST01",
+    "tags": ["authorization trace", "ST01", "SU53", "access issue", "security trace", "missing authorization"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "SU53",
+        "action": "Capture the most recent failed authorization check first",
+        "reason": "SU53 is still the fastest first check and may already reveal the missing object or field value without needing a full trace."
+      },
+      {
+        "order": 2,
+        "transaction": "ST01",
+        "action": "Activate an authorization trace for the affected user",
+        "reason": "ST01 records every authorization check during the failing action, including checks that SU53 may not show clearly."
+      },
+      {
+        "order": 3,
+        "transaction": null,
+        "action": "Ask the user to repeat the exact failing step while the trace is active",
+        "reason": "The trace is only useful if it captures the real business action that is currently failing."
+      },
+      {
+        "order": 4,
+        "transaction": "ST01",
+        "action": "Stop the trace and analyze the failed authorization checks",
+        "reason": "Review which authorization objects were checked, which values were requested, and which check returned a failure."
+      },
+      {
+        "order": 5,
+        "transaction": "PFCG",
+        "action": "Adjust the relevant role authorization values if needed",
+        "reason": "Once the exact missing object and value are proven, update the role correctly instead of guessing."
+      },
+      {
+        "order": 6,
+        "transaction": null,
+        "action": "Have the user test again after the role correction",
+        "reason": "A retest confirms whether the traced authorization issue is fully resolved or whether an additional check still fails."
+      }
+    ]
+  },
+  {
+    "id": "flow-runtime-analysis",
+    "title": "Analyze a Slow Custom Transaction or Program",
+    "description": "How to investigate a transaction or report that runs slowly and identify the expensive ABAP processing steps.",
+    "category": "Technical",
+    "module": "Technical",
+    "startingTransaction": "SAT",
+    "tags": ["SAT", "performance", "slow program", "runtime analysis", "ABAP trace", "technical analysis"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "SAT",
+        "action": "Set up a runtime analysis for the affected user, transaction, or program",
+        "reason": "SAT can trace a specific execution and show where the system spends time during the actual slow step."
+      },
+      {
+        "order": 2,
+        "transaction": null,
+        "action": "Execute the slow business action during the measurement",
+        "reason": "The analysis only becomes useful if it captures the exact runtime path that users are experiencing as slow."
+      },
+      {
+        "order": 3,
+        "transaction": "SAT",
+        "action": "Review the call hierarchy, processing times, and expensive statements",
+        "reason": "This shows whether the slowness comes from custom ABAP logic, repeated calls, database access, or external function modules."
+      },
+      {
+        "order": 4,
+        "transaction": "ST05",
+        "action": "Use SQL trace as a follow-up if database access looks expensive",
+        "reason": "If SAT shows heavy database time, ST05 gives the detailed SQL-level evidence needed for optimization."
+      },
+      {
+        "order": 5,
+        "transaction": null,
+        "action": "Identify whether the issue is code logic, data volume, or database access",
+        "reason": "The right fix depends on the root cause, so separate slow ABAP loops from slow SQL or unusually large data sets."
+      },
+      {
+        "order": 6,
+        "transaction": null,
+        "action": "Retest after optimization or correction",
+        "reason": "A fresh runtime measurement confirms whether the implemented change actually improved performance."
+      }
+    ]
+  },
+  {
+    "id": "flow-table-maintenance",
+    "title": "Investigate a Table Maintenance Issue",
+    "description": "How to diagnose why a configuration table cannot be maintained through SM30 or why the expected table view does not work.",
+    "category": "Technical",
+    "module": "Technical",
+    "startingTransaction": "SM30",
+    "tags": ["SM30", "table maintenance", "view maintenance", "config table", "maintenance dialog", "customizing"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "SM30",
+        "action": "Enter the table or view name and check whether a maintenance dialog exists",
+        "reason": "Not every table is maintainable through SM30. Some objects have no generated maintenance view or are meant to be maintained elsewhere."
+      },
+      {
+        "order": 2,
+        "transaction": "SM30",
+        "action": "Review the exact error or restriction message",
+        "reason": "The message usually tells you whether the issue is missing authorization, no maintenance object, or client-dependent restrictions."
+      },
+      {
+        "order": 3,
+        "transaction": "SE16N",
+        "action": "Display the table contents to confirm the target entries and keys",
+        "reason": "SE16N helps verify whether the table contains the expected data and whether you are looking at the correct client and key values."
+      },
+      {
+        "order": 4,
+        "transaction": "SPRO",
+        "action": "Check whether the data should be maintained through IMG instead of SM30",
+        "reason": "Many configuration objects are intended to be maintained through a controlled customizing activity rather than direct table maintenance."
+      },
+      {
+        "order": 5,
+        "transaction": null,
+        "action": "Confirm the user has the right authorization and the correct maintenance path",
+        "reason": "Even with a valid maintenance view, missing table maintenance authorization or the wrong process path can block the change."
+      }
+    ]
+  },
+  {
+    "id": "flow-billing-due-list",
+    "title": "Investigate Why a Document Is Missing from the Billing Due List",
+    "description": "How to diagnose why a sales or delivery document is not appearing in the billing due list and therefore cannot be invoiced as expected.",
+    "category": "Logistics",
+    "module": "Logistics",
+    "startingTransaction": "VF04",
+    "tags": ["VF04", "billing due list", "invoice missing", "billing", "sales document", "delivery billing"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "VF04",
+        "action": "Search the billing due list with the relevant sales or delivery selection criteria",
+        "reason": "Start by confirming whether the document is truly absent or simply filtered out by billing type, date, organizational data, or user selection."
+      },
+      {
+        "order": 2,
+        "transaction": "VL03N",
+        "action": "Check whether the delivery is complete and goods issue has been posted",
+        "reason": "Many billing processes depend on a completed outbound delivery with the right status before the document becomes billing-relevant."
+      },
+      {
+        "order": 3,
+        "transaction": "VA03",
+        "action": "Review the sales order billing status and billing block fields",
+        "reason": "A billing block or incomplete billing-relevant status at header or item level prevents the document from appearing in VF04."
+      },
+      {
+        "order": 4,
+        "transaction": null,
+        "action": "Confirm that the document is actually billing-relevant for the intended process",
+        "reason": "The issue may be configuration or document type related rather than an operational problem in billing execution."
+      },
+      {
+        "order": 5,
+        "transaction": "VF01",
+        "action": "Attempt manual billing creation if appropriate",
+        "reason": "A manual attempt can reveal the direct blocking error and helps confirm whether the issue is in selection logic or document readiness."
+      }
+    ]
+  },
+  {
+    "id": "flow-ssl-trust-issue",
+    "title": "Investigate an SSL Certificate or Trust Problem",
+    "description": "How to diagnose secure connection failures caused by missing, expired, or untrusted certificates in SAP.",
+    "category": "Connectivity & Services",
+    "module": "Connectivity",
+    "startingTransaction": "STRUST",
+    "tags": ["SSL", "certificate", "STRUST", "trust", "HTTPS", "secure connection", "certificate error"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "STRUST",
+        "action": "Identify the relevant trust store and review the current certificate chain",
+        "reason": "You first need to confirm which SSL client or server PSE is involved and whether the expected certificates are present."
+      },
+      {
+        "order": 2,
+        "transaction": "STRUST",
+        "action": "Check whether the certificate is expired, missing, or not trusted",
+        "reason": "Most SSL issues come from expiry, missing intermediate certificates, or a certificate chain that SAP does not trust."
+      },
+      {
+        "order": 3,
+        "transaction": "SM59",
+        "action": "Retest the secure destination if the issue affects an RFC or HTTP destination",
+        "reason": "A test after reviewing trust settings helps confirm whether the handshake failure is tied to the certificate problem you found."
+      },
+      {
+        "order": 4,
+        "transaction": "SICF",
+        "action": "Check the secure service configuration if the issue affects an SAP-hosted HTTPS service",
+        "reason": "For inbound or service-side issues, SICF helps verify the affected service path and related security setup."
+      },
+      {
+        "order": 5,
+        "transaction": null,
+        "action": "Import or replace the required certificate chain if needed",
+        "reason": "The trust issue is only resolved once the correct root, intermediate, or server certificate is available and trusted by SAP."
+      }
+    ]
+  },
+  {
+    "id": "flow-account-determination",
+    "title": "Investigate Missing Automatic Account Determination",
+    "description": "How to diagnose MM-related postings that fail because SAP cannot determine the correct G/L accounts automatically.",
+    "category": "Finance & Controlling",
+    "module": "Finance",
+    "startingTransaction": "MIGO",
+    "tags": ["OBYC", "account determination", "goods movement", "inventory posting", "automatic posting", "MM FI integration"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "MIGO",
+        "action": "Capture the exact posting scenario, movement type, plant, and material involved",
+        "reason": "Automatic account determination depends on the business context, so you need the precise posting situation before checking configuration."
+      },
+      {
+        "order": 2,
+        "transaction": "MM03",
+        "action": "Review the material valuation class and relevant master data",
+        "reason": "The valuation class is one of the main keys used in OBYC to determine which G/L account SAP should post to."
+      },
+      {
+        "order": 3,
+        "transaction": "OBYC",
+        "action": "Check the relevant transaction key and account determination entry",
+        "reason": "OBYC is the standard place to verify whether the combination of valuation grouping code, valuation class, and transaction key is maintained."
+      },
+      {
+        "order": 4,
+        "transaction": null,
+        "action": "Confirm the posting is using the correct valuation area and configuration context",
+        "reason": "An account entry may exist in OBYC but still not match if the plant, valuation grouping, or material setup is different from what you expect."
+      },
+      {
+        "order": 5,
+        "transaction": "MIGO",
+        "action": "Repeat the posting after correcting the account determination setup",
+        "reason": "A successful retest confirms that SAP can now derive the intended G/L account automatically."
+      }
+    ]
   }
 ]

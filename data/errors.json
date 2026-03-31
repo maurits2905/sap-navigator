@@ -703,5 +703,143 @@
       "Rerun PT60 if recalculation is required."
     ],
     "linkedFlow": "flow-time-data-correction"
+  },
+  {
+    "id": "err-trfc-not-processing",
+    "pattern": ["trfc stuck", "sm58", "transactional RFC failed", "rfc entry waiting", "async rfc not processing", "failed trfc", "rfc waiting for retry", "trfc error"],
+    "title": "tRFC Call Stuck or Failing",
+    "category": "Technical",
+    "description": "A transactional RFC call is waiting, failing repeatedly, or not reaching the target system. Common causes include broken destinations, logon issues, or temporary communication failures.",
+    "primaryTransaction": "SM58",
+    "relatedTransactions": ["SM59", "SM21", "SMQ1"],
+    "steps": [
+      "Open SM58 and locate the failed or waiting entry.",
+      "Review the destination, function call, and exact error text.",
+      "Test the destination in SM59 to check connection and logon behavior.",
+      "Review SM21 around the same time for supporting technical errors.",
+      "Fix the destination, authorization, or target-system problem before retrying.",
+      "Reprocess the entry in SM58 and confirm it clears successfully."
+    ],
+    "linkedFlow": "flow-trfc-issue"
+  },
+  {
+    "id": "err-su53-not-enough-detail",
+    "pattern": ["su53 not enough", "su53 shows nothing", "authorization still unclear", "need auth trace", "st01", "access issue not explained by su53", "missing authorization but su53 unclear"],
+    "title": "Authorization Failure Needs Deeper Trace",
+    "category": "Security & Authorization",
+    "description": "An access issue still cannot be explained clearly after checking SU53. This usually means a deeper authorization trace is needed to see the exact failed checks.",
+    "primaryTransaction": "ST01",
+    "relatedTransactions": ["SU53", "PFCG", "SU24"],
+    "steps": [
+      "Check SU53 first to capture the latest failed authorization check.",
+      "If SU53 is incomplete or unclear, activate an authorization trace in ST01 for the affected user.",
+      "Have the user repeat the exact failing action while the trace is active.",
+      "Analyze the trace results to identify the missing object and field values.",
+      "Adjust the relevant role content in PFCG based on the traced evidence.",
+      "Retest the transaction after the role correction."
+    ],
+    "linkedFlow": "flow-authorization-trace"
+  },
+  {
+    "id": "err-table-maintenance-not-allowed",
+    "pattern": ["sm30 not working", "cannot maintain table", "view maintenance not allowed", "no maintenance dialog", "table maintenance blocked", "sm30 error", "cannot change config table"],
+    "title": "Table Cannot Be Maintained in SM30",
+    "category": "Technical",
+    "description": "A table or view cannot be maintained through SM30 because no maintenance dialog exists, the wrong path is being used, or the user lacks the required authorization.",
+    "primaryTransaction": "SM30",
+    "relatedTransactions": ["SE16N", "SPRO"],
+    "steps": [
+      "Open SM30 and enter the exact table or view name.",
+      "Review the returned error or restriction message carefully.",
+      "Use SE16N to verify the correct table contents and key values.",
+      "Check whether the object should be maintained through SPRO or another controlled transaction instead of SM30.",
+      "Confirm the user has the right maintenance authorization and client context."
+    ],
+    "linkedFlow": "flow-table-maintenance"
+  },
+  {
+    "id": "err-billing-due-list-empty",
+    "pattern": ["vf04 empty", "billing due list empty", "invoice not in vf04", "not appearing for billing", "document not billing due", "billing document not created", "invoice missing from due list"],
+    "title": "Document Missing from Billing Due List",
+    "category": "Logistics",
+    "description": "A sales or delivery document is expected to be invoiced but does not appear in the billing due list. Causes often include billing blocks, incomplete delivery processing, or billing relevance issues.",
+    "primaryTransaction": "VF04",
+    "relatedTransactions": ["VA03", "VL03N", "VF01"],
+    "steps": [
+      "Open VF04 and search using the correct sales, delivery, and organizational selection criteria.",
+      "Check VL03N to confirm the delivery is complete and goods issue has been posted if required.",
+      "Review billing status and any billing blocks in VA03.",
+      "Confirm the document is actually billing-relevant for the intended process.",
+      "Try manual billing creation in VF01 if appropriate to surface the direct blocking error."
+    ],
+    "linkedFlow": "flow-billing-due-list"
+  },
+  {
+    "id": "err-ssl-certificate-not-trusted",
+    "pattern": ["ssl error", "certificate not trusted", "https handshake failed", "strust", "ssl certificate expired", "secure connection failed", "peer certificate", "trust error"],
+    "title": "SSL Certificate or Trust Error",
+    "category": "Connectivity & Services",
+    "description": "A secure connection fails because SAP does not trust the certificate chain or the relevant certificate is missing or expired.",
+    "primaryTransaction": "STRUST",
+    "relatedTransactions": ["SM59", "SICF"],
+    "steps": [
+      "Open STRUST and identify the relevant SSL client or server trust store.",
+      "Check whether the required certificate chain is present and still valid.",
+      "Review whether the certificate is expired, missing, or incomplete.",
+      "Retest the related connection in SM59 or the affected service path in SICF.",
+      "Import or replace the required certificates and test again."
+    ],
+    "linkedFlow": "flow-ssl-trust-issue"
+  },
+  {
+    "id": "err-account-determination-missing",
+    "pattern": ["account determination missing", "obyc error", "g/l account not determined", "automatic account determination", "account key missing", "goods movement account error", "valuation class issue"],
+    "title": "Automatic Account Determination Missing",
+    "category": "Finance & Controlling",
+    "description": "An MM-related posting fails because SAP cannot determine the required G/L account automatically. This is usually caused by missing or mismatched OBYC configuration or material valuation data.",
+    "primaryTransaction": "MIGO",
+    "relatedTransactions": ["OBYC", "MM03", "FB03"],
+    "steps": [
+      "Capture the exact posting error, movement type, plant, and material involved.",
+      "Check MM03 to review the material's valuation class and accounting-relevant setup.",
+      "Open OBYC and verify the relevant transaction key and account assignment entry.",
+      "Confirm the valuation grouping code and account determination context match the posting scenario.",
+      "Repeat the posting after correcting the missing or incorrect account determination."
+    ],
+    "linkedFlow": "flow-account-determination"
+  },
+  {
+    "id": "err-material-not-extended",
+    "pattern": ["material not extended", "material missing in plant", "sales view missing", "purchasing view missing", "material not maintained for org level", "material master incomplete", "mm03 missing view"],
+    "title": "Material Not Extended to Required Organizational Level",
+    "category": "Logistics",
+    "description": "A process fails because the material exists, but the required plant, storage, purchasing, sales, or accounting view is missing for the organizational level being used.",
+    "primaryTransaction": "MM03",
+    "relatedTransactions": ["MM02", "MD04", "VA03"],
+    "steps": [
+      "Open MM03 and check which views and organizational levels exist for the material.",
+      "Confirm whether the failing process needs a plant, sales area, purchasing, or accounting extension that is currently missing.",
+      "Use MM02 to extend the material to the required views and organizational levels.",
+      "Review the business process context to ensure the correct plant or sales area is being used.",
+      "Repeat the original transaction after the material extension is complete."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-time-evaluation-not-run",
+    "pattern": ["pt60 not run", "time evaluation missing", "time not calculated", "quota not updated after time entry", "time schema not processed", "overtime not calculated", "time evaluation error"],
+    "title": "Time Evaluation Not Run or Not Updated",
+    "category": "HCM",
+    "description": "Employee time results, overtime, or quota effects are missing because time evaluation has not run, failed, or not processed the expected employee data.",
+    "primaryTransaction": "PT60",
+    "relatedTransactions": ["CAT2", "PT50", "PA30"],
+    "steps": [
+      "Open PT60 and check whether time evaluation ran for the affected employee and period.",
+      "Confirm the employee's time data exists correctly in CAT2 or the relevant HR infotypes.",
+      "Review whether master data in PA30 supports the expected time evaluation process.",
+      "Rerun PT60 for the employee or relevant period if appropriate.",
+      "Check PT50 or downstream results again after time evaluation completes."
+    ],
+    "linkedFlow": null
   }
 ]
