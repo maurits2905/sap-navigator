@@ -348,5 +348,175 @@
       "Re-test the original process once the material master is complete."
     ],
     "linkedFlow": null
+  },
+  {
+    "id": "err-spool-output-missing",
+    "pattern": ["spool missing", "print not coming out", "output missing", "report ran but no output", "spool request missing", "printer issue", "sp01", "print job missing", "no spool"],
+    "title": "Spool Output Missing or Not Printed",
+    "category": "Technical",
+    "description": "A report or form appears to have run, but the expected spool output is missing, stuck, or sent to the wrong device.",
+    "primaryTransaction": "SP01",
+    "relatedTransactions": ["SM37"],
+    "steps": [
+      "Confirm the report or background job actually completed successfully.",
+      "Search SP01 for the spool request by user, program, or date.",
+      "Check the spool status and target output device.",
+      "Verify whether the output was sent to the correct printer or logical device.",
+      "Reprint or forward the existing spool request if appropriate."
+    ],
+    "linkedFlow": "flow-spool-issue"
+  },
+  {
+    "id": "err-record-locked",
+    "pattern": ["record locked", "object locked", "entry locked", "locked by another user", "cannot edit because locked", "enqueue lock", "sm12", "table entry locked"],
+    "title": "Record Locked by Another User or Process",
+    "category": "Technical",
+    "description": "A business object or table entry is locked and cannot be changed. This may be a valid active lock or a stale lock left behind by a failed process.",
+    "primaryTransaction": "SM12",
+    "relatedTransactions": ["SM21"],
+    "steps": [
+      "Search SM12 for the lock entry by user, object, or key.",
+      "Confirm whether the locking session is still active.",
+      "Check SM21 if the lock appears to be stale after a failure.",
+      "Ask the owning user or team to exit cleanly if possible.",
+      "Delete the lock only when you are sure it is no longer in active use."
+    ],
+    "linkedFlow": "flow-lock-issue"
+  },
+  {
+    "id": "err-queue-stuck",
+    "pattern": ["queue stuck", "qrfc stuck", "queued message not processing", "smq1", "smq2", "inbound queue stuck", "outbound queue stuck", "message waiting in queue", "queue error"],
+    "title": "qRFC Queue Stuck or Not Processing",
+    "category": "Technical",
+    "description": "A queued RFC message is stuck in outbound or inbound processing. Common causes include application errors, RFC issues, or dependent queues waiting to be cleared.",
+    "primaryTransaction": "SMQ1",
+    "relatedTransactions": ["SMQ2", "SLG1", "SM59"],
+    "steps": [
+      "Check SMQ1 in the source system to see whether the outbound queue is stuck.",
+      "Check SMQ2 in the target system to see whether the message arrived but is waiting there.",
+      "Review SLG1 for application-level error details.",
+      "Verify SM59 if the queue issue appears to be communication-related.",
+      "Fix the root cause before restarting or unlocking the queue."
+    ],
+    "linkedFlow": "flow-queue-issue"
+  },
+  {
+    "id": "err-pr-not-released",
+    "pattern": ["pr not released", "purchase requisition not approved", "requisition waiting for approval", "cannot approve requisition", "me54n", "requisition stuck in release", "purchase requisition blocked"],
+    "title": "Purchase Requisition Not Released",
+    "category": "Logistics",
+    "description": "A purchase requisition is waiting for approval or not progressing through its release strategy.",
+    "primaryTransaction": "ME53N",
+    "relatedTransactions": ["ME54N", "ME52N"],
+    "steps": [
+      "Open ME53N and review the release status of the requisition.",
+      "Check whether document changes reset the release status.",
+      "Confirm the correct release strategy and approver determination.",
+      "Use ME54N to release the requisition if you are authorized.",
+      "Re-display the requisition and confirm the updated release status."
+    ],
+    "linkedFlow": "flow-pr-release"
+  },
+  {
+    "id": "err-pricing-not-determined",
+    "pattern": ["pricing not determined", "price missing", "discount missing", "wrong price", "condition record missing", "sales order pricing issue", "vk13", "pricing error", "no pricing condition"],
+    "title": "Pricing Not Determined or Incorrect",
+    "category": "Logistics",
+    "description": "A sales order has missing or incorrect pricing because the condition record, validity, or determination logic is not matching as expected.",
+    "primaryTransaction": "VA03",
+    "relatedTransactions": ["VK13", "VA02"],
+    "steps": [
+      "Open the sales order in VA03 and identify which pricing condition is missing or incorrect.",
+      "Check the sales area, customer, material, and pricing date on the order.",
+      "Use VK13 to verify that a valid condition record exists.",
+      "Confirm whether pricing procedure and access sequence logic are correct.",
+      "Re-price the order in VA02 after correcting the underlying issue."
+    ],
+    "linkedFlow": "flow-pricing-issue"
+  },
+  {
+    "id": "err-delivery-not-created",
+    "pattern": ["delivery not created", "cannot create delivery", "outbound delivery missing", "sales order not delivered", "vl01n error", "delivery issue", "no outbound delivery", "delivery blocked"],
+    "title": "Outbound Delivery Not Created",
+    "category": "Logistics",
+    "description": "A sales order is not resulting in an outbound delivery because of blocks, missing confirmations, delivery relevance issues, or incorrect dates.",
+    "primaryTransaction": "VA03",
+    "relatedTransactions": ["VL01N", "VL02N", "VL03N"],
+    "steps": [
+      "Open VA03 and check the sales order status and any delivery blocks.",
+      "Review delivery-relevant dates, confirmed quantity, and schedule lines.",
+      "Try manual delivery creation in VL01N if appropriate.",
+      "Check whether a delivery already exists in VL03N.",
+      "If the delivery exists, continue processing in VL02N."
+    ],
+    "linkedFlow": "flow-delivery-issue"
+  },
+  {
+    "id": "err-posting-period-closed-specific",
+    "pattern": ["posting period closed", "period not open", "fi period closed", "cannot post in period", "ob52", "accounting period closed", "posting blocked by period"],
+    "title": "FI Posting Period Closed",
+    "category": "Finance & Controlling",
+    "description": "A financial posting cannot be made because the accounting period is closed for the relevant company code or account type.",
+    "primaryTransaction": "OB52",
+    "relatedTransactions": ["FB03", "FB50"],
+    "steps": [
+      "Capture the posting date, company code, and account type from the error.",
+      "Check OB52 to confirm whether the period is open for that account type.",
+      "Verify that the posting date is correct and falls into the intended period.",
+      "Open the period only if you are authorized and business approval exists.",
+      "Repeat the posting once the period issue is resolved."
+    ],
+    "linkedFlow": "flow-posting-period-closed"
+  },
+  {
+    "id": "err-employee-not-in-org",
+    "pattern": ["employee not in org", "employee missing from org chart", "position missing", "employee not in structure", "org assignment missing", "ppome issue", "ppose", "employee not visible in organization"],
+    "title": "Employee Missing from Organizational Structure",
+    "category": "HCM",
+    "description": "An employee exists in HR master data but is not visible or correctly placed in the organizational structure.",
+    "primaryTransaction": "PPOME",
+    "relatedTransactions": ["PPOSE", "PA30", "PA20"],
+    "steps": [
+      "Check the employee's organizational assignment data in PA30.",
+      "Open PPOME to verify the org unit and position assignment.",
+      "Use PPOSE to confirm whether the employee appears in the expected structure.",
+      "Correct the org assignment or holder relationship if necessary.",
+      "Validate the final placement in both PPOME and PA20."
+    ],
+    "linkedFlow": "flow-hire-employee"
+  },
+  {
+    "id": "err-leave-quota-missing-detailed",
+    "pattern": ["leave balance wrong", "quota not accrued", "vacation balance missing", "pt50 wrong", "pt60 not updated", "absence quota missing", "leave quota wrong"],
+    "title": "Leave Quota Missing or Incorrect",
+    "category": "HCM",
+    "description": "An employee's leave balance is missing, too low, or not updated because accrual or master data is incomplete or incorrect.",
+    "primaryTransaction": "PT50",
+    "relatedTransactions": ["PT60", "PA30", "PA2006"],
+    "steps": [
+      "Check the employee's quota balances in PT50.",
+      "Review or rerun PT60 if accrual should already have happened.",
+      "Check relevant HR master data in PA30.",
+      "Correct quota data in infotype 2006 if a manual adjustment is required.",
+      "Recheck the balance in PT50 after correction."
+    ],
+    "linkedFlow": "flow-leave-quota"
+  },
+  {
+    "id": "err-employee-hiring-incomplete",
+    "pattern": ["new employee not visible", "hire incomplete", "employee setup incomplete", "pa40 not finished", "new hire missing data", "employee onboarding incomplete"],
+    "title": "New Employee Setup Incomplete",
+    "category": "HCM",
+    "description": "A new employee was started in HR but required infotypes or organizational placement are incomplete, so downstream processes do not work correctly.",
+    "primaryTransaction": "PA40",
+    "relatedTransactions": ["PA30", "PPOME", "PPOSE", "PA20"],
+    "steps": [
+      "Review the completed hiring action in PA40.",
+      "Check PA30 for missing or incomplete infotypes.",
+      "Verify organizational placement in PPOME or PPOSE.",
+      "Correct any missing data and perform a final validation in PA20.",
+      "Retest the affected downstream process after the employee record is complete."
+    ],
+    "linkedFlow": "flow-hire-employee"
   }
 ]

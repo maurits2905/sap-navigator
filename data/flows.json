@@ -643,5 +643,380 @@
         "reason": "Once the technical or data issue is resolved, the original business action may need to be entered again."
       }
     ]
+  },
+  {
+    "id": "flow-spool-issue",
+    "title": "Investigate Missing or Stuck Spool Output",
+    "description": "How to diagnose why a report, form, or print output did not appear or did not print as expected.",
+    "category": "Technical",
+    "module": "Technical",
+    "startingTransaction": "SP01",
+    "tags": ["spool", "print", "output", "SP01", "missing output", "print issue"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "SM37",
+        "action": "Confirm the background job or report finished successfully",
+        "reason": "If the generating program failed, there may be no spool request at all. Start by confirming the source process completed."
+      },
+      {
+        "order": 2,
+        "transaction": "SP01",
+        "action": "Search for the spool request by user, date, or program",
+        "reason": "SP01 is the main place to verify whether output was generated and which spool request number belongs to it."
+      },
+      {
+        "order": 3,
+        "transaction": "SP01",
+        "action": "Open the spool request and check its status and output device",
+        "reason": "The spool may exist but be tied to the wrong printer, be incomplete, or remain in a waiting status."
+      },
+      {
+        "order": 4,
+        "transaction": null,
+        "action": "Verify the target printer and user defaults",
+        "reason": "A common cause is output going to a different printer or logical output device than expected."
+      },
+      {
+        "order": 5,
+        "transaction": "SP01",
+        "action": "Reprint or forward the spool request if needed",
+        "reason": "Once the cause is identified, you can often resend the existing spool without rerunning the business process."
+      }
+    ]
+  },
+  {
+    "id": "flow-lock-issue",
+    "title": "Investigate a Record Locked by Another User or Process",
+    "description": "How to diagnose and safely resolve SAP lock entry issues when a record or object is stuck locked.",
+    "category": "Technical",
+    "module": "Technical",
+    "startingTransaction": "SM12",
+    "tags": ["lock", "record locked", "SM12", "enqueue", "object locked", "stuck lock"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "SM12",
+        "action": "Search for the lock entry by user, table, or object key",
+        "reason": "SM12 shows which user or process currently holds the lock and what object is affected."
+      },
+      {
+        "order": 2,
+        "transaction": "SM12",
+        "action": "Check whether the locking session is still active",
+        "reason": "If the user is genuinely editing the object, deleting the lock can cause inconsistent processing."
+      },
+      {
+        "order": 3,
+        "transaction": "SM21",
+        "action": "Review the system log if the lock appears orphaned",
+        "reason": "System or communication errors can leave behind locks after a failed update or abnormal termination."
+      },
+      {
+        "order": 4,
+        "transaction": null,
+        "action": "Ask the user or owning team to exit the transaction cleanly if possible",
+        "reason": "The safest resolution is always to let the owning session release the lock normally."
+      },
+      {
+        "order": 5,
+        "transaction": "SM12",
+        "action": "Delete the stale lock only if you are sure it is no longer in use",
+        "reason": "Manual lock deletion should be the last step and only after confirming the original session is gone."
+      }
+    ]
+  },
+  {
+    "id": "flow-queue-issue",
+    "title": "Investigate a Stuck qRFC Queue",
+    "description": "How to diagnose why queued RFC messages are not moving through outbound or inbound processing.",
+    "category": "Technical",
+    "module": "Technical",
+    "startingTransaction": "SMQ1",
+    "tags": ["qRFC", "queue", "SMQ1", "SMQ2", "integration", "stuck message", "queue error"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "SMQ1",
+        "action": "Check the outbound queue in the source system",
+        "reason": "If the message never leaves the source system, the problem starts in SMQ1 with outbound processing."
+      },
+      {
+        "order": 2,
+        "transaction": "SMQ2",
+        "action": "Check the inbound queue in the target system",
+        "reason": "If the message arrives but does not process, SMQ2 shows the stuck inbound queue and its current error text."
+      },
+      {
+        "order": 3,
+        "transaction": "SLG1",
+        "action": "Review the application log for the related interface or object",
+        "reason": "SLG1 often contains the clearest business-level explanation for why a queued process failed."
+      },
+      {
+        "order": 4,
+        "transaction": "SM59",
+        "action": "Verify the RFC destination if communication is failing",
+        "reason": "Queue issues are often caused by RFC destinations that are down, misconfigured, or not authorized."
+      },
+      {
+        "order": 5,
+        "transaction": null,
+        "action": "Fix the root cause before restarting the queue",
+        "reason": "Restarting without correction usually results in the queue failing again immediately."
+      },
+      {
+        "order": 6,
+        "transaction": "SMQ1",
+        "action": "Restart or unlock the affected queue",
+        "reason": "After the issue is fixed, restart processing and confirm the queued messages are cleared successfully."
+      }
+    ]
+  },
+  {
+    "id": "flow-pr-release",
+    "title": "Investigate a Purchase Requisition Waiting for Release",
+    "description": "How to diagnose and resolve a purchase requisition that is waiting for approval or stuck in release strategy.",
+    "category": "Logistics",
+    "module": "Logistics",
+    "startingTransaction": "ME53N",
+    "tags": ["purchase requisition", "PR", "release", "approval", "ME54N", "procurement"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "ME53N",
+        "action": "Display the purchase requisition and review its release status",
+        "reason": "Start by checking whether the requisition is actually subject to release strategy and what approval step is pending."
+      },
+      {
+        "order": 2,
+        "transaction": "ME53N",
+        "action": "Review document details that influence release determination",
+        "reason": "Values such as plant, purchasing group, account assignment, and total value often determine the release strategy."
+      },
+      {
+        "order": 3,
+        "transaction": null,
+        "action": "Confirm the responsible approver and release strategy logic",
+        "reason": "If the wrong strategy was triggered, the issue is usually in master data, document content, or configuration."
+      },
+      {
+        "order": 4,
+        "transaction": "ME54N",
+        "action": "Release the purchase requisition if authorized",
+        "reason": "ME54N is the standard transaction for approving PRs under a release strategy."
+      },
+      {
+        "order": 5,
+        "transaction": "ME53N",
+        "action": "Re-display the requisition and confirm the updated release status",
+        "reason": "Always verify the requisition is now approved and available for follow-on processing."
+      }
+    ]
+  },
+  {
+    "id": "flow-pricing-issue",
+    "title": "Investigate Pricing Not Determined on a Sales Order",
+    "description": "How to diagnose why a price, discount, or condition is missing or incorrect on a sales order.",
+    "category": "Logistics",
+    "module": "Logistics",
+    "startingTransaction": "VA03",
+    "tags": ["pricing", "condition", "VA03", "VK13", "sales order", "price missing", "discount missing"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "VA03",
+        "action": "Open the sales order and review the pricing conditions on the item",
+        "reason": "Start by confirming exactly which condition type is missing or incorrect and whether pricing was carried out at all."
+      },
+      {
+        "order": 2,
+        "transaction": "VA03",
+        "action": "Check the sales area, customer, material, and pricing date",
+        "reason": "Pricing depends heavily on organizational data and validity dates. A mismatch here often explains missing conditions."
+      },
+      {
+        "order": 3,
+        "transaction": "VK13",
+        "action": "Display the expected condition record",
+        "reason": "VK13 shows whether a valid condition record exists for the relevant key combination and date."
+      },
+      {
+        "order": 4,
+        "transaction": null,
+        "action": "Verify whether the pricing procedure and condition determination are correct",
+        "reason": "If the record exists but is not found, the issue may be in pricing procedure configuration or the access sequence."
+      },
+      {
+        "order": 5,
+        "transaction": "VA02",
+        "action": "Re-price the order after correcting the underlying issue",
+        "reason": "Once the record or configuration problem is fixed, re-run pricing so the sales order reflects the correct values."
+      }
+    ]
+  },
+  {
+    "id": "flow-delivery-issue",
+    "title": "Investigate Why an Outbound Delivery Was Not Created",
+    "description": "How to diagnose why a sales order is not resulting in an outbound delivery or why delivery processing is blocked.",
+    "category": "Logistics",
+    "module": "Logistics",
+    "startingTransaction": "VA03",
+    "tags": ["delivery", "outbound delivery", "VL01N", "VL02N", "VL03N", "sales order", "delivery issue"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "VA03",
+        "action": "Display the sales order and review overall status and item status",
+        "reason": "The order may still be blocked, incomplete, or not yet due for delivery."
+      },
+      {
+        "order": 2,
+        "transaction": "VA03",
+        "action": "Check delivery-relevant dates, quantities, and any blocks",
+        "reason": "Delivery creation depends on schedule lines, confirmed quantity, shipping point determination, and absence of delivery blocks."
+      },
+      {
+        "order": 3,
+        "transaction": "VL01N",
+        "action": "Attempt delivery creation manually if appropriate",
+        "reason": "Manual creation helps confirm whether the order is actually delivery-relevant and shows immediate error messages if not."
+      },
+      {
+        "order": 4,
+        "transaction": "VL03N",
+        "action": "Check whether a delivery already exists",
+        "reason": "Sometimes the issue is not missing creation, but that the delivery exists and is stuck later in the process."
+      },
+      {
+        "order": 5,
+        "transaction": "VL02N",
+        "action": "Review and complete outstanding delivery processing steps",
+        "reason": "If the delivery exists, VL02N is used for picking, packing, and posting goods issue."
+      }
+    ]
+  },
+  {
+    "id": "flow-posting-period-closed",
+    "title": "Investigate a Closed FI Posting Period",
+    "description": "How to diagnose and resolve a posting that fails because the accounting period is not open.",
+    "category": "Finance & Controlling",
+    "module": "Finance",
+    "startingTransaction": "FB03",
+    "tags": ["posting period", "closed period", "OB52", "FI posting", "accounting period", "cannot post"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": null,
+        "action": "Capture the exact posting date, company code, and account type from the error",
+        "reason": "Those values determine which period control entry is relevant and whether the posting should be allowed."
+      },
+      {
+        "order": 2,
+        "transaction": "OB52",
+        "action": "Check whether the posting period is open for the relevant account type",
+        "reason": "OB52 is the standard place to confirm whether FI posting periods are open or closed."
+      },
+      {
+        "order": 3,
+        "transaction": null,
+        "action": "Verify whether the user is posting in the intended fiscal period",
+        "reason": "Sometimes the issue is simply that the posting date is wrong or falls into a locked prior period."
+      },
+      {
+        "order": 4,
+        "transaction": "OB52",
+        "action": "Open the period if you are authorized and the business allows it",
+        "reason": "Period opening is a controlled accounting activity and should only be done with the right approval."
+      },
+      {
+        "order": 5,
+        "transaction": null,
+        "action": "Repeat the posting after the period issue is resolved",
+        "reason": "Once the posting window is valid, the original document can be entered again."
+      }
+    ]
+  },
+  {
+    "id": "flow-leave-quota",
+    "title": "Investigate Missing or Incorrect Leave Quota",
+    "description": "How to diagnose why an employee has no leave balance, too little quota, or a missing accrual.",
+    "category": "HCM",
+    "module": "HCM",
+    "startingTransaction": "PT50",
+    "tags": ["leave quota", "absence quota", "PT50", "PT60", "vacation balance", "quota issue"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "PT50",
+        "action": "Check the employee's current quota balances",
+        "reason": "Start by confirming whether the quota truly is missing, exhausted, or simply lower than expected."
+      },
+      {
+        "order": 2,
+        "transaction": "PT60",
+        "action": "Review or rerun time evaluation if accrual should have happened",
+        "reason": "Quota accrual is often generated in time evaluation, so missing accruals usually point back to PT60."
+      },
+      {
+        "order": 3,
+        "transaction": "PA30",
+        "action": "Review quota-relevant employee master data",
+        "reason": "Work schedule, employment status, and HR master data can all affect accrual and eligibility."
+      },
+      {
+        "order": 4,
+        "transaction": "PA2006",
+        "action": "Adjust or correct the quota if a manual fix is required",
+        "reason": "Infotype 2006 is where quota balances are maintained when correction is necessary."
+      },
+      {
+        "order": 5,
+        "transaction": "PT50",
+        "action": "Recheck the employee's balance after correction",
+        "reason": "Always confirm the quota is now correct before asking the employee to retry the leave process."
+      }
+    ]
+  },
+  {
+    "id": "flow-hire-employee",
+    "title": "Hire and Place a New Employee in the Organization",
+    "description": "Step-by-step process for creating a new employee, maintaining core HR data, and verifying organizational assignment.",
+    "category": "HCM",
+    "module": "HCM",
+    "startingTransaction": "PA40",
+    "tags": ["hire employee", "new employee", "PA40", "PA30", "PPOME", "PPOSE", "onboarding", "org assignment"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "PA40",
+        "action": "Execute the hiring action for the new employee",
+        "reason": "PA40 is the standard starting point because it chains the key HR infotype steps needed for a new hire."
+      },
+      {
+        "order": 2,
+        "transaction": "PA30",
+        "action": "Review and complete the required employee master data infotypes",
+        "reason": "Personal data, organizational assignment, payroll, and time-related infotypes must be complete for the employee to function correctly in downstream processes."
+      },
+      {
+        "order": 3,
+        "transaction": "PPOME",
+        "action": "Check the organizational unit and position assignment",
+        "reason": "If the employee is not correctly placed in OM, workflows, approvals, and reporting structures may not work as expected."
+      },
+      {
+        "order": 4,
+        "transaction": "PPOSE",
+        "action": "Display the org structure and confirm the employee appears in the right place",
+        "reason": "A read-only org display is a quick way to validate the final organizational placement from a business perspective."
+      },
+      {
+        "order": 5,
+        "transaction": "PA20",
+        "action": "Perform a final read-only validation of the employee master data",
+        "reason": "PA20 is useful as a clean final check to confirm the record is complete and visible correctly."
+      }
+    ]
   }
 ]

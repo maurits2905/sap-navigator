@@ -698,5 +698,195 @@
     "category": "Finance & Controlling",
     "seeAlso": ["MIRO", "FBL1N", "FB03"],
     "relatedFlow": null
+  },
+  {
+    "id": "SP01",
+    "code": "SP01",
+    "name": "Output Controller",
+    "description": "Display and manage spool requests and print output. Use when a report ran but the expected output is missing, stuck, or not printed.",
+    "tags": ["spool", "print", "output", "spool request", "print job", "printer", "missing output", "SP01", "report output", "spool list"],
+    "category": "Technical",
+    "seeAlso": ["SM37"],
+    "relatedFlow": "flow-spool-issue"
+  },
+  {
+    "id": "SUIM",
+    "code": "SUIM",
+    "name": "User Information System",
+    "description": "Search users, roles, profiles, and authorization assignments. Useful for analyzing who has access to a transaction, role, or authorization object.",
+    "tags": ["user info", "role analysis", "who has access", "authorization analysis", "SUIM", "user report", "role assignment", "transaction access"],
+    "category": "Security & Authorization",
+    "seeAlso": ["SU01", "PFCG", "SU53"],
+    "relatedFlow": null
+  },
+  {
+    "id": "AL11",
+    "code": "AL11",
+    "name": "SAP Directories",
+    "description": "Browse application server directories and interface files. Useful for checking inbound and outbound file interfaces and file availability.",
+    "tags": ["AL11", "application server", "server file", "directory", "interface file", "inbound file", "outbound file", "file missing", "server path"],
+    "category": "Technical",
+    "seeAlso": ["SLG1"],
+    "relatedFlow": null
+  },
+  {
+    "id": "SLG1",
+    "code": "SLG1",
+    "name": "Application Log",
+    "description": "Display application logs written by SAP programs and interfaces. Useful when a process failed but there is no short dump and the business transaction gives limited information.",
+    "tags": ["application log", "log", "SLG1", "process log", "interface log", "error log", "business log", "message log"],
+    "category": "Technical",
+    "seeAlso": ["SM21", "ST22"],
+    "relatedFlow": "flow-queue-issue"
+  },
+  {
+    "id": "SMQ1",
+    "code": "SMQ1",
+    "name": "qRFC Monitor (Outbound Queue)",
+    "description": "Monitor outbound qRFC queues. Use when messages or queued calls are stuck before leaving the source system.",
+    "tags": ["qRFC", "queue", "outbound queue", "SMQ1", "stuck queue", "queued message", "integration queue", "message stuck"],
+    "category": "Technical",
+    "seeAlso": ["SMQ2", "SLG1", "SM59"],
+    "relatedFlow": "flow-queue-issue"
+  },
+  {
+    "id": "SMQ2",
+    "code": "SMQ2",
+    "name": "qRFC Monitor (Inbound Queue)",
+    "description": "Monitor inbound qRFC queues. Use when messages arrived in the target system but are stuck waiting for processing.",
+    "tags": ["qRFC", "queue", "inbound queue", "SMQ2", "stuck queue", "queued message", "integration queue", "processing queue"],
+    "category": "Technical",
+    "seeAlso": ["SMQ1", "SLG1", "SM59"],
+    "relatedFlow": "flow-queue-issue"
+  },
+  {
+    "id": "WE19",
+    "code": "WE19",
+    "name": "Test Tool for IDoc Processing",
+    "description": "Create and test IDoc processing manually. Useful for reproducing interface issues and retesting IDoc scenarios in a controlled way.",
+    "tags": ["WE19", "test IDoc", "IDoc test", "simulate IDoc", "interface test", "ALE", "EDI", "message test"],
+    "category": "Technical",
+    "seeAlso": ["WE02", "WE05", "BD87"],
+    "relatedFlow": "flow-idoc-issue"
+  },
+  {
+    "id": "ME51N",
+    "code": "ME51N",
+    "name": "Create Purchase Requisition",
+    "description": "Create a new purchase requisition for materials or services. Used as the first purchasing document before approval and conversion to a purchase order.",
+    "tags": ["purchase requisition", "PR", "create PR", "ME51N", "procurement request", "buy request", "requisition"],
+    "category": "Logistics",
+    "seeAlso": ["ME52N", "ME53N", "ME54N"],
+    "relatedFlow": "flow-pr-release"
+  },
+  {
+    "id": "ME52N",
+    "code": "ME52N",
+    "name": "Change Purchase Requisition",
+    "description": "Change an existing purchase requisition. Update quantities, dates, account assignments, and other purchasing details.",
+    "tags": ["purchase requisition", "PR", "change PR", "edit requisition", "ME52N", "update requisition"],
+    "category": "Logistics",
+    "seeAlso": ["ME51N", "ME53N", "ME54N"],
+    "relatedFlow": "flow-pr-release"
+  },
+  {
+    "id": "ME53N",
+    "code": "ME53N",
+    "name": "Display Purchase Requisition",
+    "description": "Display an existing purchase requisition including release status, item details, account assignments, and follow-on processing data.",
+    "tags": ["purchase requisition", "PR", "display PR", "ME53N", "requisition status", "check requisition", "procurement request"],
+    "category": "Logistics",
+    "seeAlso": ["ME51N", "ME52N", "ME54N"],
+    "relatedFlow": "flow-pr-release"
+  },
+  {
+    "id": "ME54N",
+    "code": "ME54N",
+    "name": "Release Purchase Requisition",
+    "description": "Approve or release a purchase requisition according to the configured release strategy.",
+    "tags": ["release PR", "approve requisition", "purchase requisition approval", "ME54N", "PR release", "release strategy"],
+    "category": "Logistics",
+    "seeAlso": ["ME53N", "ME52N"],
+    "relatedFlow": "flow-pr-release"
+  },
+  {
+    "id": "MD04",
+    "code": "MD04",
+    "name": "Stock/Requirements List",
+    "description": "Display current stock, planned receipts, reservations, and requirements for a material in a plant. Useful for understanding shortages and demand coverage.",
+    "tags": ["MD04", "stock requirements", "material planning", "shortage", "MRP", "demand", "supply", "availability", "requirements list"],
+    "category": "Logistics",
+    "seeAlso": ["MMBE", "MD02", "MM03"],
+    "relatedFlow": null
+  },
+  {
+    "id": "MD02",
+    "code": "MD02",
+    "name": "Single-Item, Multi-Level Planning",
+    "description": "Run MRP planning for a material across multi-level BOM structures. Use when demand and supply need to be recalculated.",
+    "tags": ["MD02", "MRP", "planning run", "material planning", "replan material", "requirements planning", "shortage planning"],
+    "category": "Logistics",
+    "seeAlso": ["MD04", "MM03"],
+    "relatedFlow": null
+  },
+  {
+    "id": "VL01N",
+    "code": "VL01N",
+    "name": "Create Outbound Delivery",
+    "description": "Create an outbound delivery for a sales order or stock transport process. Used before picking and goods issue.",
+    "tags": ["outbound delivery", "create delivery", "VL01N", "shipping", "delivery creation", "sales delivery"],
+    "category": "Logistics",
+    "seeAlso": ["VL02N", "VL03N", "VA03"],
+    "relatedFlow": "flow-delivery-issue"
+  },
+  {
+    "id": "VL02N",
+    "code": "VL02N",
+    "name": "Change Outbound Delivery",
+    "description": "Change an existing outbound delivery. Used for picking, packing, dates, and posting goods issue.",
+    "tags": ["change delivery", "VL02N", "outbound delivery", "post goods issue", "PGI", "shipping", "delivery processing"],
+    "category": "Logistics",
+    "seeAlso": ["VL01N", "VL03N", "VA03"],
+    "relatedFlow": "flow-delivery-issue"
+  },
+  {
+    "id": "VF01",
+    "code": "VF01",
+    "name": "Create Billing Document",
+    "description": "Create a billing document from delivery or sales order data. Used when an invoice should be generated after logistics processing.",
+    "tags": ["create billing", "create invoice", "VF01", "billing document", "customer invoice", "invoice creation", "SD billing"],
+    "category": "Logistics",
+    "seeAlso": ["VF03", "VL03N", "VA03"],
+    "relatedFlow": null
+  },
+  {
+    "id": "OB52",
+    "code": "OB52",
+    "name": "Open and Close FI Posting Periods",
+    "description": "Maintain posting period controls for Financial Accounting. Used to allow or block document posting by period and account type.",
+    "tags": ["posting period", "OB52", "open period", "close period", "FI period", "period control", "accounting period", "posting blocked"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["FB03", "FB50"],
+    "relatedFlow": "flow-posting-period-closed"
+  },
+  {
+    "id": "PA2006",
+    "code": "PA2006",
+    "name": "Absence Quotas (Infotype 2006)",
+    "description": "Maintain or review absence quota information such as leave entitlement and remaining balances through HR master data maintenance.",
+    "tags": ["absence quota", "leave quota", "infotype 2006", "quota correction", "leave balance", "vacation quota", "quota adjustment"],
+    "category": "HCM",
+    "seeAlso": ["PT50", "PT60", "PA30"],
+    "relatedFlow": "flow-leave-quota"
+  },
+  {
+    "id": "PPOSE",
+    "code": "PPOSE",
+    "name": "Display Organization and Staffing",
+    "description": "Display the organizational structure, positions, and holder assignments in a read-only view. Useful for checking where an employee sits in the org structure.",
+    "tags": ["org structure", "organization", "position", "employee in org", "PPOSE", "staffing display", "org chart", "reporting line"],
+    "category": "HCM",
+    "seeAlso": ["PPOME", "PA20", "PA30"],
+    "relatedFlow": "flow-hire-employee"
   }
 ]
