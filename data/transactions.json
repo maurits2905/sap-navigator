@@ -1,0 +1,210 @@
+[
+  {
+    "id": "SU01",
+    "code": "SU01",
+    "name": "User Maintenance",
+    "description": "Create, modify, or display SAP user accounts. Manage logon data, roles, and profiles.",
+    "tags": ["user", "account", "create user", "modify user", "display user", "logon", "password", "reset password", "lock user", "unlock user", "user management", "user admin"],
+    "category": "Security & Authorization"
+  },
+  {
+    "id": "SU53",
+    "code": "SU53",
+    "name": "Authorization Check",
+    "description": "Display the last failed authorization check for a user. Essential first step when a user reports an access issue.",
+    "tags": ["authorization", "access", "no access", "missing auth", "auth check", "auth error", "permission denied", "not authorized", "access denied"],
+    "category": "Security & Authorization"
+  },
+  {
+    "id": "PFCG",
+    "code": "PFCG",
+    "name": "Role Maintenance",
+    "description": "Create, edit, and assign SAP roles. Manage authorizations within roles and generate authorization profiles.",
+    "tags": ["role", "roles", "authorization", "profile", "assign role", "create role", "edit role", "access", "permission", "composite role", "single role"],
+    "category": "Security & Authorization"
+  },
+  {
+    "id": "SE09",
+    "code": "SE09",
+    "name": "Transport Organizer",
+    "description": "Create, manage, and release Workbench transport requests. Used for ABAP development objects.",
+    "tags": ["transport", "transport request", "workbench request", "release transport", "import transport", "TR", "change request", "development", "SE09"],
+    "category": "Transport Management"
+  },
+  {
+    "id": "SE10",
+    "code": "SE10",
+    "name": "Customizing Transport Organizer",
+    "description": "Manage Customizing transport requests. Used for configuration and IMG settings.",
+    "tags": ["transport", "customizing", "configuration", "IMG", "customizing request", "SE10", "change request"],
+    "category": "Transport Management"
+  },
+  {
+    "id": "STMS",
+    "code": "STMS",
+    "name": "Transport Management System",
+    "description": "Manage the transport landscape, import queues, and perform imports across systems.",
+    "tags": ["transport", "import", "transport route", "import queue", "transport landscape", "TMS", "deployment"],
+    "category": "Transport Management"
+  },
+  {
+    "id": "ST22",
+    "code": "ST22",
+    "name": "ABAP Runtime Error Analysis",
+    "description": "Display and analyze ABAP short dumps (runtime errors). Investigate program crashes with full stack trace.",
+    "tags": ["dump", "short dump", "runtime error", "ABAP error", "crash", "program error", "ST22", "exception", "abap dump"],
+    "category": "System Administration"
+  },
+  {
+    "id": "SM37",
+    "code": "SM37",
+    "name": "Background Job Overview",
+    "description": "Monitor, analyze, and manage background jobs. Check job status, view job logs, cancel or reschedule jobs.",
+    "tags": ["job", "background job", "batch job", "job status", "job failed", "job log", "scheduled job", "SM37", "job monitoring"],
+    "category": "System Administration"
+  },
+  {
+    "id": "SM21",
+    "code": "SM21",
+    "name": "System Log",
+    "description": "View the SAP system log. Useful for tracking system-level errors, failed logons, and critical events.",
+    "tags": ["system log", "log", "syslog", "error log", "system error", "SM21", "audit log"],
+    "category": "System Administration"
+  },
+  {
+    "id": "SM50",
+    "code": "SM50",
+    "name": "Work Process Overview",
+    "description": "Monitor all active work processes in the current application server. Check for hung processes.",
+    "tags": ["work process", "process", "performance", "hung", "system slow", "SM50", "dialog process"],
+    "category": "System Administration"
+  },
+  {
+    "id": "SM66",
+    "code": "SM66",
+    "name": "Global Work Process Overview",
+    "description": "Monitor work processes across all application servers in the system landscape.",
+    "tags": ["work process", "performance", "all servers", "SM66", "global process", "system load"],
+    "category": "System Administration"
+  },
+  {
+    "id": "SICF",
+    "code": "SICF",
+    "name": "HTTP Service Configuration",
+    "description": "Activate, deactivate, and configure Internet Communication Framework (ICF) services. Required for OData, Fiori, and web services.",
+    "tags": ["ICF", "service", "HTTP", "activate service", "Fiori", "OData", "web service", "SICF", "service not active", "ICM"],
+    "category": "Connectivity & Services"
+  },
+  {
+    "id": "SEGW",
+    "code": "SEGW",
+    "name": "OData Service Builder",
+    "description": "Build and maintain OData services in the SAP Gateway. Define entity types, associations, and service operations.",
+    "tags": ["OData", "gateway", "service builder", "SEGW", "entity type", "API", "OData service", "create OData", "Fiori", "backend service"],
+    "category": "Connectivity & Services"
+  },
+  {
+    "id": "/IWFND/MAINT_SERVICE",
+    "code": "/IWFND/MAINT_SERVICE",
+    "name": "Activate and Maintain Services",
+    "description": "Activate and manage OData services on the Gateway hub system. Register backend services and configure service endpoints.",
+    "tags": ["OData", "gateway", "activate service", "service not found", "IWFND", "Fiori", "OData activate", "service registration"],
+    "category": "Connectivity & Services"
+  },
+  {
+    "id": "/IWBEP/CACHE_CLEANUP",
+    "code": "/IWBEP/CACHE_CLEANUP",
+    "name": "Backend Gateway Cache Cleanup",
+    "description": "Clear the OData metadata cache on the backend system. Run when OData service changes are not reflected.",
+    "tags": ["cache", "OData cache", "IWBEP", "metadata cache", "cache cleanup", "service cache", "cache not updated", "refresh cache"],
+    "category": "Connectivity & Services"
+  },
+  {
+    "id": "/IWFND/CACHE_CLEANUP",
+    "code": "/IWFND/CACHE_CLEANUP",
+    "name": "Gateway Frontend Cache Cleanup",
+    "description": "Clear the OData metadata cache on the Gateway frontend. Run after backend cache cleanup for full refresh.",
+    "tags": ["cache", "OData cache", "IWFND", "metadata cache", "cache cleanup", "gateway cache", "cache not updated"],
+    "category": "Connectivity & Services"
+  },
+  {
+    "id": "ME23N",
+    "code": "ME23N",
+    "name": "Display Purchase Order",
+    "description": "Display an existing purchase order. View header data, line items, delivery schedules, and conditions.",
+    "tags": ["purchase order", "PO", "display PO", "ME23N", "procurement", "vendor", "goods receipt", "MM"],
+    "category": "Materials Management"
+  },
+  {
+    "id": "ME21N",
+    "code": "ME21N",
+    "name": "Create Purchase Order",
+    "description": "Create a new purchase order manually. Specify vendor, material, quantity, and delivery details.",
+    "tags": ["purchase order", "create PO", "ME21N", "procurement", "vendor", "MM", "new PO"],
+    "category": "Materials Management"
+  },
+  {
+    "id": "MB52",
+    "code": "MB52",
+    "name": "Warehouse Stocks of Material",
+    "description": "Display stock overview of materials across storage locations and plants.",
+    "tags": ["stock", "inventory", "warehouse", "material stock", "MB52", "storage location", "plant stock", "check stock"],
+    "category": "Materials Management"
+  },
+  {
+    "id": "KS03",
+    "code": "KS03",
+    "name": "Display Cost Center",
+    "description": "Display cost center master data including assignments, responsible managers, and validity periods.",
+    "tags": ["cost center", "display cost center", "KS03", "CO", "controlling", "cost object", "check cost center"],
+    "category": "Controlling"
+  },
+  {
+    "id": "KS01",
+    "code": "KS01",
+    "name": "Create Cost Center",
+    "description": "Create a new cost center. Define controlling area assignment, category, and responsible person.",
+    "tags": ["cost center", "create cost center", "KS01", "CO", "controlling", "new cost center"],
+    "category": "Controlling"
+  },
+  {
+    "id": "KSH3",
+    "code": "KSH3",
+    "name": "Display Cost Center Group",
+    "description": "Display cost center groups (hierarchies) used in reporting and planning.",
+    "tags": ["cost center group", "cost center hierarchy", "KSH3", "CO", "controlling", "group"],
+    "category": "Controlling"
+  },
+  {
+    "id": "CAT2",
+    "code": "CAT2",
+    "name": "CATS: Time Sheet Entry",
+    "description": "Enter working times and activities in the Cross-Application Time Sheet (CATS). Used for project time recording.",
+    "tags": ["timesheet", "time entry", "CATS", "CAT2", "time recording", "hours", "project time", "HR", "time sheet", "working time"],
+    "category": "HR & Time Management"
+  },
+  {
+    "id": "PA30",
+    "code": "PA30",
+    "name": "Maintain HR Master Data",
+    "description": "Maintain employee master data infotypes such as personal data, organizational assignment, and payroll data.",
+    "tags": ["HR", "employee", "master data", "infotype", "PA30", "personal data", "personnel"],
+    "category": "HR & Time Management"
+  },
+  {
+    "id": "SWI5",
+    "code": "SWI5",
+    "name": "Workload Analysis for Workflow",
+    "description": "Analyze workflow workitems by task, agent, or status. Identify stuck or unprocessed workflow items.",
+    "tags": ["workflow", "workitem", "SWI5", "work item", "workflow stuck", "workflow analysis", "workflow monitor"],
+    "category": "Workflow"
+  },
+  {
+    "id": "SWIA",
+    "code": "SWIA",
+    "name": "Execute Workitem Administratively",
+    "description": "Execute, forward, or complete a workflow workitem with administrator rights. Used to unblock stuck workflows.",
+    "tags": ["workflow", "workitem", "SWIA", "workflow stuck", "execute workitem", "workflow admin", "unblock workflow"],
+    "category": "Workflow"
+  }
+]

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAP Navigator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <div class="logo-icon">SN</div>
+      <span class="logo-text">SAP <span>Navigator</span></span>
+    </a>
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="find">Find</button>
+      <button class="tab-btn" data-tab="decode">Decode</button>
+      <button class="tab-btn" data-tab="flows">Flows</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ========== MAIN ========== -->
+<main>
+
+  <!-- ===== FIND TAB ===== -->
+  <div id="find" class="tab-panel active">
+    <div class="page-header">
+      <h1>Find a Transaction</h1>
+      <p>Describe a task, object, or area and get the right starting point.</p>
+    </div>
+
+    <div class="search-wrap">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input id="find-input" type="text" placeholder="e.g. check cost center, test odata service, display purchase order…" autocomplete="off" spellcheck="false">
+      <button class="clear-btn" id="find-clear" title="Clear">✕</button>
+    </div>
+
+    <div class="suggestions">
+      <span>Try:</span>
+      <button class="suggestion-chip" data-find="check cost center">check cost center</button>
+      <button class="suggestion-chip" data-find="user authorization">user authorization</button>
+      <button class="suggestion-chip" data-find="test odata service">test odata service</button>
+      <button class="suggestion-chip" data-find="display purchase order">display purchase order</button>
+      <button class="suggestion-chip" data-find="background job">background job</button>
+      <button class="suggestion-chip" data-find="transport">transport</button>
+      <button class="suggestion-chip" data-find="timesheet entry">timesheet entry</button>
+    </div>
+
+    <div id="find-results" class="results"></div>
+
+    <div id="find-empty" class="empty-state">
+      <div class="empty-icon">🧭</div>
+      <div class="empty-title">What are you trying to do?</div>
+      <div class="empty-text">Type a task, object, or transaction code above to get started.</div>
+    </div>
+  </div>
+
+  <!-- ===== DECODE TAB ===== -->
+  <div id="decode" class="tab-panel">
+    <div class="page-header">
+      <h1>Decode a Problem</h1>
+      <p>Describe a symptom, error, or issue and get likely next steps.</p>
+    </div>
+
+    <div class="search-wrap">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      <input id="decode-input" type="text" placeholder="e.g. user has no access, service not found, transport imported but change not visible…" autocomplete="off" spellcheck="false">
+      <button class="clear-btn" id="decode-clear" title="Clear">✕</button>
+    </div>
+
+    <div class="suggestions">
+      <span>Try:</span>
+      <button class="suggestion-chip" data-decode="user has no access">user has no access</button>
+      <button class="suggestion-chip" data-decode="service not found">service not found</button>
+      <button class="suggestion-chip" data-decode="transport imported but change not visible">transport not visible</button>
+      <button class="suggestion-chip" data-decode="job failed">job failed</button>
+      <button class="suggestion-chip" data-decode="abap dump">abap dump</button>
+      <button class="suggestion-chip" data-decode="workflow stuck">workflow stuck</button>
+      <button class="suggestion-chip" data-decode="user locked">user locked</button>
+    </div>
+
+    <div id="decode-results"></div>
+
+    <div id="decode-empty" class="empty-state">
+      <div class="empty-icon">🔬</div>
+      <div class="empty-title">What's the symptom?</div>
+      <div class="empty-text">Describe the error, issue, or unexpected behavior and get likely next steps.</div>
+    </div>
+  </div>
+
+  <!-- ===== FLOWS TAB ===== -->
+  <div id="flows" class="tab-panel">
+    <div class="page-header">
+      <h1>Troubleshooting Flows</h1>
+      <p>Step-by-step guides for common SAP tasks and issues. Star a flow to pin it to the top.</p>
+    </div>
+    <div id="flows-container"></div>
+  </div>
+
+</main>
+
+<!-- ========== FLOW DETAIL MODAL ========== -->
+<div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-header">
+      <button id="modal-close-btn" class="modal-close" aria-label="Close">✕</button>
+      <div id="modal-title" class="modal-title"></div>
+      <div id="modal-subtitle" class="modal-subtitle"></div>
+    </div>
+    <div id="modal-body" class="modal-body"></div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
