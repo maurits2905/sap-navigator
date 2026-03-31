@@ -1018,5 +1018,444 @@
         "reason": "PA20 is useful as a clean final check to confirm the record is complete and visible correctly."
       }
     ]
+  },
+  {
+    "id": "flow-performance-issue",
+    "title": "Investigate a Slow Transaction or General SAP Performance Issue",
+    "description": "How to diagnose whether slowness comes from workload, a specific user action, database access, or a busy application server.",
+    "category": "Technical",
+    "module": "Technical",
+    "startingTransaction": "ST03N",
+    "tags": ["performance", "slow SAP", "slow transaction", "ST03N", "ST05", "work process", "response time"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "ST03N",
+        "action": "Review workload and response time trends",
+        "reason": "Start broad to confirm whether the issue is isolated to one transaction or part of a larger system performance pattern."
+      },
+      {
+        "order": 2,
+        "transaction": "SM50",
+        "action": "Check active work processes on the affected server",
+        "reason": "Hung or long-running work processes can explain why one or more users experience major slowness."
+      },
+      {
+        "order": 3,
+        "transaction": "SM66",
+        "action": "Review work processes across all servers",
+        "reason": "If the issue is system-wide, the global work process view gives a better picture than a single-instance view."
+      },
+      {
+        "order": 4,
+        "transaction": "SM51",
+        "action": "Confirm the affected application server landscape",
+        "reason": "This helps determine whether the user is tied to a specific problematic instance or whether the issue spans the full system."
+      },
+      {
+        "order": 5,
+        "transaction": "ST05",
+        "action": "Run a focused trace for the affected transaction or user",
+        "reason": "Use ST05 when you need detailed evidence of expensive SQL, RFC, or other low-level performance bottlenecks."
+      }
+    ]
+  },
+  {
+    "id": "flow-odata-runtime-error",
+    "title": "Investigate an Active OData Service Returning a Runtime Error",
+    "description": "How to diagnose an OData service that is active and reachable but fails at runtime with a backend exception or HTTP 500-style error.",
+    "category": "Connectivity & Services",
+    "module": "Connectivity",
+    "startingTransaction": "/IWFND/ERROR_LOG",
+    "tags": ["OData runtime", "gateway error", "/IWFND/ERROR_LOG", "OData 500", "service exception", "backend error"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "/IWFND/ERROR_LOG",
+        "action": "Find the failed request in the Gateway error log",
+        "reason": "This is the best starting point when the service is active but the request itself is failing during processing."
+      },
+      {
+        "order": 2,
+        "transaction": "/IWFND/ERROR_LOG",
+        "action": "Open the technical details and backend exception text",
+        "reason": "The error log often points directly to the failing entity set, method, or backend exception."
+      },
+      {
+        "order": 3,
+        "transaction": "SEGW",
+        "action": "Review the service implementation and relevant runtime objects",
+        "reason": "If the issue comes from a model mismatch or provider logic, SEGW is the right place to validate service design and generation."
+      },
+      {
+        "order": 4,
+        "transaction": "ST22",
+        "action": "Check for a short dump at the same timestamp",
+        "reason": "Backend OData runtime failures often generate an ABAP short dump that contains the real root cause."
+      },
+      {
+        "order": 5,
+        "transaction": "/IWFND/MAINT_SERVICE",
+        "action": "Retest the service after fixing the backend issue",
+        "reason": "Once the exception is resolved, use the Gateway client or service test to confirm the request now succeeds."
+      }
+    ]
+  },
+  {
+    "id": "flow-email-not-sent",
+    "title": "Investigate an SAP Email Not Sent",
+    "description": "How to diagnose outbound emails that are waiting, failing, or never leaving SAP.",
+    "category": "Technical",
+    "module": "Technical",
+    "startingTransaction": "SOST",
+    "tags": ["email", "SOST", "SCOT", "mail issue", "SAPconnect", "outbound mail"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "SOST",
+        "action": "Locate the send request and review its status",
+        "reason": "SOST shows whether the message is waiting, failed, or already handed over for sending."
+      },
+      {
+        "order": 2,
+        "transaction": "SOST",
+        "action": "Open the message details and error text",
+        "reason": "The send request details often show whether the issue is recipient-related, node-related, or scheduling-related."
+      },
+      {
+        "order": 3,
+        "transaction": "SCOT",
+        "action": "Check SAPconnect node configuration and send scheduling",
+        "reason": "If many messages are stuck, the problem is often in SMTP configuration or the send job setup."
+      },
+      {
+        "order": 4,
+        "transaction": null,
+        "action": "Confirm the recipient address and business trigger are correct",
+        "reason": "Sometimes the system worked correctly but the mail was addressed incorrectly or never generated as expected."
+      },
+      {
+        "order": 5,
+        "transaction": "SOST",
+        "action": "Retry or monitor the send request after correction",
+        "reason": "Once configuration or data is fixed, confirm the mail leaves SAP successfully."
+      }
+    ]
+  },
+  {
+    "id": "flow-workflow-error",
+    "title": "Investigate a Workflow That Failed with an Error",
+    "description": "How to diagnose a workflow instance that started but encountered an execution error or stopped at a specific step.",
+    "category": "Workflow",
+    "module": "Workflow",
+    "startingTransaction": "SWI1",
+    "tags": ["workflow error", "workflow failed", "SWI1", "workflow log", "approval error", "workflow analysis"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "SWI1",
+        "action": "Locate the workflow instance and open its technical log",
+        "reason": "SWI1 gives the clearest end-to-end view of where the workflow stopped and which step failed."
+      },
+      {
+        "order": 2,
+        "transaction": "SWI5",
+        "action": "Review related workitems by status or task",
+        "reason": "This helps confirm whether the issue is isolated to one item or affects multiple instances."
+      },
+      {
+        "order": 3,
+        "transaction": null,
+        "action": "Identify whether the problem is agent assignment, business data, or a technical exception",
+        "reason": "The remediation path depends on whether the workflow failed in routing, business logic, or execution."
+      },
+      {
+        "order": 4,
+        "transaction": "SWIA",
+        "action": "Administratively process or forward the workitem if needed",
+        "reason": "SWIA is useful once you understand the cause and need to unblock or complete the stuck item."
+      },
+      {
+        "order": 5,
+        "transaction": "SBWP",
+        "action": "Confirm the user-facing inbox result after the fix",
+        "reason": "After resolving the issue, validate that the workflow now reaches the expected user or completes correctly."
+      }
+    ]
+  },
+  {
+    "id": "flow-credit-block",
+    "title": "Investigate a Sales Order Credit Block",
+    "description": "How to diagnose and release a sales order blocked by credit management.",
+    "category": "Logistics",
+    "module": "Logistics",
+    "startingTransaction": "VA03",
+    "tags": ["credit block", "sales order", "VKM3", "credit management", "VA03", "blocked order"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "VA03",
+        "action": "Display the sales order and confirm it is blocked by credit",
+        "reason": "Start by verifying that the actual blocking reason is credit and not delivery, billing, or incompletion."
+      },
+      {
+        "order": 2,
+        "transaction": null,
+        "action": "Review customer credit situation and business reason for the block",
+        "reason": "Credit blocks are usually triggered by exceeded limits, overdue receivables, or risk controls."
+      },
+      {
+        "order": 3,
+        "transaction": "VKM3",
+        "action": "Review the blocked sales document in credit management",
+        "reason": "VKM3 is the standard place to review and release credit-blocked sales orders."
+      },
+      {
+        "order": 4,
+        "transaction": "VKM3",
+        "action": "Release the order if business approval exists",
+        "reason": "Only release the document if the block is understood and approval to proceed exists."
+      },
+      {
+        "order": 5,
+        "transaction": "VA03",
+        "action": "Re-display the order and confirm the credit block is gone",
+        "reason": "Always confirm the document is now available for follow-on processing."
+      }
+    ]
+  },
+  {
+    "id": "flow-mm-period-closed",
+    "title": "Investigate an MM Posting Blocked by Period Issue",
+    "description": "How to diagnose inventory or materials postings that fail because the MM period is not open.",
+    "category": "Logistics",
+    "module": "Logistics",
+    "startingTransaction": "MIGO",
+    "tags": ["MM period", "MMPV", "inventory period", "goods movement blocked", "MM posting issue"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "MIGO",
+        "action": "Capture the exact posting date, plant, and material movement being attempted",
+        "reason": "You need the specific context to determine whether the issue is date-related, plant-related, or process-related."
+      },
+      {
+        "order": 2,
+        "transaction": "MMPV",
+        "action": "Check the current MM period status",
+        "reason": "MMPV controls MM period closing and opening, which directly affects whether stock postings are allowed."
+      },
+      {
+        "order": 3,
+        "transaction": null,
+        "action": "Confirm whether the posting date belongs in the intended MM period",
+        "reason": "Sometimes the issue is not the period setup, but that the posting date is incorrect for the business event."
+      },
+      {
+        "order": 4,
+        "transaction": "MMPV",
+        "action": "Advance the MM period if authorized and appropriate",
+        "reason": "Period changes should only be performed with proper controls, but this is the standard correction when the next period is needed."
+      },
+      {
+        "order": 5,
+        "transaction": "MIGO",
+        "action": "Retry the goods movement after period correction",
+        "reason": "Once the period is open, the original material posting can be executed again."
+      }
+    ]
+  },
+  {
+    "id": "flow-document-reversal",
+    "title": "Reverse an Incorrect FI Document",
+    "description": "How to identify, reverse, and validate the cancellation of a wrongly posted accounting document.",
+    "category": "Finance & Controlling",
+    "module": "Finance",
+    "startingTransaction": "FB03",
+    "tags": ["reverse document", "FB08", "FI reversal", "wrong posting", "cancel document", "FB03"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "FB03",
+        "action": "Display the posted document and confirm it is the one to reverse",
+        "reason": "Always verify the company code, fiscal year, amounts, and line items before attempting reversal."
+      },
+      {
+        "order": 2,
+        "transaction": null,
+        "action": "Check whether the document is eligible for reversal",
+        "reason": "Some postings may already be cleared, related to follow-on documents, or subject to period restrictions."
+      },
+      {
+        "order": 3,
+        "transaction": "FB08",
+        "action": "Reverse the accounting document",
+        "reason": "FB08 is the standard transaction for canceling an FI document and creating the reversal entry."
+      },
+      {
+        "order": 4,
+        "transaction": "FB03",
+        "action": "Display both original and reversal documents",
+        "reason": "Confirm the reversal document was created correctly and that the original is marked as reversed."
+      },
+      {
+        "order": 5,
+        "transaction": "FS10N",
+        "action": "Check account balances if needed",
+        "reason": "For material accounting or reconciliation concerns, verify the expected balances after reversal."
+      }
+    ]
+  },
+  {
+    "id": "flow-manual-vendor-payment",
+    "title": "Post a Manual Vendor Payment",
+    "description": "Step-by-step process for posting a manual outgoing payment and clearing vendor open items.",
+    "category": "Finance & Controlling",
+    "module": "Finance",
+    "startingTransaction": "FBL1N",
+    "tags": ["vendor payment", "F-53", "manual payment", "clear AP", "supplier payment", "outgoing payment"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "FBL1N",
+        "action": "Review the vendor's open items and identify what should be paid",
+        "reason": "Start by confirming the invoice is open, due, and ready to be cleared."
+      },
+      {
+        "order": 2,
+        "transaction": "FB03",
+        "action": "Display the invoice if you need to validate payment terms or details",
+        "reason": "This helps confirm you are clearing the correct item and understand any references or terms."
+      },
+      {
+        "order": 3,
+        "transaction": "F-53",
+        "action": "Post the outgoing payment and clear the open item",
+        "reason": "F-53 is the standard transaction for a manual vendor payment with open item clearing."
+      },
+      {
+        "order": 4,
+        "transaction": "FBL1N",
+        "action": "Confirm the item is now cleared",
+        "reason": "Recheck vendor line items to ensure the posting cleared the intended invoice."
+      }
+    ]
+  },
+  {
+    "id": "flow-customer-payment",
+    "title": "Post a Manual Customer Payment",
+    "description": "How to post an incoming customer payment and clear open receivables manually.",
+    "category": "Finance & Controlling",
+    "module": "Finance",
+    "startingTransaction": "FBL5N",
+    "tags": ["customer payment", "F-28", "incoming payment", "clear AR", "manual receipt", "accounts receivable"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "FBL5N",
+        "action": "Review the customer's open receivables",
+        "reason": "Start by confirming which invoice or invoices should be cleared by the incoming payment."
+      },
+      {
+        "order": 2,
+        "transaction": "FB03",
+        "action": "Display the invoice if additional validation is needed",
+        "reason": "This helps confirm the customer reference, amount, and due date before posting."
+      },
+      {
+        "order": 3,
+        "transaction": "F-28",
+        "action": "Post the incoming payment and clear the open items",
+        "reason": "F-28 is the standard transaction for manual incoming customer payments and receivable clearing."
+      },
+      {
+        "order": 4,
+        "transaction": "FBL5N",
+        "action": "Confirm the receivable is now cleared",
+        "reason": "Recheck the customer line items to verify the payment cleared the intended invoice."
+      }
+    ]
+  },
+  {
+    "id": "flow-timesheet-approval",
+    "title": "Investigate a Timesheet Waiting for Approval",
+    "description": "How to diagnose why time data was entered but not yet approved or transferred downstream.",
+    "category": "HCM",
+    "module": "HCM",
+    "startingTransaction": "CAT2",
+    "tags": ["timesheet approval", "CAT2", "CAT7", "CATS", "waiting approval", "time entry"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "CAT2",
+        "action": "Check the status of the employee's time entry",
+        "reason": "The timesheet may be saved but still waiting in an unapproved or in-process state."
+      },
+      {
+        "order": 2,
+        "transaction": "CAT7",
+        "action": "Review pending time approvals",
+        "reason": "CAT7 is the standard place to approve submitted working times in CATS-based processes."
+      },
+      {
+        "order": 3,
+        "transaction": null,
+        "action": "Confirm the right approver or approval process is being used",
+        "reason": "If entries never appear for approval, the issue may be in workflow routing or organizational setup."
+      },
+      {
+        "order": 4,
+        "transaction": "CAT7",
+        "action": "Approve the submitted time if appropriate",
+        "reason": "Once approved, downstream transfer or visibility issues can be retested."
+      },
+      {
+        "order": 5,
+        "transaction": "PT50",
+        "action": "Confirm the approved time is visible in downstream HR balances if relevant",
+        "reason": "This final check verifies that approval translated into the expected business effect."
+      }
+    ]
+  },
+  {
+    "id": "flow-time-data-correction",
+    "title": "Correct Employee Time Data",
+    "description": "How to adjust employee time infotypes when attendances, absences, or time records are incorrect.",
+    "category": "HCM",
+    "module": "HCM",
+    "startingTransaction": "PA61",
+    "tags": ["time data", "PA61", "attendance correction", "absence correction", "HR time", "time infotype"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "PA61",
+        "action": "Open the relevant employee and time infotype",
+        "reason": "PA61 is used specifically for time-related infotypes and corrections."
+      },
+      {
+        "order": 2,
+        "transaction": null,
+        "action": "Identify the incorrect absence or attendance record",
+        "reason": "Before changing data, confirm the exact date, subtype, and business reason for the correction."
+      },
+      {
+        "order": 3,
+        "transaction": "PA61",
+        "action": "Change or correct the time data record",
+        "reason": "Use the proper infotype maintenance process to keep HR time data consistent."
+      },
+      {
+        "order": 4,
+        "transaction": "PT50",
+        "action": "Review downstream quota or absence balances if relevant",
+        "reason": "Time corrections can affect leave balances and related HR calculations."
+      },
+      {
+        "order": 5,
+        "transaction": "PT60",
+        "action": "Rerun time evaluation if the correction requires recalculation",
+        "reason": "Some corrections only take full effect after time evaluation processes the updated data."
+      }
+    ]
   }
 ]

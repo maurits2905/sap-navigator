@@ -518,5 +518,190 @@
       "Retest the affected downstream process after the employee record is complete."
     ],
     "linkedFlow": "flow-hire-employee"
+  },
+  {
+    "id": "err-performance-slow",
+    "pattern": ["sap slow", "transaction slow", "system slow", "response time bad", "performance issue", "slow transaction", "slow sap", "st03n", "st05"],
+    "title": "Slow Transaction or General Performance Issue",
+    "category": "Technical",
+    "description": "A user reports that SAP is slow or a specific transaction has poor response time. The issue may be system-wide, server-specific, or caused by expensive processing.",
+    "primaryTransaction": "ST03N",
+    "relatedTransactions": ["SM50", "SM66", "SM51", "ST05"],
+    "steps": [
+      "Start with ST03N to determine whether the issue is broad or isolated.",
+      "Check active work processes in SM50 and SM66 for long-running or blocked sessions.",
+      "Confirm whether one application server is affected using SM51.",
+      "Run ST05 if you need a detailed SQL or RFC trace for the problematic transaction.",
+      "Differentiate between workload, application design, and infrastructure causes before taking action."
+    ],
+    "linkedFlow": "flow-performance-issue"
+  },
+  {
+    "id": "err-odata-runtime-error",
+    "pattern": ["odata runtime error", "gateway runtime error", "odata 500", "service active but failing", "iwfnd error log", "backend odata exception", "odata internal server error"],
+    "title": "OData Service Active but Failing at Runtime",
+    "category": "Connectivity & Services",
+    "description": "An OData service is active and reachable but fails during execution due to backend logic, model mismatch, or runtime exceptions.",
+    "primaryTransaction": "/IWFND/ERROR_LOG",
+    "relatedTransactions": ["SEGW", "ST22", "/IWFND/MAINT_SERVICE"],
+    "steps": [
+      "Open /IWFND/ERROR_LOG and locate the failed request.",
+      "Review the technical details and backend exception text.",
+      "Check SEGW if the issue points to service implementation or runtime generation.",
+      "Review ST22 at the same timestamp for backend dumps.",
+      "Retest the service after fixing the identified cause."
+    ],
+    "linkedFlow": "flow-odata-runtime-error"
+  },
+  {
+    "id": "err-email-not-sent",
+    "pattern": ["email not sent", "mail stuck", "sost error", "outbound email failed", "sap email issue", "mail waiting", "sapconnect mail problem", "message not sent"],
+    "title": "SAP Email Not Sent",
+    "category": "Technical",
+    "description": "An email or outbound SAPconnect message is waiting, failed, or never left the system. Causes include send job, node configuration, or data issues.",
+    "primaryTransaction": "SOST",
+    "relatedTransactions": ["SCOT"],
+    "steps": [
+      "Open SOST and find the send request.",
+      "Check whether the request is waiting, failed, or already processed.",
+      "Review the request details and error text.",
+      "Check SCOT if the issue appears to be configuration or scheduling-related.",
+      "Retry or monitor the message after correction."
+    ],
+    "linkedFlow": "flow-email-not-sent"
+  },
+  {
+    "id": "err-workflow-runtime-error",
+    "pattern": ["workflow error", "workflow failed", "workflow exception", "workflow log error", "swi1 error", "approval workflow failed", "workflow execution error"],
+    "title": "Workflow Failed During Execution",
+    "category": "Workflow",
+    "description": "A workflow started but failed during processing due to agent issues, business data problems, or technical exceptions.",
+    "primaryTransaction": "SWI1",
+    "relatedTransactions": ["SWI5", "SWIA", "SBWP"],
+    "steps": [
+      "Open SWI1 and locate the failed workflow instance.",
+      "Review the workflow log to find the failing step.",
+      "Use SWI5 to identify related workitems and statuses.",
+      "Determine whether the issue is routing, data, or execution-related.",
+      "Use SWIA if administrative intervention is required."
+    ],
+    "linkedFlow": "flow-workflow-error"
+  },
+  {
+    "id": "err-credit-block",
+    "pattern": ["credit block", "sales order credit blocked", "order blocked by credit", "vkm3", "credit management block", "customer credit exceeded"],
+    "title": "Sales Order Credit Block",
+    "category": "Logistics",
+    "description": "A sales order is blocked by credit management because of credit exposure, overdue receivables, or customer risk controls.",
+    "primaryTransaction": "VA03",
+    "relatedTransactions": ["VKM3", "VA02"],
+    "steps": [
+      "Check VA03 to confirm the order is blocked specifically for credit reasons.",
+      "Review the customer's credit situation and business context.",
+      "Use VKM3 to review the blocked document in credit management.",
+      "Release the order only if business approval exists.",
+      "Recheck the order afterwards to confirm the block is gone."
+    ],
+    "linkedFlow": "flow-credit-block"
+  },
+  {
+    "id": "err-mm-period-closed",
+    "pattern": ["mm period closed", "materials period closed", "cannot post goods movement", "inventory period closed", "mmpv", "material posting blocked by period"],
+    "title": "MM Posting Blocked by Closed Period",
+    "category": "Logistics",
+    "description": "A goods movement or materials posting cannot be made because the MM period is not open for the intended posting date.",
+    "primaryTransaction": "MMPV",
+    "relatedTransactions": ["MIGO", "MB51"],
+    "steps": [
+      "Capture the exact movement and posting date from the error.",
+      "Check MMPV to determine the active MM period.",
+      "Confirm whether the posting date is appropriate for the intended business event.",
+      "Advance the MM period only if authorized and appropriate.",
+      "Retry the posting after the period issue is resolved."
+    ],
+    "linkedFlow": "flow-mm-period-closed"
+  },
+  {
+    "id": "err-fi-document-needs-reversal",
+    "pattern": ["wrong fi document", "posted wrong document", "need to reverse document", "cancel accounting document", "fb08", "wrong posting"],
+    "title": "Incorrect FI Document Needs Reversal",
+    "category": "Finance & Controlling",
+    "description": "A financial document was posted incorrectly and needs to be reversed in a controlled way.",
+    "primaryTransaction": "FB03",
+    "relatedTransactions": ["FB08", "FS10N"],
+    "steps": [
+      "Display the document in FB03 and confirm it is the one to reverse.",
+      "Check whether it is eligible for reversal and whether period restrictions apply.",
+      "Reverse the document in FB08.",
+      "Confirm the reversal document was created correctly.",
+      "Review balances afterwards if needed."
+    ],
+    "linkedFlow": "flow-document-reversal"
+  },
+  {
+    "id": "err-manual-vendor-payment-needed",
+    "pattern": ["manual vendor payment", "pay vendor manually", "outgoing payment manual", "f-53", "clear vendor invoice manually", "supplier payment manual"],
+    "title": "Manual Vendor Payment Needed",
+    "category": "Finance & Controlling",
+    "description": "A vendor invoice must be paid manually outside the automatic payment run process.",
+    "primaryTransaction": "FBL1N",
+    "relatedTransactions": ["F-53", "FB03"],
+    "steps": [
+      "Review the vendor's open items in FBL1N.",
+      "Validate the invoice details in FB03 if necessary.",
+      "Post the manual outgoing payment in F-53.",
+      "Confirm the invoice is cleared afterwards in FBL1N."
+    ],
+    "linkedFlow": "flow-manual-vendor-payment"
+  },
+  {
+    "id": "err-customer-payment-manual",
+    "pattern": ["manual customer payment", "incoming payment manual", "f-28", "customer payment not posted", "clear customer invoice manually", "manual receipt"],
+    "title": "Manual Customer Payment Needed",
+    "category": "Finance & Controlling",
+    "description": "A customer payment must be posted manually and matched to open receivables.",
+    "primaryTransaction": "FBL5N",
+    "relatedTransactions": ["F-28", "FB03"],
+    "steps": [
+      "Review the customer's open items in FBL5N.",
+      "Validate the invoice details if necessary.",
+      "Post the incoming payment in F-28.",
+      "Confirm the receivable is cleared afterwards."
+    ],
+    "linkedFlow": "flow-customer-payment"
+  },
+  {
+    "id": "err-timesheet-awaiting-approval",
+    "pattern": ["timesheet waiting approval", "time entry not approved", "cats approval pending", "cat7", "submitted timesheet not processed", "time approval missing"],
+    "title": "Timesheet Waiting for Approval",
+    "category": "HCM",
+    "description": "A time entry was submitted but has not yet been approved, so it is not available for downstream processing or balances.",
+    "primaryTransaction": "CAT2",
+    "relatedTransactions": ["CAT7", "PT50"],
+    "steps": [
+      "Check the submitted time entry status in CAT2.",
+      "Review pending approvals in CAT7.",
+      "Confirm the correct approver or workflow is involved.",
+      "Approve the entry if appropriate.",
+      "Validate the downstream result afterwards."
+    ],
+    "linkedFlow": "flow-timesheet-approval"
+  },
+  {
+    "id": "err-time-data-incorrect",
+    "pattern": ["time data wrong", "absence wrong", "attendance wrong", "need to correct time data", "pa61", "hr time infotype wrong", "time infotype incorrect"],
+    "title": "Employee Time Data Incorrect",
+    "category": "HCM",
+    "description": "An employee's HR time data such as absences or attendances is incorrect and needs correction through the proper infotype process.",
+    "primaryTransaction": "PA61",
+    "relatedTransactions": ["PT50", "PT60", "PA30"],
+    "steps": [
+      "Identify the incorrect time record and date range.",
+      "Open the relevant time infotype in PA61.",
+      "Correct the record using the proper HR maintenance process.",
+      "Review downstream balances or calculations in PT50.",
+      "Rerun PT60 if recalculation is required."
+    ],
+    "linkedFlow": "flow-time-data-correction"
   }
 ]

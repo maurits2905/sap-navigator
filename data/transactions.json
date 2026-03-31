@@ -888,5 +888,195 @@
     "category": "HCM",
     "seeAlso": ["PPOME", "PA20", "PA30"],
     "relatedFlow": "flow-hire-employee"
+  },
+  {
+    "id": "SU10",
+    "code": "SU10",
+    "name": "Mass User Maintenance",
+    "description": "Maintain multiple SAP users at once. Useful for mass unlocks, role assignments, validity changes, and password administration across many users.",
+    "tags": ["mass user", "SU10", "bulk user update", "mass unlock", "mass role assignment", "multiple users", "user admin", "bulk password reset"],
+    "category": "Security & Authorization",
+    "seeAlso": ["SU01", "SUIM", "PFCG"],
+    "relatedFlow": null
+  },
+  {
+    "id": "ST03N",
+    "code": "ST03N",
+    "name": "Workload and Performance Analysis",
+    "description": "Analyze workload, response times, transaction performance, and system activity over time. Useful for identifying slow transactions and performance hotspots.",
+    "tags": ["performance", "slow system", "response time", "workload", "ST03N", "transaction performance", "system performance", "slow SAP"],
+    "category": "Technical",
+    "seeAlso": ["ST05", "SM50", "SM66"],
+    "relatedFlow": "flow-performance-issue"
+  },
+  {
+    "id": "ST05",
+    "code": "ST05",
+    "name": "Performance Trace",
+    "description": "Trace SQL, RFC, enqueue, and buffer accesses for a transaction or user session. Used for detailed technical performance investigation.",
+    "tags": ["performance trace", "SQL trace", "ST05", "slow transaction", "database trace", "RFC trace", "buffer trace", "technical analysis"],
+    "category": "Technical",
+    "seeAlso": ["ST03N", "SM50", "SM66"],
+    "relatedFlow": "flow-performance-issue"
+  },
+  {
+    "id": "SM51",
+    "code": "SM51",
+    "name": "SAP Servers",
+    "description": "Display all active application servers in the SAP system and jump to administration functions on a selected instance.",
+    "tags": ["application server", "server list", "SM51", "instances", "SAP servers", "app server", "server administration"],
+    "category": "Technical",
+    "seeAlso": ["SM50", "SM66"],
+    "relatedFlow": "flow-performance-issue"
+  },
+  {
+    "id": "/IWFND/ERROR_LOG",
+    "code": "/IWFND/ERROR_LOG",
+    "name": "Gateway Error Log",
+    "description": "Display runtime errors for SAP Gateway OData requests. Useful when a service is active but returns backend or processing errors.",
+    "tags": ["gateway error", "odata error log", "gateway runtime", "/IWFND/ERROR_LOG", "service exception", "OData 500", "gateway log"],
+    "category": "Connectivity & Services",
+    "seeAlso": ["/IWFND/MAINT_SERVICE", "SEGW", "ST22"],
+    "relatedFlow": "flow-odata-runtime-error"
+  },
+  {
+    "id": "SOST",
+    "code": "SOST",
+    "name": "SAPconnect Send Requests",
+    "description": "Monitor outbound emails, faxes, and other SAPconnect messages. Check whether messages are waiting, failed, or already sent.",
+    "tags": ["email", "mail", "send request", "SOST", "outbound email", "SAPconnect", "mail queue", "email not sent"],
+    "category": "Technical",
+    "seeAlso": ["SCOT", "SLG1"],
+    "relatedFlow": "flow-email-not-sent"
+  },
+  {
+    "id": "SCOT",
+    "code": "SCOT",
+    "name": "SAPconnect Administration",
+    "description": "Maintain SAPconnect settings such as SMTP nodes, send jobs, and outbound communication configuration.",
+    "tags": ["SMTP", "mail config", "SCOT", "SAPconnect", "email configuration", "mail node", "outbound mail"],
+    "category": "Technical",
+    "seeAlso": ["SOST"],
+    "relatedFlow": "flow-email-not-sent"
+  },
+  {
+    "id": "SWI1",
+    "code": "SWI1",
+    "name": "Workflow Log / Selection Report",
+    "description": "Display workflow instances and their detailed execution logs. Useful for understanding where a workflow failed or stopped.",
+    "tags": ["workflow log", "workflow instance", "SWI1", "workflow history", "approval flow", "workflow error", "workflow trace"],
+    "category": "Workflow",
+    "seeAlso": ["SWI5", "SWIA", "SBWP"],
+    "relatedFlow": "flow-workflow-error"
+  },
+  {
+    "id": "VA05",
+    "code": "VA05",
+    "name": "List of Sales Orders",
+    "description": "Display a list of sales orders by customer, material, date, and status. Useful for locating an order when the document number is unknown.",
+    "tags": ["sales order list", "VA05", "find sales order", "sales documents", "order search", "SD order list"],
+    "category": "Logistics",
+    "seeAlso": ["VA03", "VA02", "VL03N"],
+    "relatedFlow": null
+  },
+  {
+    "id": "VKM3",
+    "code": "VKM3",
+    "name": "Release Sales Documents from Credit Management",
+    "description": "Review and release sales documents blocked by credit management. Used when a sales order is held due to credit limit issues.",
+    "tags": ["credit block", "credit release", "VKM3", "sales order credit", "release blocked order", "credit management"],
+    "category": "Logistics",
+    "seeAlso": ["VA03", "VA02"],
+    "relatedFlow": "flow-credit-block"
+  },
+  {
+    "id": "ME2N",
+    "code": "ME2N",
+    "name": "Purchase Orders by PO Number",
+    "description": "Display a report of purchase orders using flexible selection criteria. Useful when searching or monitoring POs in bulk.",
+    "tags": ["PO report", "purchase order report", "ME2N", "list purchase orders", "procurement report", "PO list"],
+    "category": "Logistics",
+    "seeAlso": ["ME23N", "ME2L", "ME2M"],
+    "relatedFlow": null
+  },
+  {
+    "id": "ME2L",
+    "code": "ME2L",
+    "name": "Purchase Orders by Vendor",
+    "description": "Display purchase orders for a specific vendor using reporting selections and status filters.",
+    "tags": ["vendor purchase orders", "ME2L", "PO by vendor", "procurement vendor report", "supplier orders"],
+    "category": "Logistics",
+    "seeAlso": ["ME2N", "ME23N"],
+    "relatedFlow": null
+  },
+  {
+    "id": "ME2M",
+    "code": "ME2M",
+    "name": "Purchase Orders by Material",
+    "description": "Display purchase orders for a specific material. Useful for procurement analysis and tracking ordered quantities by material.",
+    "tags": ["PO by material", "ME2M", "purchase orders material", "material procurement", "ordered quantity", "material PO report"],
+    "category": "Logistics",
+    "seeAlso": ["ME2N", "MM03", "ME23N"],
+    "relatedFlow": null
+  },
+  {
+    "id": "MMPV",
+    "code": "MMPV",
+    "name": "Close MM Period",
+    "description": "Close the current Materials Management period and open the next period for inventory posting. Relevant when MM postings fail due to period issues.",
+    "tags": ["MM period", "MMPV", "material ledger period", "inventory period", "close MM month", "MM posting period"],
+    "category": "Logistics",
+    "seeAlso": ["MIGO", "MB51"],
+    "relatedFlow": "flow-mm-period-closed"
+  },
+  {
+    "id": "FB08",
+    "code": "FB08",
+    "name": "Reverse Accounting Document",
+    "description": "Reverse a posted accounting document in Financial Accounting. Used when a posted FI document needs to be canceled.",
+    "tags": ["reverse document", "FB08", "cancel posting", "reverse FI document", "reverse accounting entry", "document reversal"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["FB03", "FB50"],
+    "relatedFlow": "flow-document-reversal"
+  },
+  {
+    "id": "F-53",
+    "code": "F-53",
+    "name": "Post Outgoing Payment",
+    "description": "Post a manual outgoing payment to a vendor, including invoice clearing and payment difference handling.",
+    "tags": ["outgoing payment", "vendor payment", "manual payment", "F-53", "clear vendor invoice", "AP payment", "pay supplier"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["F110", "FBL1N", "FB03"],
+    "relatedFlow": "flow-manual-vendor-payment"
+  },
+  {
+    "id": "F-28",
+    "code": "F-28",
+    "name": "Post Incoming Payment",
+    "description": "Post a manual incoming customer payment and clear open receivables.",
+    "tags": ["incoming payment", "customer payment", "manual receipt", "F-28", "clear customer invoice", "AR payment", "cash receipt"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["FBL5N", "FB03"],
+    "relatedFlow": "flow-customer-payment"
+  },
+  {
+    "id": "CAT7",
+    "code": "CAT7",
+    "name": "Approve Working Times",
+    "description": "Approve submitted CATS timesheet entries. Used when time data requires workflow or managerial approval before downstream transfer.",
+    "tags": ["approve timesheet", "CAT7", "CATS approval", "time approval", "working time approval", "submitted timesheet"],
+    "category": "HCM",
+    "seeAlso": ["CAT2", "PT50"],
+    "relatedFlow": "flow-timesheet-approval"
+  },
+  {
+    "id": "PA61",
+    "code": "PA61",
+    "name": "Change Time Data",
+    "description": "Maintain employee time data such as absences and attendances through HR time infotypes.",
+    "tags": ["time data", "PA61", "absence entry", "attendance entry", "change time infotype", "HR time maintenance"],
+    "category": "HCM",
+    "seeAlso": ["PA30", "CAT2", "PT50"],
+    "relatedFlow": "flow-time-data-correction"
   }
 ]
