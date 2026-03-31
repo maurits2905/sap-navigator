@@ -3,113 +3,211 @@
     "id": "SU01",
     "code": "SU01",
     "name": "User Maintenance",
-    "description": "Create, modify, or display SAP user accounts. Manage logon data, roles, and profiles.",
+    "description": "Create, modify, or display SAP user accounts. Manage logon data, roles, profiles, and lock status.",
     "tags": ["user", "account", "create user", "modify user", "display user", "logon", "password", "reset password", "lock user", "unlock user", "user management", "user admin"],
-    "category": "Security & Authorization"
+    "category": "Security & Authorization",
+    "seeAlso": [],
+    "relatedFlow": "flow-new-user"
   },
   {
     "id": "SU53",
     "code": "SU53",
     "name": "Authorization Check",
-    "description": "Display the last failed authorization check for a user. Essential first step when a user reports an access issue.",
-    "tags": ["authorization", "access", "no access", "missing auth", "auth check", "auth error", "permission denied", "not authorized", "access denied"],
-    "category": "Security & Authorization"
+    "description": "Display the last failed authorization check for a user. Essential first step when a user reports an access or permission error.",
+    "tags": ["authorization", "access", "no access", "missing auth", "auth check", "auth error", "permission denied", "not authorized", "access denied", "missing authorization object"],
+    "category": "Security & Authorization",
+    "seeAlso": ["PFCG", "SU01"],
+    "relatedFlow": "flow-auth-issue"
   },
   {
     "id": "PFCG",
     "code": "PFCG",
     "name": "Role Maintenance",
-    "description": "Create, edit, and assign SAP roles. Manage authorizations within roles and generate authorization profiles.",
-    "tags": ["role", "roles", "authorization", "profile", "assign role", "create role", "edit role", "access", "permission", "composite role", "single role"],
-    "category": "Security & Authorization"
+    "description": "Create, edit, and assign SAP roles. Manage authorizations within roles and regenerate authorization profiles.",
+    "tags": ["role", "roles", "authorization", "profile", "assign role", "create role", "edit role", "access", "permission", "composite role", "single role", "auth profile"],
+    "category": "Security & Authorization",
+    "seeAlso": ["SU01", "SU53"],
+    "relatedFlow": "flow-auth-issue"
   },
   {
     "id": "SE09",
     "code": "SE09",
     "name": "Transport Organizer",
-    "description": "Create, manage, and release Workbench transport requests. Used for ABAP development objects.",
-    "tags": ["transport", "transport request", "workbench request", "release transport", "import transport", "TR", "change request", "development", "SE09"],
-    "category": "Transport Management"
+    "description": "Create, manage, and release Workbench transport requests. Used for ABAP objects, programs, and repository objects.",
+    "tags": ["transport", "transport request", "workbench request", "release transport", "import transport", "TR", "change request", "development", "workbench"],
+    "category": "Transport Management",
+    "seeAlso": ["SE10", "STMS"],
+    "relatedFlow": "flow-transport-issue"
   },
   {
     "id": "SE10",
     "code": "SE10",
     "name": "Customizing Transport Organizer",
     "description": "Manage Customizing transport requests. Used for configuration and IMG settings.",
-    "tags": ["transport", "customizing", "configuration", "IMG", "customizing request", "SE10", "change request"],
-    "category": "Transport Management"
+    "tags": ["transport", "customizing", "configuration", "IMG", "customizing request", "change request"],
+    "category": "Transport Management",
+    "seeAlso": ["SE09", "STMS"],
+    "relatedFlow": "flow-transport-issue"
   },
   {
     "id": "STMS",
     "code": "STMS",
     "name": "Transport Management System",
-    "description": "Manage the transport landscape, import queues, and perform imports across systems.",
-    "tags": ["transport", "import", "transport route", "import queue", "transport landscape", "TMS", "deployment"],
-    "category": "Transport Management"
+    "description": "Manage the transport landscape, import queues, and perform imports across systems. Check import logs.",
+    "tags": ["transport", "import", "transport route", "import queue", "transport landscape", "TMS", "deployment", "import log"],
+    "category": "Transport Management",
+    "seeAlso": ["SE09", "SE10"],
+    "relatedFlow": "flow-transport-issue"
   },
   {
     "id": "ST22",
     "code": "ST22",
     "name": "ABAP Runtime Error Analysis",
-    "description": "Display and analyze ABAP short dumps (runtime errors). Investigate program crashes with full stack trace.",
-    "tags": ["dump", "short dump", "runtime error", "ABAP error", "crash", "program error", "ST22", "exception", "abap dump"],
-    "category": "System Administration"
+    "description": "Display and analyze ABAP short dumps (runtime errors). Investigate program crashes with full stack trace and variable contents.",
+    "tags": ["dump", "short dump", "runtime error", "ABAP error", "crash", "program error", "exception", "abap dump", "SNAP", "system failure"],
+    "category": "Technical",
+    "seeAlso": ["SM37", "SM21"],
+    "relatedFlow": null
   },
   {
     "id": "SM37",
     "code": "SM37",
     "name": "Background Job Overview",
     "description": "Monitor, analyze, and manage background jobs. Check job status, view job logs, cancel or reschedule jobs.",
-    "tags": ["job", "background job", "batch job", "job status", "job failed", "job log", "scheduled job", "SM37", "job monitoring"],
-    "category": "System Administration"
+    "tags": ["job", "background job", "batch job", "job status", "job failed", "job log", "scheduled job", "job monitoring", "batch", "program run"],
+    "category": "Technical",
+    "seeAlso": ["ST22", "SM21"],
+    "relatedFlow": null
   },
   {
     "id": "SM21",
     "code": "SM21",
     "name": "System Log",
-    "description": "View the SAP system log. Useful for tracking system-level errors, failed logons, and critical events.",
-    "tags": ["system log", "log", "syslog", "error log", "system error", "SM21", "audit log"],
-    "category": "System Administration"
+    "description": "View the SAP system log. Track system-level errors, failed logons, updates, and critical events across all clients.",
+    "tags": ["system log", "log", "syslog", "error log", "system error", "audit log", "system events", "logon failure"],
+    "category": "Technical",
+    "seeAlso": [],
+    "relatedFlow": null
   },
   {
     "id": "SM50",
     "code": "SM50",
     "name": "Work Process Overview",
-    "description": "Monitor all active work processes in the current application server. Check for hung processes.",
-    "tags": ["work process", "process", "performance", "hung", "system slow", "SM50", "dialog process"],
-    "category": "System Administration"
+    "description": "Monitor all active work processes in the current application server. Check for hung or long-running processes.",
+    "tags": ["work process", "process", "performance", "hung", "system slow", "dialog process", "WP", "locked process"],
+    "category": "Technical",
+    "seeAlso": ["SM66"],
+    "relatedFlow": null
   },
   {
     "id": "SM66",
     "code": "SM66",
     "name": "Global Work Process Overview",
-    "description": "Monitor work processes across all application servers in the system landscape.",
-    "tags": ["work process", "performance", "all servers", "SM66", "global process", "system load"],
-    "category": "System Administration"
+    "description": "Monitor work processes across all application servers. Used for system-wide performance checks.",
+    "tags": ["work process", "performance", "all servers", "global process", "system load", "system performance", "WP global"],
+    "category": "Technical",
+    "seeAlso": ["SM50"],
+    "relatedFlow": null
+  },
+  {
+    "id": "SM12",
+    "code": "SM12",
+    "name": "Lock Entry List",
+    "description": "Display and delete SAP enqueue lock entries. Use when a table entry is stuck locked after a failed transaction.",
+    "tags": ["lock", "table lock", "locked entry", "enqueue", "stuck lock", "object locked", "lock entry", "locked record", "release lock"],
+    "category": "Technical",
+    "seeAlso": ["SM21"],
+    "relatedFlow": null
+  },
+  {
+    "id": "SM59",
+    "code": "SM59",
+    "name": "RFC Destinations",
+    "description": "Configure and test RFC (Remote Function Call) connections to other SAP systems or external services.",
+    "tags": ["RFC", "remote connection", "RFC destination", "connection", "remote call", "RFC error", "system connection", "trusted RFC", "RFC test", "connection failed"],
+    "category": "Technical",
+    "seeAlso": ["SICF"],
+    "relatedFlow": "flow-rfc-issue"
+  },
+  {
+    "id": "SE38",
+    "code": "SE38",
+    "name": "ABAP Editor",
+    "description": "Create, edit, and execute ABAP programs and reports. Check source code and run programs directly.",
+    "tags": ["ABAP", "program", "report", "ABAP editor", "source code", "SE38", "execute program", "run report", "custom program", "ABAP program"],
+    "category": "Technical",
+    "seeAlso": ["SE80"],
+    "relatedFlow": null
+  },
+  {
+    "id": "SE80",
+    "code": "SE80",
+    "name": "Object Navigator",
+    "description": "Browse and manage all SAP development repository objects: programs, function groups, classes, interfaces, and more.",
+    "tags": ["object navigator", "development", "repository", "function group", "class", "interface", "package", "SE80", "development object"],
+    "category": "Technical",
+    "seeAlso": ["SE38", "SE11"],
+    "relatedFlow": null
+  },
+  {
+    "id": "SE16N",
+    "code": "SE16N",
+    "name": "General Table Display",
+    "description": "Display the contents of any SAP database table or view. Useful for checking configuration, master data, and document tables.",
+    "tags": ["table", "database", "table content", "view table", "SE16N", "table display", "check table", "database table", "table data", "SE16"],
+    "category": "Technical",
+    "seeAlso": ["SE11"],
+    "relatedFlow": null
+  },
+  {
+    "id": "SE11",
+    "code": "SE11",
+    "name": "ABAP Data Dictionary",
+    "description": "Display and maintain ABAP Dictionary objects: tables, structures, data elements, domains, and search helps.",
+    "tags": ["data dictionary", "table structure", "domain", "data element", "structure", "SE11", "DDIC", "table definition", "dictionary"],
+    "category": "Technical",
+    "seeAlso": ["SE16N", "SE80"],
+    "relatedFlow": null
+  },
+  {
+    "id": "SPRO",
+    "code": "SPRO",
+    "name": "Customizing / IMG",
+    "description": "Access the Implementation Guide (IMG) for SAP configuration. Navigate to configuration activities by module.",
+    "tags": ["IMG", "customizing", "configuration", "SPRO", "implementation guide", "config", "settings", "configure"],
+    "category": "Technical",
+    "seeAlso": ["SE10"],
+    "relatedFlow": null
   },
   {
     "id": "SICF",
     "code": "SICF",
     "name": "HTTP Service Configuration",
     "description": "Activate, deactivate, and configure Internet Communication Framework (ICF) services. Required for OData, Fiori, and web services.",
-    "tags": ["ICF", "service", "HTTP", "activate service", "Fiori", "OData", "web service", "SICF", "service not active", "ICM"],
-    "category": "Connectivity & Services"
+    "tags": ["ICF", "service", "HTTP", "activate service", "Fiori", "OData", "web service", "service not active", "ICM", "HTTP service"],
+    "category": "Connectivity & Services",
+    "seeAlso": ["/IWFND/MAINT_SERVICE"],
+    "relatedFlow": "flow-odata-issue"
   },
   {
     "id": "SEGW",
     "code": "SEGW",
     "name": "OData Service Builder",
-    "description": "Build and maintain OData services in the SAP Gateway. Define entity types, associations, and service operations.",
-    "tags": ["OData", "gateway", "service builder", "SEGW", "entity type", "API", "OData service", "create OData", "Fiori", "backend service"],
-    "category": "Connectivity & Services"
+    "description": "Build and maintain OData services in SAP Gateway. Define entity types, associations, and service operations.",
+    "tags": ["OData", "gateway", "service builder", "entity type", "API", "OData service", "create OData", "Fiori", "backend service", "SEGW"],
+    "category": "Connectivity & Services",
+    "seeAlso": ["/IWFND/MAINT_SERVICE"],
+    "relatedFlow": "flow-odata-dev"
   },
   {
     "id": "/IWFND/MAINT_SERVICE",
     "code": "/IWFND/MAINT_SERVICE",
     "name": "Activate and Maintain Services",
-    "description": "Activate and manage OData services on the Gateway hub system. Register backend services and configure service endpoints.",
-    "tags": ["OData", "gateway", "activate service", "service not found", "IWFND", "Fiori", "OData activate", "service registration"],
-    "category": "Connectivity & Services"
+    "description": "Activate and manage OData services on the Gateway hub. Register backend services and configure service endpoints.",
+    "tags": ["OData", "gateway", "activate service", "service not found", "IWFND", "Fiori", "OData activate", "service registration", "gateway service"],
+    "category": "Connectivity & Services",
+    "seeAlso": ["SICF", "SEGW"],
+    "relatedFlow": "flow-odata-issue"
   },
   {
     "id": "/IWBEP/CACHE_CLEANUP",
@@ -117,94 +215,378 @@
     "name": "Backend Gateway Cache Cleanup",
     "description": "Clear the OData metadata cache on the backend system. Run when OData service changes are not reflected.",
     "tags": ["cache", "OData cache", "IWBEP", "metadata cache", "cache cleanup", "service cache", "cache not updated", "refresh cache"],
-    "category": "Connectivity & Services"
+    "category": "Connectivity & Services",
+    "seeAlso": ["/IWFND/CACHE_CLEANUP"],
+    "relatedFlow": "flow-odata-issue"
   },
   {
     "id": "/IWFND/CACHE_CLEANUP",
     "code": "/IWFND/CACHE_CLEANUP",
     "name": "Gateway Frontend Cache Cleanup",
-    "description": "Clear the OData metadata cache on the Gateway frontend. Run after backend cache cleanup for full refresh.",
+    "description": "Clear the OData metadata cache on the Gateway frontend. Run after backend cache cleanup for a full refresh.",
     "tags": ["cache", "OData cache", "IWFND", "metadata cache", "cache cleanup", "gateway cache", "cache not updated"],
-    "category": "Connectivity & Services"
+    "category": "Connectivity & Services",
+    "seeAlso": ["/IWBEP/CACHE_CLEANUP"],
+    "relatedFlow": "flow-odata-issue"
+  },
+  {
+    "id": "FB03",
+    "code": "FB03",
+    "name": "Display FI Document",
+    "description": "Display a posted Financial Accounting document. View header, line items, G/L accounts, and posting keys.",
+    "tags": ["FI document", "financial document", "accounting document", "display document", "GL document", "posted document", "FI", "document number", "accounting"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["FB50", "FBL3N"],
+    "relatedFlow": "flow-fi-document"
+  },
+  {
+    "id": "FB50",
+    "code": "FB50",
+    "name": "Enter G/L Account Document",
+    "description": "Post a manual G/L journal entry. Used for adjustments, accruals, and corrections directly in the general ledger.",
+    "tags": ["GL posting", "journal entry", "manual posting", "G/L account", "FI posting", "accounting entry", "debit", "credit", "post document", "accrual"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["FB03", "FS10N"],
+    "relatedFlow": null
+  },
+  {
+    "id": "FS10N",
+    "code": "FS10N",
+    "name": "G/L Account Balance Display",
+    "description": "Display the balance of a G/L account by period. Shows debit/credit totals and period movements.",
+    "tags": ["GL balance", "account balance", "G/L balance", "FS10N", "general ledger", "period balance", "FI balance", "account total"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["FBL3N", "FB03"],
+    "relatedFlow": null
+  },
+  {
+    "id": "FBL3N",
+    "code": "FBL3N",
+    "name": "G/L Account Line Items",
+    "description": "Display line items posted to a G/L account. Filter by open, cleared, or all items. Drill into individual documents.",
+    "tags": ["GL line items", "G/L line items", "account line items", "FBL3N", "general ledger", "open items", "cleared items", "line item report"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["FS10N", "FB03"],
+    "relatedFlow": null
+  },
+  {
+    "id": "FBL1N",
+    "code": "FBL1N",
+    "name": "Vendor Line Items",
+    "description": "Display vendor (accounts payable) line items. View open invoices, payments, and cleared items by vendor.",
+    "tags": ["vendor line items", "AP line items", "accounts payable", "vendor invoice", "FBL1N", "open invoice", "vendor balance", "vendor account"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["FBL5N", "F110"],
+    "relatedFlow": "flow-payment-run"
+  },
+  {
+    "id": "FBL5N",
+    "code": "FBL5N",
+    "name": "Customer Line Items",
+    "description": "Display customer (accounts receivable) line items. View open invoices, payments, and cleared items by customer.",
+    "tags": ["customer line items", "AR line items", "accounts receivable", "customer invoice", "FBL5N", "open item", "customer balance", "customer account"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["FBL1N", "FB03"],
+    "relatedFlow": null
+  },
+  {
+    "id": "F110",
+    "code": "F110",
+    "name": "Automatic Payment Program",
+    "description": "Run the automatic payment program to process vendor payments and generate payment documents. Configure payment parameters, proposal, and payment run.",
+    "tags": ["payment run", "automatic payment", "F110", "vendor payment", "payment proposal", "AP payment", "payment program", "bank transfer", "pay vendor", "payment list"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["FBL1N", "FB03"],
+    "relatedFlow": "flow-payment-run"
+  },
+  {
+    "id": "MIRO",
+    "code": "MIRO",
+    "name": "Logistics Invoice Verification",
+    "description": "Enter and post vendor invoices against purchase orders and goods receipts. Three-way match between PO, GR, and invoice.",
+    "tags": ["invoice", "invoice verification", "LIV", "MIRO", "vendor invoice", "PO invoice", "three way match", "goods receipt invoice", "MM invoice"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["ME23N", "MIGO"],
+    "relatedFlow": null
+  },
+  {
+    "id": "KO03",
+    "code": "KO03",
+    "name": "Display Internal Order",
+    "description": "Display internal order master data: category, responsible cost center, budget, and status.",
+    "tags": ["internal order", "IO", "order", "CO", "controlling", "display order", "KO03", "cost collector"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["KS03"],
+    "relatedFlow": null
+  },
+  {
+    "id": "CJ20N",
+    "code": "CJ20N",
+    "name": "Project Builder",
+    "description": "Create, display, and maintain SAP projects and WBS elements. Used for project management, budgeting, and PS reporting.",
+    "tags": ["project", "WBS", "project builder", "CJ20N", "PS", "project system", "work breakdown structure", "project plan", "budget project"],
+    "category": "Finance & Controlling",
+    "seeAlso": [],
+    "relatedFlow": null
   },
   {
     "id": "ME23N",
     "code": "ME23N",
     "name": "Display Purchase Order",
-    "description": "Display an existing purchase order. View header data, line items, delivery schedules, and conditions.",
-    "tags": ["purchase order", "PO", "display PO", "ME23N", "procurement", "vendor", "goods receipt", "MM"],
-    "category": "Materials Management"
+    "description": "Display an existing purchase order. View header data, line items, delivery schedules, conditions, and confirmation status.",
+    "tags": ["purchase order", "PO", "display PO", "procurement", "vendor", "goods receipt", "MM", "order status", "check PO"],
+    "category": "Logistics",
+    "seeAlso": ["ME22N", "ME21N"],
+    "relatedFlow": null
   },
   {
     "id": "ME21N",
     "code": "ME21N",
     "name": "Create Purchase Order",
-    "description": "Create a new purchase order manually. Specify vendor, material, quantity, and delivery details.",
-    "tags": ["purchase order", "create PO", "ME21N", "procurement", "vendor", "MM", "new PO"],
-    "category": "Materials Management"
+    "description": "Create a new purchase order manually. Specify vendor, material, quantity, delivery details, and account assignment.",
+    "tags": ["purchase order", "create PO", "new PO", "procurement", "vendor", "MM", "create order"],
+    "category": "Logistics",
+    "seeAlso": ["ME22N", "ME23N"],
+    "relatedFlow": null
+  },
+  {
+    "id": "ME22N",
+    "code": "ME22N",
+    "name": "Change Purchase Order",
+    "description": "Modify an existing purchase order. Change quantities, dates, conditions, and account assignments on open POs.",
+    "tags": ["purchase order", "change PO", "edit PO", "modify PO", "ME22N", "procurement", "update PO"],
+    "category": "Logistics",
+    "seeAlso": ["ME21N", "ME23N"],
+    "relatedFlow": null
+  },
+  {
+    "id": "MIGO",
+    "code": "MIGO",
+    "name": "Goods Movement",
+    "description": "Post goods receipts, goods issues, stock transfers, and returns. The central transaction for all physical stock movements.",
+    "tags": ["goods receipt", "GR", "goods issue", "GI", "stock movement", "MIGO", "post GR", "goods movement", "material document", "receive goods", "transfer stock", "101 movement"],
+    "category": "Logistics",
+    "seeAlso": ["MB51", "ME23N", "MMBE"],
+    "relatedFlow": "flow-goods-receipt"
+  },
+  {
+    "id": "MB51",
+    "code": "MB51",
+    "name": "Material Document List",
+    "description": "Display a list of material documents (stock movements) by material, plant, movement type, or date range.",
+    "tags": ["material document", "goods movement history", "MB51", "movement type", "stock movement list", "GR history", "material history"],
+    "category": "Logistics",
+    "seeAlso": ["MIGO", "MMBE"],
+    "relatedFlow": null
   },
   {
     "id": "MB52",
     "code": "MB52",
     "name": "Warehouse Stocks of Material",
-    "description": "Display stock overview of materials across storage locations and plants.",
-    "tags": ["stock", "inventory", "warehouse", "material stock", "MB52", "storage location", "plant stock", "check stock"],
-    "category": "Materials Management"
+    "description": "Display stock overview of materials across storage locations and plants. Shows unrestricted, blocked, and quality inspection stock.",
+    "tags": ["stock", "inventory", "warehouse", "material stock", "storage location", "plant stock", "check stock", "warehouse stock"],
+    "category": "Logistics",
+    "seeAlso": ["MMBE", "MB51"],
+    "relatedFlow": null
+  },
+  {
+    "id": "MMBE",
+    "code": "MMBE",
+    "name": "Stock Overview",
+    "description": "Display a complete stock overview for a material across all plants, storage locations, and stock types.",
+    "tags": ["stock overview", "MMBE", "inventory", "plant stock", "material stock", "stock by plant", "stock levels", "check inventory"],
+    "category": "Logistics",
+    "seeAlso": ["MB52", "MB51"],
+    "relatedFlow": null
+  },
+  {
+    "id": "MM03",
+    "code": "MM03",
+    "name": "Display Material Master",
+    "description": "Display the material master record across all views: basic data, purchasing, MRP, accounting, and plant data.",
+    "tags": ["material master", "material", "display material", "MM03", "MM", "material data", "material record", "check material"],
+    "category": "Logistics",
+    "seeAlso": ["MMBE"],
+    "relatedFlow": null
+  },
+  {
+    "id": "VA03",
+    "code": "VA03",
+    "name": "Display Sales Order",
+    "description": "Display an existing sales order. View header, item details, delivery status, billing status, and conditions.",
+    "tags": ["sales order", "SO", "display SO", "SD", "order status", "sales", "check sales order", "order display", "VA03"],
+    "category": "Logistics",
+    "seeAlso": ["VA02", "VA01"],
+    "relatedFlow": "flow-sales-order-blocked"
+  },
+  {
+    "id": "VA01",
+    "code": "VA01",
+    "name": "Create Sales Order",
+    "description": "Create a new sales order. Enter sold-to party, material, quantity, and pricing. Choose order type (e.g., OR for standard).",
+    "tags": ["create sales order", "new sales order", "VA01", "SD", "order entry", "sales", "new order", "create order"],
+    "category": "Logistics",
+    "seeAlso": ["VA02", "VA03"],
+    "relatedFlow": null
+  },
+  {
+    "id": "VA02",
+    "code": "VA02",
+    "name": "Change Sales Order",
+    "description": "Modify an existing sales order. Change quantities, dates, conditions, and delivery data on open orders.",
+    "tags": ["change sales order", "edit sales order", "VA02", "SD", "modify order", "update sales order", "sales order change"],
+    "category": "Logistics",
+    "seeAlso": ["VA01", "VA03"],
+    "relatedFlow": "flow-sales-order-blocked"
+  },
+  {
+    "id": "VF03",
+    "code": "VF03",
+    "name": "Display Billing Document",
+    "description": "Display a billing document (customer invoice or credit/debit memo). View header, items, accounting document, and revenue.",
+    "tags": ["billing", "invoice", "billing document", "VF03", "SD", "customer invoice", "credit memo", "debit memo", "revenue", "display invoice"],
+    "category": "Logistics",
+    "seeAlso": ["VA03", "FBL5N"],
+    "relatedFlow": null
+  },
+  {
+    "id": "VL03N",
+    "code": "VL03N",
+    "name": "Display Outbound Delivery",
+    "description": "Display an outbound delivery document. View picking status, goods issue status, and shipping details.",
+    "tags": ["delivery", "outbound delivery", "VL03N", "SD", "picking", "goods issue", "shipping", "display delivery", "delivery status"],
+    "category": "Logistics",
+    "seeAlso": ["VA03", "MIGO"],
+    "relatedFlow": null
+  },
+  {
+    "id": "VK13",
+    "code": "VK13",
+    "name": "Display Pricing Conditions",
+    "description": "Display pricing condition records used in sales order pricing. Check valid prices, discounts, and surcharges.",
+    "tags": ["pricing", "condition record", "price", "VK13", "SD pricing", "discount", "condition", "sales price", "list price", "pricing condition"],
+    "category": "Logistics",
+    "seeAlso": ["VA03"],
+    "relatedFlow": null
   },
   {
     "id": "KS03",
     "code": "KS03",
     "name": "Display Cost Center",
-    "description": "Display cost center master data including assignments, responsible managers, and validity periods.",
-    "tags": ["cost center", "display cost center", "KS03", "CO", "controlling", "cost object", "check cost center"],
-    "category": "Controlling"
+    "description": "Display cost center master data including controlling area assignment, responsible manager, and validity period.",
+    "tags": ["cost center", "display cost center", "CO", "controlling", "cost object", "check cost center", "cost center master"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["KS01", "KSH3"],
+    "relatedFlow": null
   },
   {
     "id": "KS01",
     "code": "KS01",
     "name": "Create Cost Center",
-    "description": "Create a new cost center. Define controlling area assignment, category, and responsible person.",
-    "tags": ["cost center", "create cost center", "KS01", "CO", "controlling", "new cost center"],
-    "category": "Controlling"
+    "description": "Create a new cost center. Define controlling area assignment, category, responsible person, and hierarchy.",
+    "tags": ["cost center", "create cost center", "CO", "controlling", "new cost center", "cost center creation"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["KS03", "KSH3"],
+    "relatedFlow": null
   },
   {
     "id": "KSH3",
     "code": "KSH3",
     "name": "Display Cost Center Group",
-    "description": "Display cost center groups (hierarchies) used in reporting and planning.",
-    "tags": ["cost center group", "cost center hierarchy", "KSH3", "CO", "controlling", "group"],
-    "category": "Controlling"
+    "description": "Display cost center groups (hierarchies) used in reporting, planning, and allocations.",
+    "tags": ["cost center group", "cost center hierarchy", "CO", "controlling", "group", "cost center structure"],
+    "category": "Finance & Controlling",
+    "seeAlso": ["KS03"],
+    "relatedFlow": null
   },
   {
     "id": "CAT2",
     "code": "CAT2",
     "name": "CATS: Time Sheet Entry",
-    "description": "Enter working times and activities in the Cross-Application Time Sheet (CATS). Used for project time recording.",
-    "tags": ["timesheet", "time entry", "CATS", "CAT2", "time recording", "hours", "project time", "HR", "time sheet", "working time"],
-    "category": "HR & Time Management"
+    "description": "Enter working times and activities in the Cross-Application Time Sheet (CATS). Used for project time recording and HR time management.",
+    "tags": ["timesheet", "time entry", "CATS", "time recording", "hours", "project time", "HR", "time sheet", "working time", "enter time"],
+    "category": "HCM",
+    "seeAlso": [],
+    "relatedFlow": null
   },
   {
     "id": "PA30",
     "code": "PA30",
     "name": "Maintain HR Master Data",
-    "description": "Maintain employee master data infotypes such as personal data, organizational assignment, and payroll data.",
-    "tags": ["HR", "employee", "master data", "infotype", "PA30", "personal data", "personnel"],
-    "category": "HR & Time Management"
+    "description": "Maintain employee master data infotypes: personal data, org assignment, payroll, and contract info.",
+    "tags": ["HR", "employee", "master data", "infotype", "personal data", "personnel", "maintain employee", "employee data"],
+    "category": "HCM",
+    "seeAlso": ["PA20", "PA40"],
+    "relatedFlow": null
+  },
+  {
+    "id": "PA20",
+    "code": "PA20",
+    "name": "Display HR Master Data",
+    "description": "Display employee master data in read-only mode. View any infotype for an employee without change rights.",
+    "tags": ["HR", "employee", "display employee", "infotype", "personal data", "personnel", "view employee", "employee master"],
+    "category": "HCM",
+    "seeAlso": ["PA30", "PA40"],
+    "relatedFlow": null
+  },
+  {
+    "id": "PA40",
+    "code": "PA40",
+    "name": "Personnel Actions",
+    "description": "Execute HR actions such as hiring, transfers, promotions, and terminations. Chains all relevant infotype updates together.",
+    "tags": ["personnel action", "hiring", "hire employee", "termination", "transfer", "promotion", "PA40", "onboarding", "HR action", "leaver", "new hire"],
+    "category": "HCM",
+    "seeAlso": ["PA30", "PPOME"],
+    "relatedFlow": null
+  },
+  {
+    "id": "PPOME",
+    "code": "PPOME",
+    "name": "Organization and Staffing",
+    "description": "Display and maintain the organizational chart. Manage org units, positions, relationships, and reporting lines.",
+    "tags": ["org chart", "organization", "org structure", "PPOME", "org unit", "position", "reporting line", "organizational management", "OM", "headcount", "org hierarchy"],
+    "category": "HCM",
+    "seeAlso": ["PA30"],
+    "relatedFlow": null
+  },
+  {
+    "id": "PT50",
+    "code": "PT50",
+    "name": "Quota Overview",
+    "description": "Display an employee's leave and absence quota balances. Shows accrued, used, and remaining quota by absence type.",
+    "tags": ["leave quota", "absence quota", "quota overview", "PT50", "leave balance", "annual leave", "vacation", "days remaining", "absence balance", "leave entitlement"],
+    "category": "HCM",
+    "seeAlso": ["CAT2", "PA20"],
+    "relatedFlow": null
+  },
+  {
+    "id": "PT60",
+    "code": "PT60",
+    "name": "Time Evaluation",
+    "description": "Run or check time evaluation for employees. Processes time data to calculate overtime, absences, and quota accruals.",
+    "tags": ["time evaluation", "PT60", "time schema", "time processing", "overtime", "time calculation", "time management", "TM", "evaluate time"],
+    "category": "HCM",
+    "seeAlso": ["PT50", "CAT2"],
+    "relatedFlow": null
   },
   {
     "id": "SWI5",
     "code": "SWI5",
     "name": "Workload Analysis for Workflow",
-    "description": "Analyze workflow workitems by task, agent, or status. Identify stuck or unprocessed workflow items.",
-    "tags": ["workflow", "workitem", "SWI5", "work item", "workflow stuck", "workflow analysis", "workflow monitor"],
-    "category": "Workflow"
+    "description": "Analyze workflow workitems by task, agent, or status. Identify stuck, unprocessed, or error workflow items.",
+    "tags": ["workflow", "workitem", "work item", "workflow stuck", "workflow analysis", "workflow monitor", "SWI5"],
+    "category": "Workflow",
+    "seeAlso": ["SWIA"],
+    "relatedFlow": null
   },
   {
     "id": "SWIA",
     "code": "SWIA",
     "name": "Execute Workitem Administratively",
     "description": "Execute, forward, or complete a workflow workitem with administrator rights. Used to unblock stuck workflows.",
-    "tags": ["workflow", "workitem", "SWIA", "workflow stuck", "execute workitem", "workflow admin", "unblock workflow"],
-    "category": "Workflow"
+    "tags": ["workflow", "workitem", "workflow stuck", "execute workitem", "workflow admin", "unblock workflow", "SWIA", "forward workitem"],
+    "category": "Workflow",
+    "seeAlso": ["SWI5"],
+    "relatedFlow": null
   }
 ]

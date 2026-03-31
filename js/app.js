@@ -31,6 +31,31 @@ function toggleFavorite(flowId, btn) {
   renderFlows();
 }
 
+// ========== INTENT DETECTION ==========
+const INTENT_MAP = {
+  display: ['display', 'show', 'view', 'check', 'see', 'look', 'read', 'find', 'open'],
+  create:  ['create', 'new', 'add', 'make', 'raise', 'enter', 'generate', 'post'],
+  change:  ['change', 'edit', 'modify', 'update', 'maintain', 'correct', 'fix', 'adjust'],
+  run:     ['run', 'execute', 'trigger', 'start', 'process', 'test', 'activate', 'schedule']
+};
+
+function detectIntent(query) {
+  const q = ' ' + query.toLowerCase() + ' ';
+  for (const [intent, verbs] of Object.entries(INTENT_MAP)) {
+    if (verbs.some(v => q.includes(' ' + v + ' ') || q.startsWith(v + ' '))) return intent;
+  }
+  return null;
+}
+
+function txIntent(tx) {
+  const n = tx.name.toLowerCase();
+  if (n.startsWith('display') || n.startsWith('show')) return 'display';
+  if (n.startsWith('create')) return 'create';
+  if (n.startsWith('change') || n.startsWith('maintain') || n.startsWith('post') || n.startsWith('enter')) return 'change';
+  if (n.startsWith('run') || n.startsWith('execute') || n.startsWith('activate')) return 'run';
+  return null;
+}
+
 // ========== SEARCH SCORING ==========
 function scoreTransaction(tx, query) {
   const q = query.toLowerCase().trim();
@@ -47,38 +72,84 @@ function scoreTransaction(tx, query) {
   if (codeL === q) score += 100;
   else if (codeL.includes(q)) score += 60;
 
+  // Intent alignment bonus — boosts display/create/change transaction when query verb matches
+  const qi = detectIntent(query);
+  const ti = txIntent(tx);
+  if (qi && ti && qi === ti) score += 28;
+
+  // Longest matching tag phrase (multi-word tags are high quality signals)
+  for (const tag of tagsL) {
+    if (q === tag) score += 50;
+    else if (q.includes(tag) && tag.length > 4) score += 30;
+    else if (tag.includes(q) && q.length > 4) score += 20;
+  }
+
   // Each word match
   for (const w of words) {
+    if (w.length < 2) continue;
     if (nameL.includes(w)) score += 20;
-    if (descL.includes(w)) score += 8;
+    if (descL.includes(w)) score += 6;
     if (catL.includes(w)) score += 10;
     for (const tag of tagsL) {
       if (tag === w) score += 30;
-      else if (tag.includes(w)) score += 15;
+      else if (tag.includes(w) && w.length > 3) score += 14;
     }
   }
 
-  // Full query in tags or name
-  if (tagsL.some(t => t.includes(q))) score += 25;
-  if (nameL.includes(q)) score += 15;
+  // Full query in name
+  if (nameL.includes(q)) score += 18;
 
   return score;
 }
 
 function matchReason(tx, query) {
   const q = query.toLowerCase().trim();
-  const words = q.split(/\s+/);
+  const words = q.split(/\s+/).filter(w => w.length > 2);
   const codeL = tx.code.toLowerCase();
   const tagsL = tx.tags.map(t => t.toLowerCase());
+  const nameL = tx.name.toLowerCase();
 
-  if (codeL === q || codeL.includes(q)) return `Matches transaction code "${tx.code}" directly.`;
+  // Direct code match
+  if (codeL === q) return `Exact match for transaction code ${tx.code}.`;
+  if (codeL.includes(q) || q.includes(codeL)) return `Transaction code "${tx.code}" matches your query.`;
+
+  // Intent + transaction name alignment
+  const qi = detectIntent(query);
+  const ti = txIntent(tx);
+  if (qi && ti && qi === ti) {
+    const verb = qi.charAt(0).toUpperCase() + qi.slice(1);
+    return `${verb}-mode transaction — matches your intent in ${tx.category}.`;
+  }
+
+  // Best multi-word tag phrase match (longest wins)
+  let bestTag = '';
   for (const tag of tagsL) {
-    for (const w of words) {
-      if (tag.includes(w)) return `Matches keyword: "${tag}"`;
+    if (q.includes(tag) && tag.length > bestTag.length) bestTag = tag;
+  }
+  if (bestTag.length > 4) return `Phrase match on "${bestTag}" — ${tx.name} covers this directly.`;
+
+  // Exact single-word tag hits
+  for (const w of words) {
+    for (const tag of tagsL) {
+      if (tag === w) return `Keyword "${w}" is a direct tag in ${tx.category}.`;
     }
   }
-  if (tx.name.toLowerCase().includes(q)) return `Name contains "${q}"`;
-  return `Related to "${query}"`;
+
+  // Partial tag match — find the most descriptive tag hit
+  for (const w of words) {
+    for (const tag of tagsL) {
+      if (tag.includes(w) && w.length > 3) return `Keyword "${w}" matched tag "${tag}" in ${tx.category}.`;
+    }
+  }
+
+  // Category word match
+  const catL = tx.category.toLowerCase();
+  for (const w of words) {
+    if (catL.includes(w)) return `Relevant in ${tx.category} for this query.`;
+  }
+
+  if (nameL.includes(q)) return `Transaction name contains "${q}".`;
+  return `Likely starting point in ${tx.category} for "${query}".`;
 }
 
 function findTransactions(query) {
@@ -138,7 +209,45 @@ function renderFind(query) {
   resultsEl.innerHTML = html;
 }
 
+function findRelatedFlowForTx(tx) {
+  if (tx.relatedFlow) return flows.find(f => f.id === tx.relatedFlow) || null;
+  const codeL = tx.code.toLowerCase();
+  return flows.find(f =>
+    f.startingTransaction === tx.code ||
+    f.tags.some(t => t.toLowerCase() === codeL)
+  ) || null;
+}
+
+function quickFind(code) {
+  const findInput = document.getElementById('find-input');
+  findInput.value = code;
+  renderFind(code);
+  switchTab('find');
+  findInput.focus();
+}
+
 function renderBestCard(tx, reason) {
+  const seeAlsoCodes = tx.seeAlso || [];
+  const seeAlsoTxs = seeAlsoCodes.map(c => transactions.find(t => t.code === c)).filter(Boolean);
+  const relatedFlow = findRelatedFlowForTx(tx);
+
+  let extras = '';
+
+  if (seeAlsoTxs.length > 0) {
+    const chips = seeAlsoTxs.map(t =>
+      `<button class="seealso-chip" onclick="quickFind('${escHtml(t.code)}')" title="${escHtml(t.description)}">${escHtml(t.code)} <span class="seealso-chip-name">${escHtml(t.name)}</span></button>`
+    ).join('');
+    extras += `<div class="see-also"><span class="see-also-label">Also see:</span><div class="see-also-chips">${chips}</div></div>`;
+  }
+
+  if (relatedFlow) {
+    extras += `<div class="related-flow-hint">
+      <button class="flow-link-btn" onclick="openFlowModal('${escHtml(relatedFlow.id)}')">
+        → Related troubleshooting flow: ${escHtml(relatedFlow.title)}
+      </button>
+    </div>`;
+  }
+
   return `
   <div class="best-card">
     <div class="best-badge">★ Best Starting Point</div>
@@ -147,6 +256,7 @@ function renderBestCard(tx, reason) {
     <div class="card-desc">${escHtml(tx.description)}</div>
     <div class="card-reason">${escHtml(reason)}</div>
     <div class="card-category">${escHtml(tx.category)}</div>
+    ${extras}
   </div>`;
 }
 
@@ -288,14 +398,44 @@ function renderDecode(query) {
 }
 
 // ========== FLOWS TAB ==========
+let activeModule = '';
+
+// Module display order
+const MODULE_ORDER = ['Security', 'Transport', 'Finance', 'Logistics', 'HCM', 'Connectivity', 'Technical', 'Workflow'];
+
+function getFlowModule(flow) {
+  return flow.module || flow.category;
+}
+
+function setModuleFilter(mod) {
+  activeModule = mod;
+  renderFlows();
+}
+
 function renderFlows() {
   const container = document.getElementById('flows-container');
   if (!container) return;
 
-  const favFlows = flows.filter(f => favorites.has(f.id));
-  const otherFlows = flows.filter(f => !favorites.has(f.id));
+  // Build module list in defined order, then append any unlisted ones
+  const allModules = [...new Set(flows.map(getFlowModule))];
+  const orderedModules = [
+    ...MODULE_ORDER.filter(m => allModules.includes(m)),
+    ...allModules.filter(m => !MODULE_ORDER.includes(m)).sort()
+  ];
 
-  let html = '';
+  // Filter bar
+  const filterHtml = `<div class="module-filters">
+    <button class="module-chip ${activeModule === '' ? 'active' : ''}" onclick="setModuleFilter('')">All</button>
+    ${orderedModules.map(m =>
+      `<button class="module-chip ${activeModule === m ? 'active' : ''}" onclick="setModuleFilter('${escHtml(m)}')">${escHtml(m)}</button>`
+    ).join('')}
+  </div>`;
+
+  const visibleFlows = activeModule ? flows.filter(f => getFlowModule(f) === activeModule) : flows;
+  const favFlows = visibleFlows.filter(f => favorites.has(f.id));
+  const otherFlows = visibleFlows.filter(f => !favorites.has(f.id));
+
+  let html = filterHtml;
 
   if (favFlows.length > 0) {
     html += `<div class="flows-section">
@@ -306,20 +446,40 @@ function renderFlows() {
     </div>`;
   }
 
-  if (otherFlows.length > 0) {
-    html += `<div class="flows-section">
-      <div class="flows-section-title">${favFlows.length > 0 ? 'All Flows' : 'Common Flows'}</div>
-      <div class="flows-grid">
-        ${otherFlows.map(f => renderFlowCard(f, false)).join('')}
-      </div>
-    </div>`;
+  if (activeModule) {
+    // Single module selected — flat list, no sub-grouping
+    if (otherFlows.length > 0) {
+      html += `<div class="flows-section">
+        <div class="flows-section-title">${escHtml(activeModule)}</div>
+        <div class="flows-grid">
+          ${otherFlows.map(f => renderFlowCard(f, false)).join('')}
+        </div>
+      </div>`;
+    }
+  } else {
+    // All modules — group by module
+    const grouped = {};
+    for (const f of otherFlows) {
+      const m = getFlowModule(f);
+      if (!grouped[m]) grouped[m] = [];
+      grouped[m].push(f);
+    }
+    for (const m of orderedModules) {
+      if (!grouped[m] || grouped[m].length === 0) continue;
+      html += `<div class="flows-section">
+        <div class="flows-section-title">${escHtml(m)}</div>
+        <div class="flows-grid">
+          ${grouped[m].map(f => renderFlowCard(f, false)).join('')}
+        </div>
+      </div>`;
+    }
   }
 
-  if (flows.length === 0) {
-    html = `<div class="empty-state">
+  if (visibleFlows.length === 0) {
+    html += `<div class="empty-state">
       <div class="empty-icon">📋</div>
-      <div class="empty-title">No flows available</div>
-      <div class="empty-text">Flows will appear here once data is loaded.</div>
+      <div class="empty-title">No flows in this module yet</div>
+      <div class="empty-text">More flows are being added across all modules.</div>
     </div>`;
   }
 

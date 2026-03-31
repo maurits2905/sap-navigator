@@ -1,143 +1,248 @@
 [
   {
     "id": "err-no-access",
-    "pattern": ["no access", "access denied", "not authorized", "authorization error", "missing authorization", "no authorization", "permission denied", "user has no access", "auth failed"],
+    "pattern": ["no access", "access denied", "not authorized", "authorization error", "missing authorization", "no authorization", "permission denied", "user has no access", "auth failed", "not permitted", "missing auth"],
     "title": "Authorization / Access Denied",
     "category": "Security & Authorization",
-    "description": "The user is missing one or more authorization objects required to perform the action.",
+    "description": "The user is missing one or more authorization objects required to perform the action. This is the most common support issue in SAP.",
     "primaryTransaction": "SU53",
     "relatedTransactions": ["PFCG", "SU01", "SM21"],
     "steps": [
-      "Run SU53 as the affected user (or ask them to run it) immediately after the error to capture the failed authorization check.",
-      "Note the missing authorization object, field, and value from the SU53 output.",
-      "Go to PFCG and find the role(s) assigned to the user.",
-      "Add the missing authorization to the appropriate role and regenerate the profile.",
-      "Re-assign the role to the user in SU01 if needed (profile regeneration usually suffices).",
-      "Test access again."
+      "Run SU53 immediately as the affected user (or ask them to run it) right after the error occurs — SU53 only stores the most recent failed check.",
+      "Note the missing authorization object, field name, and the value that was checked.",
+      "Open PFCG and locate the role(s) assigned to the user. Search for the missing authorization object on the Authorization tab.",
+      "Add or correct the field value in the role and regenerate the authorization profile.",
+      "Re-assign the role in SU01 if it was newly added — profile regeneration alone is usually sufficient for existing assignments.",
+      "Ask the user to re-test. If SU53 shows a new failure, repeat for each additional missing object."
     ],
     "linkedFlow": "flow-auth-issue"
   },
   {
+    "id": "err-user-locked",
+    "pattern": ["user locked", "account locked", "user cannot logon", "login failed", "logon failed", "locked user", "user is locked", "cannot login", "locked out"],
+    "title": "User Account Locked",
+    "category": "Security & Authorization",
+    "description": "A user cannot log in because their account is locked, either administratively or due to repeated failed logon attempts.",
+    "primaryTransaction": "SU01",
+    "relatedTransactions": ["SM21"],
+    "steps": [
+      "Go to SU01, enter the username, and open the record in Change mode.",
+      "On the Logon Data tab, check the lock status icon and the reason for the lock.",
+      "If locked by failed logon attempts, clear the lock and save.",
+      "If administratively locked by another admin, investigate the reason before unlocking.",
+      "Advise the user to use a new password after unlocking, especially if the lock was due to multiple failed attempts.",
+      "Check SM21 system log for the pattern of logon failures if this recurs."
+    ],
+    "linkedFlow": null
+  },
+  {
     "id": "err-transport-not-visible",
-    "pattern": ["transport imported but", "change not visible", "transport done but nothing changed", "customizing not showing", "transport imported change missing", "imported but not reflected"],
+    "pattern": ["transport imported but", "change not visible", "transport done but nothing changed", "customizing not showing", "transport imported change missing", "imported but not reflected", "transport not working"],
     "title": "Transport Imported but Change Not Visible",
     "category": "Transport Management",
     "description": "A transport was imported successfully but the expected changes are not visible in the target system.",
     "primaryTransaction": "STMS",
-    "relatedTransactions": ["SE09", "SE10", "SCC1"],
+    "relatedTransactions": ["SE09", "SE10"],
     "steps": [
-      "Check the import log in STMS — look for warnings or errors that may have caused partial import.",
-      "Verify the transport was imported to the correct client.",
-      "Check if the object was locked or overwritten by a later transport.",
-      "For Customizing transports, confirm the correct client was targeted.",
-      "If the import log shows success, check whether the change requires activation (e.g., ABAP programs need activation).",
-      "Re-import the transport if needed using STMS import queue."
+      "Open STMS and check the import log for the transport in the target system's import queue — a green traffic light does not mean error-free.",
+      "Verify the correct client was targeted (Customizing transports are client-specific).",
+      "Open the transport in SE09 and check the object list — confirm the expected object is included.",
+      "Check whether another transport imported after this one overwrote the same object.",
+      "If the import log shows errors or warnings, re-import the transport from the STMS queue.",
+      "For ABAP programs, check if the program needs to be activated after import."
     ],
     "linkedFlow": "flow-transport-issue"
   },
   {
     "id": "err-odata-not-found",
-    "pattern": ["service not found", "odata service not found", "404 gateway", "service not active", "gateway error", "odata 404", "service unavailable", "no service found", "odata not working"],
+    "pattern": ["service not found", "odata service not found", "404 gateway", "service not active", "gateway error", "odata 404", "service unavailable", "no service found", "odata not working", "odata error"],
     "title": "OData Service Not Found / Not Active",
     "category": "Connectivity & Services",
-    "description": "An OData service returns a 404 or is not accessible. Usually caused by the service not being activated or a cache issue.",
+    "description": "An OData service returns a 404 or is not accessible. Usually caused by the service not being activated on the Gateway or a stale metadata cache.",
     "primaryTransaction": "/IWFND/MAINT_SERVICE",
     "relatedTransactions": ["SICF", "/IWBEP/CACHE_CLEANUP", "/IWFND/CACHE_CLEANUP", "SEGW"],
     "steps": [
-      "Go to /IWFND/MAINT_SERVICE and search for the service. Check if it is active.",
-      "If not active, add and activate the service.",
-      "Check SICF to ensure the ICF node for the service is active.",
+      "Go to /IWFND/MAINT_SERVICE and search for the service by name. Check whether it is active.",
+      "If not found, add and activate the service, setting the correct system alias.",
+      "Check SICF to ensure the ICF node for the service path is active.",
       "Run /IWBEP/CACHE_CLEANUP on the backend to clear the metadata cache.",
       "Run /IWFND/CACHE_CLEANUP on the Gateway frontend.",
-      "Test the service URL again from a browser or Postman."
+      "Test the $metadata URL in a browser to confirm the service is responding."
     ],
     "linkedFlow": "flow-odata-issue"
   },
   {
     "id": "err-job-failed",
-    "pattern": ["job failed", "background job failed", "batch job error", "job aborted", "scheduled job not running", "job did not run", "job status failed", "job error"],
+    "pattern": ["job failed", "background job failed", "batch job error", "job aborted", "scheduled job not running", "job did not run", "job status failed", "job error", "batch failed"],
     "title": "Background Job Failed or Aborted",
-    "category": "System Administration",
+    "category": "Technical",
     "description": "A scheduled background job has failed, aborted, or did not run as expected.",
     "primaryTransaction": "SM37",
     "relatedTransactions": ["ST22", "SM21"],
     "steps": [
-      "Open SM37 and filter for the job by name, user, or date range. Check the job status.",
-      "Open the job log to see the last message before termination.",
-      "If the log shows an ABAP exception, go to ST22 to view the short dump.",
-      "Check SM21 system log for related system-level errors at the time of failure.",
-      "Identify whether the issue is a data problem, a missing authorization, or a program error.",
-      "Fix the root cause and reschedule the job."
+      "Open SM37 and filter by job name, user, or date range. Identify the failed job.",
+      "Open the job log to read the last message — it usually points to the root cause.",
+      "If the log references an ABAP exception or short dump, go to ST22 to find the dump.",
+      "Check SM21 for system-level errors at the time of failure.",
+      "Identify whether the issue is a data problem, missing authorization (check SU53), or program error.",
+      "Fix the root cause and reschedule or re-run the job."
     ],
     "linkedFlow": null
   },
   {
     "id": "err-abap-dump",
-    "pattern": ["abap dump", "short dump", "runtime error", "program crashed", "ABAP error", "system exception", "dump occurred", "abap exception", "ST22"],
+    "pattern": ["abap dump", "short dump", "runtime error", "program crashed", "ABAP error", "system exception", "dump occurred", "abap exception", "ST22", "program terminated"],
     "title": "ABAP Runtime Error / Short Dump",
-    "category": "System Administration",
-    "description": "An ABAP program has terminated with a runtime error (short dump). Common causes include type conflicts, null pointer access, or missing customizing.",
+    "category": "Technical",
+    "description": "An ABAP program terminated with a runtime error. Common causes include type conflicts, null object access, or missing configuration data.",
     "primaryTransaction": "ST22",
     "relatedTransactions": ["SM37", "SM21"],
     "steps": [
-      "Go to ST22 and find the dump by date, time, user, or program name.",
-      "Read the exception description and the active call stack.",
-      "Identify the program and line where the error occurred.",
-      "Check if it is a standard SAP program — if so, check OSS notes.",
-      "If it is a custom program, involve the developer to fix the code.",
-      "If the dump is authorization-related, check SU53."
+      "Go to ST22 and find the dump by date/time, user, or program name.",
+      "Read the exception description and the active call stack to identify where the error occurred.",
+      "Check whether it is a standard SAP program — if so, search SAP Notes (OSS) for the dump type.",
+      "If it is a custom program, involve the ABAP developer to fix the logic.",
+      "If the dump involves authorization checks, check SU53 for missing authorization objects."
     ],
     "linkedFlow": null
   },
   {
-    "id": "err-timesheet-missing",
-    "pattern": ["timesheet missing", "time entry missing", "timesheet not showing", "CATS entry gone", "time entry not saved", "timesheet entry missing", "time recording lost"],
-    "title": "Timesheet Entry Missing or Not Saved",
-    "category": "HR & Time Management",
-    "description": "A user's timesheet entry is not visible or appears to not have been saved in CATS.",
-    "primaryTransaction": "CAT2",
-    "relatedTransactions": ["CAT3", "SM37", "PA30"],
+    "id": "err-fi-document-not-posting",
+    "pattern": ["document not posting", "FI document error", "cannot post", "posting error", "balance not zero", "G/L account not found", "account not found", "posting blocked", "document blocked", "posting period closed"],
+    "title": "FI Document Not Posting",
+    "category": "Finance & Controlling",
+    "description": "A financial document cannot be posted. Common causes include closed posting periods, blocked G/L accounts, missing cost objects, or document balance errors.",
+    "primaryTransaction": "FB03",
+    "relatedTransactions": ["FS10N", "SM21", "SPRO"],
     "steps": [
-      "Open CAT2 and check the entry for the relevant person and date.",
-      "Verify the entry was saved and released — unsaved entries are lost.",
-      "Check if the entry was transferred to HR/Payroll via the transfer background job in SM37.",
-      "Use CAT3 to display the time sheet for the employee in display mode for confirmation.",
-      "If entries are systematically missing, check the CATS transfer job in SM37."
+      "Note the exact error message — it usually contains the G/L account, cost center, or period causing the issue.",
+      "If the error is 'posting period closed', the fiscal period is locked. Ask FI admins to open the period in OB52.",
+      "If the G/L account is blocked for posting, check the account master data and remove the posting block.",
+      "If a cost center or cost object is missing or invalid, verify the CO assignment on the line item.",
+      "If the document does not balance to zero, check all debit and credit line items.",
+      "For recurring errors, check SM21 for update task failures after posting."
+    ],
+    "linkedFlow": "flow-fi-document"
+  },
+  {
+    "id": "err-payment-run-not-picking-up",
+    "pattern": ["payment run not picking up", "vendor not paid", "payment proposal empty", "payment run missed", "invoice not in payment", "F110 empty", "no items selected", "payment not running"],
+    "title": "Payment Run Not Picking Up Open Items",
+    "category": "Finance & Controlling",
+    "description": "The F110 automatic payment run is not selecting expected vendor invoices. Usually caused by incorrect payment parameters, blocked invoices, or missing payment method configuration.",
+    "primaryTransaction": "F110",
+    "relatedTransactions": ["FBL1N", "FB03"],
+    "steps": [
+      "Open F110 and review the payment run parameters: company code, payment method, vendor selection, and due date.",
+      "Check FBL1N for the vendor's open items — confirm the invoice is open and not already cleared.",
+      "In FBL1N, check the payment block indicator on the invoice (a payment block prevents selection).",
+      "Confirm the payment method on the invoice matches what is configured in the payment run.",
+      "Check that the invoice due date falls within the next payment date range in F110.",
+      "Review the payment log from the last run for exclusion reasons."
+    ],
+    "linkedFlow": "flow-payment-run"
+  },
+  {
+    "id": "err-sales-order-blocked",
+    "pattern": ["sales order blocked", "order on hold", "delivery blocked", "billing blocked", "credit block", "credit limit exceeded", "order not processed", "sales order credit", "order blocked"],
+    "title": "Sales Order Blocked",
+    "category": "Logistics",
+    "description": "A sales order has a delivery block, billing block, or credit block that prevents it from being processed further.",
+    "primaryTransaction": "VA03",
+    "relatedTransactions": ["VA02", "VF03"],
+    "steps": [
+      "Open VA03 and navigate to the header. Check the Delivery Block and Billing Block fields.",
+      "If there is a credit block, check the customer's credit status — the credit manager must release it.",
+      "For a delivery block, understand the reason (e.g., incomplete data, manual hold) and remove it in VA02.",
+      "For a billing block on a line item, check item conditions and pricing — blocks often indicate a pricing issue.",
+      "After removing blocks, check whether downstream documents (delivery, invoice) can now be created."
+    ],
+    "linkedFlow": "flow-sales-order-blocked"
+  },
+  {
+    "id": "err-goods-receipt-mismatch",
+    "pattern": ["goods receipt mismatch", "GR quantity wrong", "GR not matching PO", "goods receipt error", "stock not updated", "GR not posted", "inventory mismatch", "goods receipt issue", "material document missing"],
+    "title": "Goods Receipt Quantity or Value Mismatch",
+    "category": "Logistics",
+    "description": "A goods receipt does not match the purchase order quantity or value, or stock levels are not updated as expected.",
+    "primaryTransaction": "MIGO",
+    "relatedTransactions": ["ME23N", "MB51", "MMBE"],
+    "steps": [
+      "Open MIGO and display the material document to see what was actually posted.",
+      "Compare the posted quantity and unit of measure against the PO line in ME23N.",
+      "Check MB51 for the material document history to see all movements for the material.",
+      "If a GR was posted with the wrong quantity, post a reversal in MIGO (movement type 102) and repost correctly.",
+      "Use MMBE to verify the current stock balance reflects the expected quantity.",
+      "If the GR is missing entirely, check SM37 for any automated GR jobs that may have failed."
+    ],
+    "linkedFlow": "flow-goods-receipt"
+  },
+  {
+    "id": "err-timesheet-missing",
+    "pattern": ["timesheet missing", "time entry missing", "timesheet not showing", "CATS entry gone", "time entry not saved", "timesheet entry missing", "time recording lost", "time not recorded"],
+    "title": "Timesheet Entry Missing or Not Saved",
+    "category": "HCM",
+    "description": "A user's CATS timesheet entry is not visible or appears to not have been saved.",
+    "primaryTransaction": "CAT2",
+    "relatedTransactions": ["PT50", "SM37"],
+    "steps": [
+      "Open CAT2 for the affected employee and date — check whether the entry exists and was saved and released.",
+      "Unsaved or unreleased entries will not transfer to HR. Look for entries in 'In Process' status.",
+      "Check SM37 for the CATS transfer job (RPTCAT** variants) to confirm it ran and completed successfully.",
+      "If the entry should have transferred to HR, use PT50 to check whether the absence/attendance is visible.",
+      "If entries are systematically missing, check the CATS transfer job schedule and last run log."
     ],
     "linkedFlow": null
   },
   {
     "id": "err-workflow-stuck",
-    "pattern": ["workflow stuck", "workflow not progressing", "approval pending", "workflow waiting", "workitem not processed", "workflow item stuck", "approval stuck"],
+    "pattern": ["workflow stuck", "workflow not progressing", "approval pending", "workflow waiting", "workitem not processed", "workflow item stuck", "approval stuck", "waiting for approval"],
     "title": "Workflow Stuck or Not Progressing",
     "category": "Workflow",
-    "description": "A workflow instance is not advancing, usually because a workitem has no agent or the responsible user cannot process it.",
+    "description": "A workflow instance is not advancing, usually because a workitem has no assigned agent, the responsible user cannot action it, or the workflow hit an error.",
     "primaryTransaction": "SWI5",
-    "relatedTransactions": ["SWIA", "SWI1", "SM21"],
+    "relatedTransactions": ["SWIA", "SM21"],
     "steps": [
-      "Go to SWI5 and analyze workitems by task or agent to find the stuck item.",
-      "Check whether an agent is assigned — if not, the workitem has no one to action it.",
-      "Use SWIA to execute or forward the workitem administratively.",
-      "Check the workflow log to understand where the process stalled.",
-      "If systematically recurring, review the role resolution for the task in the workflow definition."
+      "Go to SWI5 and search by task or status to find the stuck workitem.",
+      "Open the workitem and check whether an agent is assigned — no agent means no one is responsible.",
+      "Use SWIA to execute, forward, or complete the workitem administratively to unblock the process.",
+      "Check the workflow log (SWI1) to understand where and why the process stalled.",
+      "If no agent is assigned systematically, review the role resolution and org data in PPOME."
     ],
     "linkedFlow": null
   },
   {
-    "id": "err-user-locked",
-    "pattern": ["user locked", "account locked", "user cannot logon", "login failed", "logon failed", "locked user", "user is locked"],
-    "title": "User Account Locked",
-    "category": "Security & Authorization",
-    "description": "A user cannot log in because their account is locked, either administratively or due to failed logon attempts.",
-    "primaryTransaction": "SU01",
-    "relatedTransactions": ["SM21"],
+    "id": "err-rfc-connection-failed",
+    "pattern": ["RFC error", "RFC connection failed", "RFC not available", "remote call failed", "CALL FUNCTION error", "RFC destination", "cannot connect", "remote system unavailable", "RFC timeout"],
+    "title": "RFC Connection Failing",
+    "category": "Technical",
+    "description": "An RFC (Remote Function Call) to another SAP system or external service is failing. Causes include wrong connection parameters, the target system being unavailable, or authorization issues.",
+    "primaryTransaction": "SM59",
+    "relatedTransactions": ["SM21", "SICF"],
     "steps": [
-      "Go to SU01, enter the username, and click Display or Change.",
-      "On the Logon Data tab, check the lock status.",
-      "If locked by failed logon attempts, unlock the account.",
-      "If administratively locked by another admin, investigate the reason before unlocking.",
-      "Check SM21 system log for logon failure patterns if repeated lockouts occur.",
-      "Advise the user to reset their password after unlocking."
+      "Open SM59 and find the RFC destination by name. Use the Test Connection and Remote Login buttons to diagnose.",
+      "Check the hostname, system number, and logon credentials configured in the destination.",
+      "Test the network connection independently (ping / traceroute to the target host).",
+      "Check whether the target system is running — verify in the target system's SM21 or with the basis team.",
+      "For Trusted RFC connections, verify the trust settings are configured on both systems.",
+      "Check SM21 for RFC-related errors at the time of the failure."
+    ],
+    "linkedFlow": "flow-rfc-issue"
+  },
+  {
+    "id": "err-leave-quota-exceeded",
+    "pattern": ["leave quota exceeded", "quota exceeded", "absence quota", "no leave balance", "leave request rejected", "not enough quota", "leave balance zero", "leave entitlement", "quota not enough"],
+    "title": "Leave Quota Exceeded or Missing",
+    "category": "HCM",
+    "description": "An employee cannot book leave because their quota is exhausted, not yet accrued, or missing entirely.",
+    "primaryTransaction": "PT50",
+    "relatedTransactions": ["CAT2", "PT60"],
+    "steps": [
+      "Open PT50 for the employee and check the absence quota balance for the relevant absence type.",
+      "If the quota is zero or missing, check PT60 to see when time evaluation last ran and whether it accrued the quota.",
+      "Verify the employee's employment status and working schedule — incorrect schedules prevent accrual.",
+      "If quota should have been generated but was not, re-run time evaluation in PT60 for the employee.",
+      "For manual quota corrections, an HR admin can add or adjust quotas directly via PA30 (infotype 2006)."
     ],
     "linkedFlow": null
   }

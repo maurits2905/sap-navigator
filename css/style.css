@@ -471,6 +471,100 @@ main {
 
 .flow-link-btn:hover { background: var(--blue-light); }
 
+/* ========== SEE ALSO STRIP (Find best card) ========== */
+.see-also {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--gray-100);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.see-also-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--gray-400);
+  white-space: nowrap;
+  padding-top: 4px;
+}
+
+.see-also-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.seealso-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gray-700);
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.seealso-chip:hover {
+  background: var(--blue-light);
+  border-color: var(--blue-mid);
+  color: var(--blue-dark);
+}
+
+.seealso-chip-name {
+  font-family: var(--font);
+  font-size: 11.5px;
+  font-weight: 400;
+  color: var(--gray-500);
+}
+
+/* ========== RELATED FLOW HINT (Find best card) ========== */
+.related-flow-hint {
+  margin-top: 10px;
+}
+
+/* ========== MODULE FILTER BAR (Flows tab) ========== */
+.module-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.module-chip {
+  padding: 5px 14px;
+  font-size: 12.5px;
+  font-weight: 500;
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  border-radius: 20px;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all .15s;
+  font-family: var(--font);
+}
+
+.module-chip:hover {
+  border-color: var(--gray-400);
+  color: var(--gray-800);
+}
+
+.module-chip.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--white);
+  font-weight: 600;
+}
+
 /* ========== FLOWS TAB ========== */
 .flows-section { margin-bottom: 32px; }
 .flows-section-title {

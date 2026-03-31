@@ -4,6 +4,7 @@
     "title": "Troubleshoot User Authorization Issue",
     "description": "Step-by-step process to diagnose and resolve a user access or authorization problem.",
     "category": "Security & Authorization",
+    "module": "Security",
     "startingTransaction": "SU53",
     "tags": ["authorization", "access", "role", "PFCG", "SU53"],
     "steps": [
@@ -11,123 +12,37 @@
         "order": 1,
         "transaction": "SU53",
         "action": "Capture the failed authorization check",
-        "reason": "SU53 shows exactly which authorization object, field, and value was missing at the time of the last failed check. This is your primary diagnostic tool — always start here."
+        "reason": "SU53 shows exactly which authorization object, field, and value was missing at the time of the last failed check. Run it immediately after the error — it only stores the most recent failure."
       },
       {
         "order": 2,
         "transaction": "SU01",
         "action": "Review the user's assigned roles and profiles",
-        "reason": "Confirm which roles are currently assigned to the user and whether the expected role is present and active for the correct validity period."
+        "reason": "Confirm which roles are currently assigned to the user and that they are valid for the current date. A role with expired validity grants no access."
       },
       {
         "order": 3,
         "transaction": "PFCG",
         "action": "Open the relevant role and check the authorization data",
-        "reason": "In the Authorization tab of PFCG, search for the missing authorization object from SU53. Check if the field value is maintained correctly."
+        "reason": "On the Authorization tab in PFCG, locate the missing authorization object from SU53. Check whether the required field value is maintained and not restricted."
       },
       {
         "order": 4,
         "transaction": "PFCG",
         "action": "Add or correct the authorization and generate the profile",
-        "reason": "After editing the authorization, you must regenerate the authorization profile — otherwise the change has no effect on the user's actual access."
+        "reason": "After editing the authorization, you must regenerate the authorization profile — the change has no effect until the profile is rebuilt and saved."
       },
       {
         "order": 5,
         "transaction": "SU01",
         "action": "Re-assign or refresh the role on the user if needed",
-        "reason": "In most cases profile regeneration is enough. If the role was newly added, confirm the assignment is saved correctly in SU01."
+        "reason": "Profile regeneration is usually sufficient. If the role was just added, verify the assignment saved correctly and validity dates are set."
       },
       {
         "order": 6,
         "transaction": null,
         "action": "Ask the user to re-test the failing action",
-        "reason": "Confirm the fix resolved the issue. If SU53 still shows a failure, repeat the process for any additional missing authorization objects."
-      }
-    ]
-  },
-  {
-    "id": "flow-transport-issue",
-    "title": "Investigate Missing Transport Change",
-    "description": "How to investigate why a transport was imported successfully but the expected change is not visible in the target system.",
-    "category": "Transport Management",
-    "startingTransaction": "STMS",
-    "tags": ["transport", "import", "STMS", "SE09", "missing change"],
-    "steps": [
-      {
-        "order": 1,
-        "transaction": "STMS",
-        "action": "Check the transport import log in STMS",
-        "reason": "Navigate to the import queue for the target system and open the import log for the transport. Look for warnings or errors — a green status icon can be misleading if there were partial errors."
-      },
-      {
-        "order": 2,
-        "transaction": "STMS",
-        "action": "Verify the correct client and system were targeted",
-        "reason": "Transports are client-specific for Customizing requests. Confirm the import was done for the right client number in the right system."
-      },
-      {
-        "order": 3,
-        "transaction": "SE09",
-        "action": "Open the transport request and check its objects",
-        "reason": "In SE09, display the transport request and expand the object list. Confirm the expected object (table entry, program, etc.) is actually included in the request."
-      },
-      {
-        "order": 4,
-        "transaction": "SE09",
-        "action": "Check if another transport overwrote the object",
-        "reason": "If multiple transports contain the same object, the last one imported wins. Look at the transport history for the object to detect overwrite conflicts."
-      },
-      {
-        "order": 5,
-        "transaction": "STMS",
-        "action": "Re-import the transport if necessary",
-        "reason": "If the import had errors or the wrong client was used, re-import the transport from the STMS import queue using the correct settings."
-      }
-    ]
-  },
-  {
-    "id": "flow-odata-issue",
-    "title": "Fix an OData Service Not Found Error",
-    "description": "Diagnose and resolve a 404 or service unavailable error on an SAP Gateway OData service.",
-    "category": "Connectivity & Services",
-    "startingTransaction": "/IWFND/MAINT_SERVICE",
-    "tags": ["OData", "gateway", "service", "404", "SICF", "cache"],
-    "steps": [
-      {
-        "order": 1,
-        "transaction": "/IWFND/MAINT_SERVICE",
-        "action": "Search for the service and check its activation status",
-        "reason": "The most common cause is that the service is not activated on the Gateway. Search by service name and confirm it shows as active. If missing, add it."
-      },
-      {
-        "order": 2,
-        "transaction": "SICF",
-        "action": "Verify the ICF service node is active",
-        "reason": "Even if activated in /IWFND/MAINT_SERVICE, the underlying ICF HTTP service node must also be active in SICF. Navigate to the OData service path and check its status."
-      },
-      {
-        "order": 3,
-        "transaction": "/IWBEP/CACHE_CLEANUP",
-        "action": "Clear the backend metadata cache",
-        "reason": "Stale metadata cache on the backend can cause the Gateway to fail to retrieve service metadata. Run this on the backend system first."
-      },
-      {
-        "order": 4,
-        "transaction": "/IWFND/CACHE_CLEANUP",
-        "action": "Clear the Gateway frontend metadata cache",
-        "reason": "After clearing the backend cache, also clear the Gateway hub cache to ensure fresh metadata is served to consumers."
-      },
-      {
-        "order": 5,
-        "transaction": "SEGW",
-        "action": "Verify the service definition is complete and generated",
-        "reason": "If the service was recently modified, ensure the runtime artifacts were regenerated in SEGW using Generate → Runtime Objects. Without regeneration, changes are not active."
-      },
-      {
-        "order": 6,
-        "transaction": null,
-        "action": "Test the service URL in a browser or tool",
-        "reason": "Access the service document URL (e.g., /sap/opu/odata/svc/SERVICE_NAME/) to confirm it returns a valid XML metadata response."
+        "reason": "Confirm the fix worked. If SU53 shows a different failure, repeat the process — multiple missing authorizations may need to be resolved in sequence."
       }
     ]
   },
@@ -136,38 +51,127 @@
     "title": "Create and Set Up a New SAP User",
     "description": "Complete process for creating a new SAP user, assigning roles, and verifying access.",
     "category": "Security & Authorization",
+    "module": "Security",
     "startingTransaction": "SU01",
     "tags": ["new user", "create user", "SU01", "PFCG", "onboarding"],
     "steps": [
       {
         "order": 1,
         "transaction": "SU01",
-        "action": "Create the user with logon data and personal info",
-        "reason": "Set the username, first/last name, email, and initial password. Choose the correct user type (Dialog, Service, Communication, etc.) based on the use case."
+        "action": "Create the user record with logon data and personal info",
+        "reason": "Set username, first/last name, email, and initial password. Choose the correct user type — Dialog for interactive users, Service for technical/batch users, Communication for RFC users."
       },
       {
         "order": 2,
         "transaction": "SU01",
         "action": "Assign the required roles on the Roles tab",
-        "reason": "Roles carry the authorization profiles. Assign all roles the user needs and set appropriate validity dates. Avoid using manual profiles — use roles."
+        "reason": "Roles carry the authorization profiles. Assign all roles the user needs with correct validity dates. Always use roles rather than direct profile assignments."
       },
       {
         "order": 3,
         "transaction": "PFCG",
-        "action": "Confirm roles have up-to-date authorization profiles",
-        "reason": "If the roles show a yellow or red status, the authorization profile needs to be regenerated. A role without a current profile grants no authorizations."
+        "action": "Confirm all assigned roles have current authorization profiles",
+        "reason": "A yellow or red status indicator on a role means the profile is outdated or missing. Regenerate the profile so the authorizations are active."
       },
       {
         "order": 4,
         "transaction": null,
-        "action": "Ask the user to log on and test key transactions",
-        "reason": "Have the user attempt their key tasks. If they hit authorization errors, use SU53 immediately after the failure to capture the missing object."
+        "action": "Ask the user to log on and test their key transactions",
+        "reason": "Have the user attempt the main tasks they need to perform. If they hit authorization errors, use SU53 immediately after each failure to capture the missing object."
       },
       {
         "order": 5,
         "transaction": "SU53",
-        "action": "Review any access failures and adjust roles",
-        "reason": "Use SU53 output to fine-tune role authorizations in PFCG. Repeat until all required access is confirmed."
+        "action": "Review any access failures and adjust roles via PFCG",
+        "reason": "Use the SU53 output to fine-tune authorizations in PFCG. Repeat until all required access is confirmed working."
+      }
+    ]
+  },
+  {
+    "id": "flow-transport-issue",
+    "title": "Investigate Missing Transport Change",
+    "description": "How to investigate why a transport imported successfully but the expected change is not visible in the target system.",
+    "category": "Transport Management",
+    "module": "Transport",
+    "startingTransaction": "STMS",
+    "tags": ["transport", "import", "STMS", "SE09", "missing change"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "STMS",
+        "action": "Check the transport import log in STMS",
+        "reason": "Navigate to the target system's import queue and open the import log. Look carefully for warnings — a green status icon does not mean the import was error-free."
+      },
+      {
+        "order": 2,
+        "transaction": "STMS",
+        "action": "Verify the correct client and system were targeted",
+        "reason": "Customizing transports are client-specific. If the transport was imported to the wrong client, the change will not appear in the expected client."
+      },
+      {
+        "order": 3,
+        "transaction": "SE09",
+        "action": "Open the transport request and check its object list",
+        "reason": "Expand the transport and verify the expected object (table entry, program, config) is actually in the request. If it is missing, it was never added to the transport."
+      },
+      {
+        "order": 4,
+        "transaction": "SE09",
+        "action": "Check whether another transport overwrote the object",
+        "reason": "If multiple transports contain the same object, the last one imported wins. Check the import sequence for the object to detect overwrite conflicts."
+      },
+      {
+        "order": 5,
+        "transaction": "STMS",
+        "action": "Re-import the transport if necessary",
+        "reason": "If the import had errors or targeted the wrong client, re-import from the STMS import queue with the correct settings. Check the log again after re-import."
+      }
+    ]
+  },
+  {
+    "id": "flow-odata-issue",
+    "title": "Fix an OData Service Not Found Error",
+    "description": "Diagnose and resolve a 404 or service unavailable error on an SAP Gateway OData service.",
+    "category": "Connectivity & Services",
+    "module": "Connectivity",
+    "startingTransaction": "/IWFND/MAINT_SERVICE",
+    "tags": ["OData", "gateway", "service", "404", "SICF", "cache"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "/IWFND/MAINT_SERVICE",
+        "action": "Search for the service and check its activation status",
+        "reason": "The most common cause is the service not being activated on the Gateway. Search by service name and confirm it shows as active. If missing, add it from the backend."
+      },
+      {
+        "order": 2,
+        "transaction": "SICF",
+        "action": "Verify the ICF service node is active",
+        "reason": "Even if activated in /IWFND/MAINT_SERVICE, the underlying HTTP service node in SICF must also be active. Navigate to the OData service path and check its status."
+      },
+      {
+        "order": 3,
+        "transaction": "/IWBEP/CACHE_CLEANUP",
+        "action": "Clear the backend metadata cache",
+        "reason": "Stale backend cache causes the Gateway to fail when retrieving service metadata. Run this on the backend system first, before the frontend cache."
+      },
+      {
+        "order": 4,
+        "transaction": "/IWFND/CACHE_CLEANUP",
+        "action": "Clear the Gateway frontend metadata cache",
+        "reason": "After clearing the backend cache, clear the Gateway hub cache too. Both must be cleared for a complete refresh of the service metadata."
+      },
+      {
+        "order": 5,
+        "transaction": "SEGW",
+        "action": "Verify the service definition is complete and regenerated",
+        "reason": "If the service was recently modified, confirm runtime objects were regenerated in SEGW. Without regeneration, model changes are not active in the Gateway."
+      },
+      {
+        "order": 6,
+        "transaction": null,
+        "action": "Test the $metadata URL in a browser or Gateway Client",
+        "reason": "Access /sap/opu/odata/svc/SERVICE_NAME/$metadata to confirm a valid XML response. Use the Gateway Client in /IWFND/MAINT_SERVICE for a quick test without leaving SAP."
       }
     ]
   },
@@ -176,6 +180,7 @@
     "title": "Build and Activate a New OData Service",
     "description": "End-to-end flow for developing, registering, and testing a new OData service in SAP Gateway.",
     "category": "Connectivity & Services",
+    "module": "Connectivity",
     "startingTransaction": "SEGW",
     "tags": ["OData", "SEGW", "gateway", "development", "API", "new service"],
     "steps": [
@@ -183,37 +188,248 @@
         "order": 1,
         "transaction": "SEGW",
         "action": "Create or open the OData project and define the data model",
-        "reason": "Define entity types, properties, and associations that represent your data model. This is the foundation of the service."
+        "reason": "Define entity types, properties, and associations that model your data. The data model determines the shape of the OData $metadata and all entity sets."
       },
       {
         "order": 2,
         "transaction": "SEGW",
-        "action": "Implement the DPC (Data Provider Class) methods",
-        "reason": "The generated DPC_EXT class must be extended with ABAP code to handle reads, creates, updates, and deletes for each entity set."
+        "action": "Implement the DPC_EXT class methods for each entity set",
+        "reason": "The generated Data Provider Class extension (DPC_EXT) must be enhanced with ABAP code for each operation: GET_ENTITY, GET_ENTITYSET, CREATE_ENTITY, etc."
       },
       {
         "order": 3,
         "transaction": "SEGW",
         "action": "Generate runtime objects",
-        "reason": "Use Generate → Runtime Objects in SEGW to create the backend registration and activate the service definition. This must be done after any model change."
+        "reason": "Use Generate → Runtime Objects after any model change. This creates the backend registration artifacts. Without this step, the service definition has no runtime effect."
       },
       {
         "order": 4,
         "transaction": "/IWFND/MAINT_SERVICE",
         "action": "Register the service on the Gateway hub",
-        "reason": "Add the new service in /IWFND/MAINT_SERVICE to make it accessible via the Gateway URL. Set the system alias pointing to the backend."
+        "reason": "Add the service in /IWFND/MAINT_SERVICE to expose it on the Gateway URL. Set the system alias to point to the backend where the service was built."
       },
       {
         "order": 5,
         "transaction": "SICF",
         "action": "Activate the ICF node if not already active",
-        "reason": "Ensure the HTTP service node for the OData service path is active in SICF, otherwise the Gateway will return HTTP 403 or 404."
+        "reason": "Ensure the HTTP service path for the OData service is active. Without an active ICF node, the Gateway returns HTTP 403 or 404 regardless of service registration."
       },
       {
         "order": 6,
         "transaction": "/IWFND/MAINT_SERVICE",
-        "action": "Use the SAP Gateway Client to test the service",
-        "reason": "Within /IWFND/MAINT_SERVICE, use the Gateway Client button to call the service $metadata and entity sets directly, confirming correct responses before handing off."
+        "action": "Use the SAP Gateway Client to test $metadata and entity sets",
+        "reason": "The built-in Gateway Client lets you call service endpoints without leaving SAP. Test $metadata first, then each entity set to confirm correct data is returned."
+      }
+    ]
+  },
+  {
+    "id": "flow-fi-document",
+    "title": "Investigate a Missing or Incorrect FI Document",
+    "description": "How to find, review, and troubleshoot a financial accounting document that is missing, incorrect, or failed to post.",
+    "category": "Finance & Controlling",
+    "module": "Finance",
+    "startingTransaction": "FB03",
+    "tags": ["FI", "document", "posting", "GL", "finance", "accounting"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "FB03",
+        "action": "Display the document by number, company code, and fiscal year",
+        "reason": "If you have the document number, start here to see exactly what was posted — header data, line items, G/L accounts, and posting keys."
+      },
+      {
+        "order": 2,
+        "transaction": "FBL3N",
+        "action": "Search for the document via G/L account line items if number is unknown",
+        "reason": "FBL3N lets you filter by account, date, amount, and reference. Use it when you need to find a document without knowing its number."
+      },
+      {
+        "order": 3,
+        "transaction": "FS10N",
+        "action": "Check the G/L account balance to confirm whether the posting landed",
+        "reason": "If a posting should have hit a specific G/L account, verify the balance in FS10N. Period totals help confirm whether the document was included in the period."
+      },
+      {
+        "order": 4,
+        "transaction": null,
+        "action": "Check if the posting period is open for the document date",
+        "reason": "A closed posting period is one of the most common causes of posting failures. Ask an FI admin to check period settings in OB52 if the period appears closed."
+      },
+      {
+        "order": 5,
+        "transaction": "SM21",
+        "action": "Check the system log if the document appears to have failed silently",
+        "reason": "Update task failures can cause documents to appear posted in the UI but not actually written to the database. SM21 will show update failures for the relevant timeframe."
+      }
+    ]
+  },
+  {
+    "id": "flow-payment-run",
+    "title": "Diagnose a Failed or Empty Payment Run",
+    "description": "Step-by-step approach for investigating why the F110 automatic payment run did not select expected vendor invoices or produced no payments.",
+    "category": "Finance & Controlling",
+    "module": "Finance",
+    "startingTransaction": "F110",
+    "tags": ["payment run", "F110", "vendor payment", "AP", "automatic payment"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "F110",
+        "action": "Open the payment run and review the parameters",
+        "reason": "Check the company code, payment methods, vendor range, and next payment date. A single wrong parameter can exclude all expected vendors."
+      },
+      {
+        "order": 2,
+        "transaction": "F110",
+        "action": "Review the payment proposal log for exclusion reasons",
+        "reason": "The payment proposal displays each item considered and the reason it was excluded (payment block, no payment method, past due date, etc.)."
+      },
+      {
+        "order": 3,
+        "transaction": "FBL1N",
+        "action": "Check the vendor's open items directly",
+        "reason": "Confirm the invoice is open (not already cleared) and has no payment block indicator. FBL1N shows all open items with their attributes at a glance."
+      },
+      {
+        "order": 4,
+        "transaction": "FB03",
+        "action": "Display the invoice and check the payment method and terms",
+        "reason": "The payment method on the invoice must match the payment run configuration. Also check that the due date falls within the 'Next payment date' window in F110."
+      },
+      {
+        "order": 5,
+        "transaction": null,
+        "action": "Remove any payment blocks and re-run the proposal",
+        "reason": "Once you have identified the exclusion reason, correct it (remove block, fix payment method, open period) and re-run the payment proposal to confirm selection."
+      }
+    ]
+  },
+  {
+    "id": "flow-sales-order-blocked",
+    "title": "Investigate a Blocked Sales Order",
+    "description": "How to find and resolve delivery or billing blocks on a sales order that is stuck in processing.",
+    "category": "Logistics",
+    "module": "Logistics",
+    "startingTransaction": "VA03",
+    "tags": ["sales order", "block", "delivery block", "billing block", "credit block", "VA03", "VA02"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "VA03",
+        "action": "Display the sales order and check header-level blocks",
+        "reason": "On the Sales tab of the order header, look for Delivery Block and Billing Block fields. Note the block reason — this tells you the category of the problem."
+      },
+      {
+        "order": 2,
+        "transaction": "VA03",
+        "action": "Check the Status Overview tab for the full document flow",
+        "reason": "The status overview shows whether a delivery or invoice was already created, and where the process is stuck. This prevents duplicate actions."
+      },
+      {
+        "order": 3,
+        "transaction": null,
+        "action": "If credit-blocked, contact the credit manager for release",
+        "reason": "Credit blocks are set automatically when the customer exceeds their credit limit. Only a credit manager should release these — do not remove them without authorization."
+      },
+      {
+        "order": 4,
+        "transaction": "VA02",
+        "action": "Remove the delivery or billing block if authorized",
+        "reason": "In VA02, navigate to the header Sales tab and clear the block field. Save the order. The delivery or billing run can now pick up the order."
+      },
+      {
+        "order": 5,
+        "transaction": "VA03",
+        "action": "Verify the block is removed and the order status updated",
+        "reason": "Re-display VA03 to confirm the block is gone and the order status allows further processing. Trigger delivery creation if needed."
+      }
+    ]
+  },
+  {
+    "id": "flow-goods-receipt",
+    "title": "Process and Verify a Goods Receipt",
+    "description": "End-to-end steps for posting a goods receipt against a purchase order and verifying stock is updated correctly.",
+    "category": "Logistics",
+    "module": "Logistics",
+    "startingTransaction": "MIGO",
+    "tags": ["goods receipt", "GR", "MIGO", "stock", "PO", "materials management"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "ME23N",
+        "action": "Display the purchase order and confirm the expected delivery",
+        "reason": "Before posting the GR, verify the PO is open, quantities are correct, and no full GR has already been posted against the relevant line items."
+      },
+      {
+        "order": 2,
+        "transaction": "MIGO",
+        "action": "Post the goods receipt (movement type 101) referencing the PO number",
+        "reason": "In MIGO, select 'Goods Receipt' and 'Purchase Order'. Enter the PO number to load the expected items. Confirm quantities and storage location before posting."
+      },
+      {
+        "order": 3,
+        "transaction": "MIGO",
+        "action": "Note the material document number after posting",
+        "reason": "MIGO generates a material document number on successful posting. Record this for reference — it is needed for reversals or further investigation."
+      },
+      {
+        "order": 4,
+        "transaction": "MMBE",
+        "action": "Verify stock levels updated correctly",
+        "reason": "After posting, open MMBE for the material and plant to confirm unrestricted stock increased by the received quantity."
+      },
+      {
+        "order": 5,
+        "transaction": "ME23N",
+        "action": "Check the PO delivery status",
+        "reason": "Re-display the PO and check the Delivery Status on the item — it should now show as fully or partially delivered depending on the quantity received."
+      }
+    ]
+  },
+  {
+    "id": "flow-rfc-issue",
+    "title": "Diagnose an RFC Connection Failure",
+    "description": "Step-by-step approach to diagnosing and resolving a failing RFC destination between SAP systems.",
+    "category": "Technical",
+    "module": "Technical",
+    "startingTransaction": "SM59",
+    "tags": ["RFC", "connection", "SM59", "remote call", "technical"],
+    "steps": [
+      {
+        "order": 1,
+        "transaction": "SM59",
+        "action": "Open the RFC destination and run the Connection Test",
+        "reason": "SM59 shows all configured RFC destinations. The 'Test Connection' button confirms whether the network layer is reachable. A failure here points to a network or hostname issue."
+      },
+      {
+        "order": 2,
+        "transaction": "SM59",
+        "action": "Run Remote Login to test application-layer connectivity",
+        "reason": "If the connection test passes but Remote Login fails, the issue is with the logon credentials or the target system's availability — not the network."
+      },
+      {
+        "order": 3,
+        "transaction": null,
+        "action": "Verify the connection parameters: host, system number, client, and credentials",
+        "reason": "Even a small typo in the hostname or system number will prevent the connection. Confirm these values against the target system's instance profile."
+      },
+      {
+        "order": 4,
+        "transaction": "SM21",
+        "action": "Check the system log on both sides for RFC errors",
+        "reason": "SM21 on the calling and target systems often reveals the root cause — authentication failures, authorization issues, or system-level connectivity errors."
+      },
+      {
+        "order": 5,
+        "transaction": null,
+        "action": "Confirm the target system RFC user has the correct authorizations",
+        "reason": "RFC technical users need authorization object S_RFC. Check SU53 on the target system if the connection test produces an authorization error."
+      },
+      {
+        "order": 6,
+        "transaction": "SM59",
+        "action": "Save updated settings and re-test",
+        "reason": "After correcting parameters or permissions, save the RFC destination and run both tests again to confirm end-to-end connectivity is restored."
       }
     ]
   }
