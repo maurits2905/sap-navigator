@@ -127,6 +127,35 @@ main {
 .page-header h1 { font-size: 22px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
 .page-header p { font-size: 14px; color: var(--gray-500); }
 
+/* ========== PAGE STAT COUNTER ========== */
+.page-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-top: 10px;
+  background: var(--blue-light);
+  border: 1px solid var(--blue-mid);
+  border-radius: 20px;
+  padding: 5px 14px 5px 12px;
+}
+
+.page-stat-count {
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: -0.5px;
+  min-width: 2ch;
+  transition: color .15s;
+}
+
+.page-stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--blue-dark);
+  opacity: .75;
+}
+
 /* ========== SEARCH BOX ========== */
 .search-wrap {
   position: relative;

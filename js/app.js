@@ -762,6 +762,7 @@ function switchTab(tabId) {
   document.querySelectorAll('.tab-panel').forEach(panel => {
     panel.classList.toggle('active', panel.id === tabId);
   });
+  animateTabStat(tabId);
 }
 
 // ========== UTILS ==========
@@ -782,9 +783,44 @@ function debounce(fn, delay) {
   };
 }
 
+function countUp(el, target, duration) {
+  if (!el) return;
+  // Scale duration: fast for small numbers, slower for large ones
+  const ms = duration || Math.min(300 + Math.sqrt(target) * 18, 1600);
+  const start = performance.now();
+  function step(now) {
+    const t = Math.min((now - start) / ms, 1);
+    // Ease out cubic
+    const ease = 1 - Math.pow(1 - t, 3);
+    el.textContent = Math.round(ease * target).toLocaleString();
+    if (t < 1) requestAnimationFrame(step);
+    else el.textContent = target.toLocaleString();
+  }
+  el.textContent = '0';
+  requestAnimationFrame(step);
+}
+
+const STAT_MAP = {
+  'find':   { id: 'stat-transactions', source: () => transactions.length },
+  'tables': { id: 'stat-tables',       source: () => tables.length },
+  'decode': { id: 'stat-errors',       source: () => errors.length },
+  'flows':  { id: 'stat-flows',        source: () => flows.length }
+};
+
+function animateTabStat(tabId) {
+  const entry = STAT_MAP[tabId];
+  if (!entry) return;
+  countUp(document.getElementById(entry.id), entry.source());
+}
+
+function animateAllStats() {
+  for (const tabId of Object.keys(STAT_MAP)) animateTabStat(tabId);
+}
+
 // ========== INIT ==========
 async function init() {
   await loadData();
+  animateAllStats();
 
   // Tab switching
   document.querySelectorAll('.tab-btn').forEach(btn => {
