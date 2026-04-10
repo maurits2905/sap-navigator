@@ -251,25 +251,31 @@ function renderBestCard(tx, reason) {
   return `
   <div class="best-card">
     <div class="best-badge">★ Best Starting Point</div>
-    <div class="card-code">${escHtml(tx.code)}</div>
-    ${tx.report ? `<div class="card-report">Report: ${escHtml(tx.report)}</div>` : ''}
+    <div class="card-header">
+      <div class="card-code">${escHtml(tx.code)}</div>
+      ${tx.category ? `<span class="card-cat-badge">${escHtml(tx.category)}</span>` : ''}
+    </div>
     <div class="card-name">${escHtml(tx.name)}</div>
     <div class="card-desc">${escHtml(tx.description)}</div>
     <div class="card-reason">${escHtml(reason)}</div>
-    <div class="card-category">${escHtml(tx.category)}</div>
     ${extras}
+    ${tx.report ? `<div class="card-footer"><span class="card-report">Report: ${escHtml(tx.report)}</span></div>` : ''}
   </div>`;
 }
 
 function renderTxCard(tx, reason) {
+  const hasFooter = tx.report || tx.category;
   return `
   <div class="tx-card">
     <div class="card-code">${escHtml(tx.code)}</div>
-    ${tx.report ? `<div class="card-report">Report: ${escHtml(tx.report)}</div>` : ''}
     <div class="card-name">${escHtml(tx.name)}</div>
     <div class="card-desc">${escHtml(tx.description)}</div>
     ${reason ? `<div class="card-reason">${escHtml(reason)}</div>` : ''}
-    <div class="card-category" style="margin-top:8px">${escHtml(tx.category)}</div>
+    ${hasFooter ? `
+    <div class="card-footer">
+      <span class="card-report">${tx.report ? escHtml(tx.report) : ''}</span>
+      <span class="card-cat-tag">${tx.category ? escHtml(tx.category) : ''}</span>
+    </div>` : ''}
   </div>`;
 }
 
