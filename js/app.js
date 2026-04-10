@@ -252,6 +252,7 @@ function renderBestCard(tx, reason) {
   <div class="best-card">
     <div class="best-badge">★ Best Starting Point</div>
     <div class="card-code">${escHtml(tx.code)}</div>
+    ${tx.report ? `<div class="card-report">Report: ${escHtml(tx.report)}</div>` : ''}
     <div class="card-name">${escHtml(tx.name)}</div>
     <div class="card-desc">${escHtml(tx.description)}</div>
     <div class="card-reason">${escHtml(reason)}</div>
@@ -264,6 +265,7 @@ function renderTxCard(tx, reason) {
   return `
   <div class="tx-card">
     <div class="card-code">${escHtml(tx.code)}</div>
+    ${tx.report ? `<div class="card-report">Report: ${escHtml(tx.report)}</div>` : ''}
     <div class="card-name">${escHtml(tx.name)}</div>
     <div class="card-desc">${escHtml(tx.description)}</div>
     ${reason ? `<div class="card-reason">${escHtml(reason)}</div>` : ''}
