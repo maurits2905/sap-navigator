@@ -68,14 +68,18 @@ body[data-tab="flows"] {
   --tab-glow:  rgba(5,150,105,.13);
 }
 
-html { font-size: 16px; }
+html { font-size: 16px; height: 100%; }
 body {
   font-family: var(--font);
   background: var(--gray-50);
   color: var(--gray-800);
   line-height: 1.6;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
+
+main { flex: 1; }
 
 /* ========== HEADER ========== */
 header {
