@@ -4,16 +4,20 @@
 let transactions = [];
 let errors = [];
 let flows = [];
+let tables = [];
 let favorites = new Set(JSON.parse(localStorage.getItem('sap-nav-favorites') || '[]'));
 
 // ========== DATA LOADING ==========
 async function loadData() {
-  const [txRes, errRes, flowRes] = await Promise.all([
+  const [txRes, errRes, flowRes, tableRes] = await Promise.all([
     fetch('data/transactions.json'),
     fetch('data/errors.json'),
-    fetch('data/flows.json')
+    fetch('data/flows.json'),
+    fetch('data/tables.json')
   ]);
-  [transactions, errors, flows] = await Promise.all([txRes.json(), errRes.json(), flowRes.json()]);
+  [transactions, errors, flows, tables] = await Promise.all([
+    txRes.json(), errRes.json(), flowRes.json(), tableRes.json()
+  ]);
 }
 
 // ========== FAVORITES ==========
@@ -277,6 +281,201 @@ function renderTxCard(tx, reason) {
       <span class="card-cat-tag">${tx.category ? escHtml(tx.category) : ''}</span>
     </div>` : ''}
   </div>`;
+}
+
+// ========== TABLES TAB ==========
+function scoreTable(tbl, query) {
+  const q = query.toLowerCase().trim();
+  const words = q.split(/\s+/);
+  let score = 0;
+
+  const nameL = tbl.name.toLowerCase();
+  const titleL = tbl.title.toLowerCase();
+  const descL = tbl.description.toLowerCase();
+  const tagsL = tbl.tags.map(t => t.toLowerCase());
+  const moduleL = tbl.module.toLowerCase();
+
+  // Exact table name match
+  if (nameL === q) score += 120;
+  else if (nameL.startsWith(q)) score += 70;
+  else if (nameL.includes(q)) score += 40;
+
+  // Key field match
+  if (tbl.keyFields && tbl.keyFields.some(f => f.toLowerCase() === q)) score += 50;
+
+  // Tag matches
+  for (const tag of tagsL) {
+    if (q === tag) score += 55;
+    else if (q.includes(tag) && tag.length > 3) score += 28;
+    else if (tag.includes(q) && q.length > 3) score += 18;
+  }
+
+  // Word-level matches
+  for (const w of words) {
+    if (w.length < 2) continue;
+    if (nameL.includes(w)) score += 30;
+    if (titleL.includes(w)) score += 20;
+    if (descL.includes(w)) score += 6;
+    if (moduleL.includes(w)) score += 8;
+    for (const tag of tagsL) {
+      if (tag === w) score += 30;
+      else if (tag.includes(w) && w.length > 3) score += 12;
+    }
+  }
+
+  // Full query in title
+  if (titleL.includes(q)) score += 20;
+
+  return score;
+}
+
+function matchTableReason(tbl, query) {
+  const q = query.toLowerCase().trim();
+  const words = q.split(/\s+/).filter(w => w.length > 2);
+  const nameL = tbl.name.toLowerCase();
+  const tagsL = tbl.tags.map(t => t.toLowerCase());
+  const titleL = tbl.title.toLowerCase();
+
+  if (nameL === q) return `Exact match for table ${tbl.name}.`;
+  if (nameL.startsWith(q) || nameL.includes(q)) return `Table name "${tbl.name}" matches your query.`;
+
+  let bestTag = '';
+  for (const tag of tagsL) {
+    if (q.includes(tag) && tag.length > bestTag.length) bestTag = tag;
+  }
+  if (bestTag.length > 3) return `Phrase match on "${bestTag}" — ${tbl.name} covers this directly.`;
+
+  for (const w of words) {
+    for (const tag of tagsL) {
+      if (tag === w) return `Keyword "${w}" is a direct tag — ${tbl.name} in ${tbl.module}.`;
+    }
+  }
+
+  for (const w of words) {
+    if (titleL.includes(w)) return `Table title matches "${w}" — ${tbl.title}.`;
+  }
+
+  return `Relevant table in ${tbl.module} for "${query}".`;
+}
+
+function findTables(query) {
+  if (!query.trim()) return [];
+  return tables
+    .map(tbl => ({ tbl, score: scoreTable(tbl, query) }))
+    .filter(r => r.score > 0)
+    .sort((a, b) => b.score - a.score);
+}
+
+function quickTableFind(name) {
+  const tablesInput = document.getElementById('tables-input');
+  tablesInput.value = name;
+  renderTables(name);
+  switchTab('tables');
+  tablesInput.focus();
+}
+
+function renderBestTableCard(tbl, reason) {
+  const seeAlso = (tbl.seeAlso || []).slice(0, 6);
+  const keyFields = tbl.keyFields || [];
+
+  let keyHtml = '';
+  if (keyFields.length > 0) {
+    keyHtml = `<div class="table-key-fields">
+      <span class="table-key-label">Key fields:</span>
+      ${keyFields.map(f => `<span class="table-key-chip">${escHtml(f)}</span>`).join('')}
+    </div>`;
+  }
+
+  let seeAlsoHtml = '';
+  if (seeAlso.length > 0) {
+    seeAlsoHtml = `<div class="table-see-also">
+      <span class="table-see-also-label">See also:</span>
+      <div class="table-see-also-chips">
+        ${seeAlso.map(name =>
+          `<button class="table-chip" onclick="quickTableFind('${escHtml(name)}')">${escHtml(name)}</button>`
+        ).join('')}
+      </div>
+    </div>`;
+  }
+
+  return `
+  <div class="table-best-card">
+    <div class="best-badge">★ Best Match</div>
+    <div class="card-header">
+      <div class="table-name">${escHtml(tbl.name)}</div>
+      ${tbl.module ? `<span class="table-module-tag">${escHtml(tbl.module)}</span>` : ''}
+    </div>
+    <div class="table-title">${escHtml(tbl.title)}</div>
+    <div class="table-desc">${escHtml(tbl.description)}</div>
+    <div class="card-reason">${escHtml(reason)}</div>
+    ${keyHtml}
+    ${seeAlsoHtml}
+  </div>`;
+}
+
+function renderTableCard(tbl, reason) {
+  const keyFields = (tbl.keyFields || []).slice(0, 4);
+  return `
+  <div class="table-card">
+    <div class="card-header">
+      <div class="table-name" style="font-size:15px">${escHtml(tbl.name)}</div>
+      ${tbl.module ? `<span class="table-module-tag">${escHtml(tbl.module)}</span>` : ''}
+    </div>
+    <div class="table-title" style="font-size:13px">${escHtml(tbl.title)}</div>
+    <div class="table-desc" style="font-size:12.5px;margin-bottom:6px">${escHtml(tbl.description)}</div>
+    ${reason ? `<div class="card-reason" style="font-size:12px">${escHtml(reason)}</div>` : ''}
+    ${keyFields.length > 0 ? `
+    <div class="table-key-fields">
+      <span class="table-key-label">Keys:</span>
+      ${keyFields.map(f => `<span class="table-key-chip">${escHtml(f)}</span>`).join('')}
+    </div>` : ''}
+  </div>`;
+}
+
+function renderTables(query) {
+  const resultsEl = document.getElementById('tables-results');
+  const emptyEl = document.getElementById('tables-empty');
+  const clearBtn = document.getElementById('tables-clear');
+
+  clearBtn.classList.toggle('visible', query.length > 0);
+
+  if (!query.trim()) {
+    resultsEl.innerHTML = '';
+    emptyEl.classList.remove('hidden');
+    return;
+  }
+
+  const scored = findTables(query);
+  emptyEl.classList.add('hidden');
+
+  if (scored.length === 0) {
+    resultsEl.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🗂️</div>
+        <div class="empty-title">No tables found</div>
+        <div class="empty-text">Try a table name like BKPF, or describe the data — e.g. "vendor", "purchase order", "cost center".</div>
+      </div>`;
+    return;
+  }
+
+  const best = scored[0];
+  const related = scored.slice(1, 6);
+
+  let html = `<div class="results-section">
+    <div class="results-label">Best match</div>
+    ${renderBestTableCard(best.tbl, matchTableReason(best.tbl, query))}
+  </div>`;
+
+  if (related.length > 0) {
+    html += `<div class="results-section">
+      <div class="results-label">Related tables</div>
+      <div class="cards-grid">
+        ${related.map(r => renderTableCard(r.tbl, matchTableReason(r.tbl, query))).join('')}
+      </div>
+    </div>`;
+  }
+
+  resultsEl.innerHTML = html;
 }
 
 // ========== DECODE TAB ==========
@@ -612,6 +811,26 @@ async function init() {
     });
   });
 
+  // Tables tab
+  const tablesInput = document.getElementById('tables-input');
+  const tablesClear = document.getElementById('tables-clear');
+  const debouncedTables = debounce(q => renderTables(q), 180);
+
+  tablesInput.addEventListener('input', () => debouncedTables(tablesInput.value));
+  tablesClear.addEventListener('click', () => {
+    tablesInput.value = '';
+    renderTables('');
+    tablesInput.focus();
+  });
+
+  document.querySelectorAll('[data-tables]').forEach(chip => {
+    chip.addEventListener('click', () => {
+      tablesInput.value = chip.dataset.tables;
+      renderTables(chip.dataset.tables);
+      switchTab('tables');
+    });
+  });
+
   // Decode tab
   const decodeInput = document.getElementById('decode-input');
   const decodeClear = document.getElementById('decode-clear');
@@ -659,6 +878,7 @@ async function init() {
 
   // Initial empty states
   renderFind('');
+  renderTables('');
   renderDecode('');
 }
 

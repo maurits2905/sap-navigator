@@ -18,7 +18,8 @@
       <span class="logo-text">SAP <span>Navigator</span></span>
     </a>
     <nav class="tabs">
-      <button class="tab-btn active" data-tab="find">Find</button>
+      <button class="tab-btn active" data-tab="find">Transactions</button>
+      <button class="tab-btn" data-tab="tables">Tables</button>
       <button class="tab-btn" data-tab="decode">Decode</button>
       <button class="tab-btn" data-tab="flows">Flows</button>
     </nav>
@@ -65,6 +66,44 @@
       <div class="empty-icon">🧭</div>
       <div class="empty-title">What are you trying to do?</div>
       <div class="empty-text">Describe the task, or enter a transaction code directly.</div>
+    </div>
+  </div>
+
+  <!-- ===== TABLES TAB ===== -->
+  <div id="tables" class="tab-panel">
+    <div class="page-header">
+      <h1>SAP Standard Tables</h1>
+      <p>Look up standard SAP table names, their purpose, key fields, and related tables.</p>
+    </div>
+
+    <div class="search-wrap">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input id="tables-input" type="text" placeholder="e.g. BKPF, vendor master, purchase order, cost center…" autocomplete="off" spellcheck="false">
+      <button class="clear-btn" id="tables-clear" title="Clear search">✕</button>
+    </div>
+
+    <div class="suggestions">
+      <span>Try:</span>
+      <button class="suggestion-chip" data-tables="BKPF">BKPF</button>
+      <button class="suggestion-chip" data-tables="vendor master">vendor master</button>
+      <button class="suggestion-chip" data-tables="purchase order">purchase order</button>
+      <button class="suggestion-chip" data-tables="cost center">cost center</button>
+      <button class="suggestion-chip" data-tables="material master">material master</button>
+      <button class="suggestion-chip" data-tables="sales order">sales order</button>
+      <button class="suggestion-chip" data-tables="authorization">authorization</button>
+      <button class="suggestion-chip" data-tables="employee">employee</button>
+      <button class="suggestion-chip" data-tables="GL account">GL account</button>
+      <button class="suggestion-chip" data-tables="transport">transport</button>
+    </div>
+
+    <div id="tables-results" class="results"></div>
+
+    <div id="tables-empty" class="empty-state">
+      <div class="empty-icon">🗂️</div>
+      <div class="empty-title">Search for a table</div>
+      <div class="empty-text">Enter a table name or describe what you're looking for — e.g. "accounting document", "MARA", "user roles".</div>
     </div>
   </div>
 
