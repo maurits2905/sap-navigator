@@ -30,6 +30,44 @@
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
+/* ========== TAB THEME PALETTES ========== */
+/* Defaults (blue) active from first paint — overridden per tab via data-tab */
+:root {
+  --tab-color: #0066cc;
+  --tab-dark:  #004fa3;
+  --tab-mid:   #ccddf7;
+  --tab-light: #e8f0fb;
+  --tab-glow:  rgba(0,102,204,.12);
+}
+body[data-tab="find"] {
+  --tab-color: #0066cc;
+  --tab-dark:  #004fa3;
+  --tab-mid:   #ccddf7;
+  --tab-light: #e8f0fb;
+  --tab-glow:  rgba(0,102,204,.12);
+}
+body[data-tab="tables"] {
+  --tab-color: #0694a2;
+  --tab-dark:  #0e7490;
+  --tab-mid:   #a5f3fc;
+  --tab-light: #ecfeff;
+  --tab-glow:  rgba(6,148,162,.15);
+}
+body[data-tab="decode"] {
+  --tab-color: #d97706;
+  --tab-dark:  #92400e;
+  --tab-mid:   #fde68a;
+  --tab-light: #fef3c7;
+  --tab-glow:  rgba(217,119,6,.13);
+}
+body[data-tab="flows"] {
+  --tab-color: #059669;
+  --tab-dark:  #065f46;
+  --tab-mid:   #a7f3d0;
+  --tab-light: #ecfdf5;
+  --tab-glow:  rgba(5,150,105,.13);
+}
+
 html { font-size: 16px; }
 body {
   font-family: var(--font);
@@ -1124,6 +1162,121 @@ footer {
 
 .footer-link:hover {
   text-decoration: underline;
+}
+
+/* ========== TAB COLOR OVERRIDES ========== */
+/* Single cascade block — uses var(--tab-color) family set on <body data-tab>.
+   These rules come after the base styles and win by source order. */
+
+/* Page header: colored left accent + gradient tint */
+.page-header {
+  background: linear-gradient(to right, var(--tab-light), transparent 70%);
+  border-left: 4px solid var(--tab-color);
+  padding: 18px 0 18px 20px;
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  margin-bottom: 28px;
+  transition: background .3s, border-color .3s;
+}
+
+/* Active tab button */
+.tab-btn.active {
+  color: var(--tab-color);
+  background: var(--tab-light);
+}
+
+/* Stat counter pill */
+.page-stat {
+  background: var(--tab-light);
+  border-color: var(--tab-mid);
+  transition: background .3s, border-color .3s;
+}
+.page-stat-count {
+  color: var(--tab-color);
+  transition: color .3s;
+}
+.page-stat-label { color: var(--tab-dark); }
+
+/* Search focus ring */
+.search-wrap input:focus {
+  border-color: var(--tab-color);
+  box-shadow: 0 0 0 3px var(--tab-glow);
+}
+
+/* Suggestion chips */
+.suggestion-chip:hover {
+  background: var(--tab-light);
+  border-color: var(--tab-mid);
+  color: var(--tab-dark);
+}
+
+/* Transaction code / Table name — top-of-card identifiers */
+.card-code    { color: var(--tab-color); }
+.table-name   { color: var(--tab-color); }
+
+/* Best result cards */
+.best-card {
+  border-color: var(--tab-color);
+  transition: border-color .3s;
+}
+.best-card::before {
+  background: linear-gradient(90deg, var(--tab-color), var(--tab-mid));
+}
+.table-best-card {
+  border-color: var(--tab-color);
+  transition: border-color .3s;
+}
+.table-best-card::before {
+  background: linear-gradient(90deg, var(--tab-color), var(--tab-mid));
+}
+
+/* Best badge */
+.best-badge {
+  background: var(--tab-light);
+  color: var(--tab-dark);
+  transition: background .3s, color .3s;
+}
+
+/* Match reason strip (was hardcoded green) */
+.card-reason {
+  color: var(--tab-dark);
+  background: var(--tab-light);
+  border-left-color: var(--tab-color);
+  transition: color .3s, background .3s, border-left-color .3s;
+}
+
+/* Result card hover borders */
+.tx-card:hover    { border-color: var(--tab-mid); }
+.table-card:hover { border-color: var(--tab-mid); }
+.flow-card:hover  { border-color: var(--tab-mid); }
+
+/* See-also + table chips */
+.seealso-chip:hover,
+.table-chip:hover {
+  background: var(--tab-light);
+  border-color: var(--tab-mid);
+  color: var(--tab-dark);
+}
+
+/* Flow link button */
+.flow-link-btn {
+  color: var(--tab-color);
+  border-color: var(--tab-mid);
+}
+.flow-link-btn:hover { background: var(--tab-light); }
+
+/* Decode "Start here" strip — amber makes great semantic sense */
+.decode-primary {
+  background: var(--tab-light);
+  border-color: var(--tab-mid);
+  transition: background .3s, border-color .3s;
+}
+.decode-primary-label { color: var(--tab-dark); }
+.decode-primary-code  { color: var(--tab-color); }
+
+/* Flows module filter chips */
+.module-chip.active {
+  background: var(--tab-color);
+  border-color: var(--tab-color);
 }
 
 /* ========== RESPONSIVE ========== */
