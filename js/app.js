@@ -1036,6 +1036,13 @@ async function init() {
   });
   document.getElementById('modal-close-btn').addEventListener('click', closeModal);
 
+  // Theme toggle
+  document.getElementById('theme-btn').addEventListener('click', () => {
+    document.documentElement.classList.toggle('dark');
+    localStorage.setItem('sap-nav-theme',
+      document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+  });
+
   // About modal
   const aboutOverlay = document.getElementById('about-overlay');
   document.getElementById('about-btn').addEventListener('click', () => {

@@ -1478,6 +1478,130 @@ footer {
   border-color: var(--tab-color);
 }
 
+/* ========== DARK MODE ========== */
+html.dark {
+  color-scheme: dark;
+  /* Surface scale — light grays flip to dark */
+  --white:    #181b25;
+  --gray-50:  #0f1117;
+  --gray-100: #1a1d27;
+  --gray-200: #252935;
+  --gray-300: #2e3348;
+  --gray-400: #4a5068;
+  --gray-500: #7c8599;
+  --gray-600: #9ea8bc;
+  --gray-700: #b8c3d8;
+  --gray-800: #d4dced;
+  --gray-900: #eef2ff;
+  /* Blue palette */
+  --blue:       #4da6ff;
+  --blue-dark:  #93c5fd;
+  --blue-light: #111e33;
+  --blue-mid:   #1c3456;
+  /* Green / amber */
+  --green:       #34d399;
+  --green-light: #052418;
+  --amber:       #fbbf24;
+  --amber-light: #261a00;
+  /* Heavier shadows on dark surfaces */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.5),  0 1px 2px rgba(0,0,0,.4);
+  --shadow:    0 4px 12px rgba(0,0,0,.5), 0 2px 4px rgba(0,0,0,.4);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,.6), 0 4px 8px rgba(0,0,0,.4);
+}
+
+/* Dark tab palettes — brighter accents, dark-tinted surfaces */
+html.dark body[data-tab="find"] {
+  --tab-color: #4da6ff;
+  --tab-dark:  #93c5fd;
+  --tab-mid:   #1c3456;
+  --tab-light: #111e33;
+  --tab-glow:  rgba(77,166,255,.22);
+}
+html.dark body[data-tab="tables"] {
+  --tab-color: #22d3ee;
+  --tab-dark:  #67e8f9;
+  --tab-mid:   #0c3a40;
+  --tab-light: #082830;
+  --tab-glow:  rgba(34,211,238,.2);
+}
+html.dark body[data-tab="decode"] {
+  --tab-color: #fbbf24;
+  --tab-dark:  #fcd34d;
+  --tab-mid:   #3d2a00;
+  --tab-light: #261a00;
+  --tab-glow:  rgba(251,191,36,.2);
+}
+html.dark body[data-tab="flows"] {
+  --tab-color: #34d399;
+  --tab-dark:  #6ee7b7;
+  --tab-mid:   #08362a;
+  --tab-light: #052418;
+  --tab-glow:  rgba(52,211,153,.2);
+}
+
+/* Category badges — dark-tinted versions */
+html.dark .category-badge.security     { background: #2d0f0f; color: #fca5a5; }
+html.dark .category-badge.transport    { background: #2d1f00; color: #fcd34d; }
+html.dark .category-badge.connectivity { background: #0f1f3d; color: #93c5fd; }
+html.dark .category-badge.system       { background: #1e0f33; color: #d8b4fe; }
+html.dark .category-badge.hr           { background: #0a2010; color: #86efac; }
+html.dark .category-badge.workflow     { background: #082030; color: #7dd3fc; }
+html.dark .category-badge.materials    { background: #2d1008; color: #fdba74; }
+html.dark .category-badge.controlling  { background: #072010; color: #86efac; }
+
+/* About modal icons */
+html.dark .about-icon--find   { background: #111e33; color: #4da6ff; }
+html.dark .about-icon--tables { background: #082830; color: #22d3ee; }
+html.dark .about-icon--decode { background: #261a00; color: #fbbf24; }
+html.dark .about-icon--flows  { background: #052418; color: #34d399; }
+
+/* Modal step numbers */
+html.dark .step-num { background: var(--gray-300); color: var(--gray-600); }
+
+/* Scrollbar tint */
+html.dark ::-webkit-scrollbar { width: 8px; height: 8px; }
+html.dark ::-webkit-scrollbar-track { background: var(--gray-100); }
+html.dark ::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 4px; }
+
+/* ========== THEME TOGGLE BUTTON ========== */
+.theme-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gray-300);
+  background: none;
+  color: var(--gray-500);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color .15s, color .15s, background .15s;
+  padding: 0;
+}
+
+.theme-btn:hover {
+  border-color: var(--tab-color);
+  color: var(--tab-color);
+  background: var(--tab-light);
+}
+
+.theme-btn svg { width: 14px; height: 14px; }
+
+/* Show moon in light, sun in dark */
+.theme-btn .icon-sun { display: none; }
+html.dark .theme-btn .icon-moon { display: none; }
+html.dark .theme-btn .icon-sun  { display: block; }
+
+/* Smooth colour transitions when toggling */
+body {
+  transition: background-color .25s, color .25s;
+}
+header, .tab-hero, .best-card, .table-best-card, .tx-card, .table-card,
+.flow-card, .decode-card, .modal, .search-wrap input {
+  transition: background-color .25s, border-color .25s, color .25s;
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 600px) {
   .header-inner { gap: 16px; height: 56px; }
