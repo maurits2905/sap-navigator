@@ -617,6 +617,62 @@ function renderDecode(query) {
 
 // ========== FLOWS TAB ==========
 let activeModule = '';
+let activeFlowSearch = '';
+
+function scoreFlow(flow, query) {
+  const q = query.toLowerCase().trim();
+  const words = q.split(/\s+/);
+  let score = 0;
+
+  const titleL = flow.title.toLowerCase();
+  const descL = flow.description.toLowerCase();
+  const moduleL = (flow.module || flow.category || '').toLowerCase();
+  const tagsL = (flow.tags || []).map(t => t.toLowerCase());
+  const txL = (flow.startingTransaction || '').toLowerCase();
+
+  // Exact title match
+  if (titleL === q) score += 100;
+  else if (titleL.includes(q)) score += 50;
+
+  // Transaction code match
+  if (txL === q) score += 80;
+  else if (txL.includes(q)) score += 35;
+
+  // Tag matches
+  for (const tag of tagsL) {
+    if (q === tag) score += 55;
+    else if (q.includes(tag) && tag.length > 3) score += 28;
+    else if (tag.includes(q) && q.length > 3) score += 18;
+  }
+
+  // Word-level matches
+  for (const w of words) {
+    if (w.length < 2) continue;
+    if (titleL.includes(w)) score += 22;
+    if (descL.includes(w)) score += 7;
+    if (moduleL.includes(w)) score += 10;
+    if (txL.includes(w)) score += 15;
+    for (const tag of tagsL) {
+      if (tag === w) score += 30;
+      else if (tag.includes(w) && w.length > 3) score += 12;
+    }
+  }
+
+  // Step action/reason text
+  if (flow.steps) {
+    for (const step of flow.steps) {
+      const actionL = (step.action || '').toLowerCase();
+      const reasonL = (step.reason || '').toLowerCase();
+      for (const w of words) {
+        if (w.length < 3) continue;
+        if (actionL.includes(w)) score += 4;
+        if (reasonL.includes(w)) score += 2;
+      }
+    }
+  }
+
+  return score;
+}
 
 // Module display order
 const MODULE_ORDER = ['Security', 'Transport', 'Finance', 'Logistics', 'HCM', 'Connectivity', 'Technical', 'Workflow'];
@@ -631,17 +687,46 @@ function setModuleFilter(mod) {
 }
 
 function renderFlows() {
+  const flowsInput = document.getElementById('flows-input');
+  if (flowsInput) flowsInput.closest('.search-wrap').classList.remove('searching');
+
   const container = document.getElementById('flows-container');
   if (!container) return;
 
-  // Build module list in defined order, then append any unlisted ones
+  const clearBtn = document.getElementById('flows-clear');
+  if (clearBtn) clearBtn.classList.toggle('visible', activeFlowSearch.length > 0);
+
+  // Search mode — flat relevance-sorted list, no module filter
+  if (activeFlowSearch.trim()) {
+    const scored = flows
+      .map(f => ({ f, score: scoreFlow(f, activeFlowSearch) }))
+      .filter(r => r.score > 0)
+      .sort((a, b) => b.score - a.score);
+
+    if (scored.length === 0) {
+      container.innerHTML = `<div class="tab-empty">
+        <div class="tab-empty-icon">${TAB_ICON.flows}</div>
+        <div class="tab-empty-title">No flows found</div>
+        <div class="tab-empty-desc">Try a different keyword — e.g. "user access", "payment run", "goods receipt".</div>
+      </div>`;
+    } else {
+      container.innerHTML = `<div class="flows-section">
+        <div class="flows-section-title">${scored.length} result${scored.length !== 1 ? 's' : ''}</div>
+        <div class="flows-grid">
+          ${scored.map(r => renderFlowCard(r.f, favorites.has(r.f.id))).join('')}
+        </div>
+      </div>`;
+    }
+    return;
+  }
+
+  // Browse mode — module filter + grouped layout
   const allModules = [...new Set(flows.map(getFlowModule))];
   const orderedModules = [
     ...MODULE_ORDER.filter(m => allModules.includes(m)),
     ...allModules.filter(m => !MODULE_ORDER.includes(m)).sort()
   ];
 
-  // Filter bar
   const filterHtml = `<div class="module-filters">
     <button class="module-chip ${activeModule === '' ? 'active' : ''}" onclick="setModuleFilter('')">All</button>
     ${orderedModules.map(m =>
@@ -665,7 +750,6 @@ function renderFlows() {
   }
 
   if (activeModule) {
-    // Single module selected — flat list, no sub-grouping
     if (otherFlows.length > 0) {
       html += `<div class="flows-section">
         <div class="flows-section-title">${escHtml(activeModule)}</div>
@@ -675,7 +759,6 @@ function renderFlows() {
       </div>`;
     }
   } else {
-    // All modules — group by module
     const grouped = {};
     for (const f of otherFlows) {
       const m = getFlowModule(f);
@@ -926,6 +1009,24 @@ async function init() {
   });
 
   // Flows tab
+  const flowsInput = document.getElementById('flows-input');
+  const flowsClear = document.getElementById('flows-clear');
+  const debouncedFlows = debounce(q => {
+    activeFlowSearch = q;
+    renderFlows();
+  }, 180);
+
+  flowsInput.addEventListener('input', () => {
+    if (flowsInput.value.trim()) flowsInput.closest('.search-wrap').classList.add('searching');
+    debouncedFlows(flowsInput.value);
+  });
+  flowsClear.addEventListener('click', () => {
+    flowsInput.value = '';
+    activeFlowSearch = '';
+    renderFlows();
+    flowsInput.focus();
+  });
+
   renderFlows();
 
   // Flow detail modal

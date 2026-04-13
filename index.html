@@ -206,7 +206,7 @@
 
   <!-- ===== FLOWS TAB ===== -->
   <div id="flows" class="tab-panel">
-    <div class="tab-hero tab-hero--browse">
+    <div class="tab-hero">
       <div class="tab-hero-header">
         <div class="tab-icon-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
@@ -225,6 +225,14 @@
           <div class="tab-stat-num" id="stat-flows">–</div>
           <div class="tab-stat-lbl">guided flows</div>
         </div>
+      </div>
+      <div class="search-wrap">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input id="flows-input" type="text" placeholder="e.g. user authorization, payment run, goods receipt, transport…" autocomplete="off" spellcheck="false">
+        <span class="search-spinner"></span>
+        <button class="clear-btn" id="flows-clear" title="Clear">✕</button>
       </div>
     </div>
     <div id="flows-container"></div>
