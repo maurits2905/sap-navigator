@@ -1068,6 +1068,52 @@ main {
 .empty-title { font-size: 15px; font-weight: 600; color: var(--gray-500); margin-bottom: 6px; }
 .empty-text { font-size: 13.5px; }
 
+/* ========== LOADING ANIMATIONS ========== */
+
+/* Initial app load — hero icon spins until data is ready */
+@keyframes icon-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes loading-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .35; }
+}
+
+body.app-loading .tab-icon-wrap svg {
+  animation: icon-spin 1.4s linear infinite;
+  transform-origin: center;
+}
+
+body.app-loading .tab-stat-num {
+  animation: loading-pulse 1.4s ease-in-out infinite;
+}
+
+/* Search debounce spinner — replaces the search icon while waiting */
+@keyframes spinner-spin {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to   { transform: translateY(-50%) rotate(360deg); }
+}
+
+.search-spinner {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 2px solid var(--tab-mid);
+  border-top-color: var(--tab-color);
+  animation: spinner-spin .6s linear infinite;
+  display: none;
+  pointer-events: none;
+  transition: border-color .3s;
+}
+
+.search-wrap.searching .search-icon   { visibility: hidden; }
+.search-wrap.searching .search-spinner { display: block; }
+
 /* ========== UTILITY ========== */
 .hidden { display: none !important; }
 

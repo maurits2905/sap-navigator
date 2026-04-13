@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body data-tab="find">
+<body data-tab="find" class="app-loading">
 
 <!-- ========== HEADER ========== -->
 <header>
@@ -58,6 +58,7 @@
           <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
         <input id="find-input" type="text" placeholder="e.g. display purchase order, check cost center, post GL document…" autocomplete="off" spellcheck="false">
+        <span class="search-spinner"></span>
         <button class="clear-btn" id="find-clear" title="Clear">✕</button>
       </div>
     </div>
@@ -117,6 +118,7 @@
           <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
         <input id="tables-input" type="text" placeholder="e.g. BKPF, vendor master, purchase order, cost center…" autocomplete="off" spellcheck="false">
+        <span class="search-spinner"></span>
         <button class="clear-btn" id="tables-clear" title="Clear">✕</button>
       </div>
     </div>
@@ -172,6 +174,7 @@
           <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
         <input id="decode-input" type="text" placeholder="e.g. user has no access, payment run missing invoices, service not found…" autocomplete="off" spellcheck="false">
+        <span class="search-spinner"></span>
         <button class="clear-btn" id="decode-clear" title="Clear">✕</button>
       </div>
     </div>

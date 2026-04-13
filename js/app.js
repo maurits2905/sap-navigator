@@ -176,6 +176,7 @@ function findTransactions(query) {
 
 // ========== FIND TAB ==========
 function renderFind(query) {
+  document.getElementById('find-input').closest('.search-wrap').classList.remove('searching');
   const resultsEl = document.getElementById('find-results');
   const emptyEl = document.getElementById('find-empty');
   const clearBtn = document.getElementById('find-clear');
@@ -441,6 +442,7 @@ function renderTableCard(tbl, reason) {
 }
 
 function renderTables(query) {
+  document.getElementById('tables-input').closest('.search-wrap').classList.remove('searching');
   const resultsEl = document.getElementById('tables-results');
   const emptyEl = document.getElementById('tables-empty');
   const clearBtn = document.getElementById('tables-clear');
@@ -525,6 +527,7 @@ function categoryClass(cat) {
 }
 
 function renderDecode(query) {
+  document.getElementById('decode-input').closest('.search-wrap').classList.remove('searching');
   const resultsEl = document.getElementById('decode-results');
   const emptyEl = document.getElementById('decode-empty');
   const clearBtn = document.getElementById('decode-clear');
@@ -840,6 +843,7 @@ function animateAllStats() {
 // ========== INIT ==========
 async function init() {
   await loadData();
+  document.body.classList.remove('app-loading');
   animateAllStats();
 
   // Tab switching
@@ -857,7 +861,10 @@ async function init() {
   const findClear = document.getElementById('find-clear');
   const debouncedFind = debounce(q => renderFind(q), 180);
 
-  findInput.addEventListener('input', () => debouncedFind(findInput.value));
+  findInput.addEventListener('input', () => {
+    if (findInput.value.trim()) findInput.closest('.search-wrap').classList.add('searching');
+    debouncedFind(findInput.value);
+  });
   findClear.addEventListener('click', () => {
     findInput.value = '';
     renderFind('');
@@ -877,7 +884,10 @@ async function init() {
   const tablesClear = document.getElementById('tables-clear');
   const debouncedTables = debounce(q => renderTables(q), 180);
 
-  tablesInput.addEventListener('input', () => debouncedTables(tablesInput.value));
+  tablesInput.addEventListener('input', () => {
+    if (tablesInput.value.trim()) tablesInput.closest('.search-wrap').classList.add('searching');
+    debouncedTables(tablesInput.value);
+  });
   tablesClear.addEventListener('click', () => {
     tablesInput.value = '';
     renderTables('');
@@ -897,7 +907,10 @@ async function init() {
   const decodeClear = document.getElementById('decode-clear');
   const debouncedDecode = debounce(q => renderDecode(q), 180);
 
-  decodeInput.addEventListener('input', () => debouncedDecode(decodeInput.value));
+  decodeInput.addEventListener('input', () => {
+    if (decodeInput.value.trim()) decodeInput.closest('.search-wrap').classList.add('searching');
+    debouncedDecode(decodeInput.value);
+  });
   decodeClear.addEventListener('click', () => {
     decodeInput.value = '';
     renderDecode('');
