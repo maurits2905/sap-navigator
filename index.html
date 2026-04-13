@@ -31,70 +31,98 @@
 <!-- ========== MAIN ========== -->
 <main>
 
-  <!-- ===== FIND TAB ===== -->
+  <!-- ===== TRANSACTIONS TAB ===== -->
   <div id="find" class="tab-panel active">
-    <div class="page-header">
-      <h1>Find a Transaction</h1>
-      <p>Type a task, area, or transaction code — get the right place to start.</p>
-      <div class="page-stat">
-        <span class="page-stat-count" id="stat-transactions">–</span>
-        <span class="page-stat-label">transactions indexed</span>
+    <div class="tab-hero">
+      <div class="tab-hero-header">
+        <div class="tab-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="10.5" cy="10.5" r="6.5"/>
+            <line x1="15.5" y1="15.5" x2="20" y2="20"/>
+            <line x1="7.5" y1="9" x2="13.5" y2="9"/>
+            <line x1="7.5" y1="11.5" x2="13.5" y2="11.5"/>
+            <line x1="7.5" y1="14" x2="11" y2="14"/>
+          </svg>
+        </div>
+        <div class="tab-hero-copy">
+          <h1>Find a Transaction</h1>
+          <p>Describe a task or enter a code — get the right place to start.</p>
+        </div>
+        <div class="tab-hero-stat">
+          <div class="tab-stat-num" id="stat-transactions">–</div>
+          <div class="tab-stat-lbl">transactions</div>
+        </div>
+      </div>
+      <div class="search-wrap">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input id="find-input" type="text" placeholder="e.g. display purchase order, check cost center, post GL document…" autocomplete="off" spellcheck="false">
+        <button class="clear-btn" id="find-clear" title="Clear">✕</button>
       </div>
     </div>
 
-    <div class="search-wrap">
-      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      <input id="find-input" type="text" placeholder="e.g. display purchase order, check cost center, post GL document…" autocomplete="off" spellcheck="false">
-      <button class="clear-btn" id="find-clear" title="Clear search">✕</button>
-    </div>
-
-    <div class="suggestions">
-      <span>Try:</span>
+    <div class="chip-row">
+      <span class="chip-row-label">Try</span>
       <button class="suggestion-chip" data-find="display purchase order">display purchase order</button>
       <button class="suggestion-chip" data-find="user authorization">user authorization</button>
       <button class="suggestion-chip" data-find="post GL document">post GL document</button>
       <button class="suggestion-chip" data-find="check stock">check stock</button>
-      <button class="suggestion-chip" data-find="test odata service">test odata service</button>
       <button class="suggestion-chip" data-find="create sales order">create sales order</button>
       <button class="suggestion-chip" data-find="payment run">payment run</button>
       <button class="suggestion-chip" data-find="background job">background job</button>
-      <button class="suggestion-chip" data-find="org chart">org chart</button>
       <button class="suggestion-chip" data-find="transport">transport</button>
-      <button class="suggestion-chip" data-find="abap table">abap table</button>
     </div>
 
     <div id="find-results" class="results"></div>
 
-    <div id="find-empty" class="empty-state">
-      <div class="empty-icon">🧭</div>
-      <div class="empty-title">What are you trying to do?</div>
-      <div class="empty-text">Describe the task, or enter a transaction code directly.</div>
+    <div id="find-empty" class="tab-empty">
+      <div class="tab-empty-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="10.5" cy="10.5" r="6.5"/>
+          <line x1="15.5" y1="15.5" x2="20" y2="20"/>
+          <line x1="7.5" y1="9" x2="13.5" y2="9"/>
+          <line x1="7.5" y1="11.5" x2="13.5" y2="11.5"/>
+          <line x1="7.5" y1="14" x2="11" y2="14"/>
+        </svg>
+      </div>
+      <div class="tab-empty-title">What are you trying to do?</div>
+      <div class="tab-empty-desc">Describe the task, or enter a transaction code directly.</div>
     </div>
   </div>
 
   <!-- ===== TABLES TAB ===== -->
   <div id="tables" class="tab-panel">
-    <div class="page-header">
-      <h1>SAP Standard Tables</h1>
-      <p>Look up standard SAP table names, their purpose, key fields, and related tables.</p>
-      <div class="page-stat">
-        <span class="page-stat-count" id="stat-tables">–</span>
-        <span class="page-stat-label">standard tables</span>
+    <div class="tab-hero">
+      <div class="tab-hero-header">
+        <div class="tab-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <line x1="3" y1="9" x2="21" y2="9"/>
+            <line x1="3" y1="15" x2="21" y2="15"/>
+            <line x1="9" y1="9" x2="9" y2="21"/>
+          </svg>
+        </div>
+        <div class="tab-hero-copy">
+          <h1>SAP Standard Tables</h1>
+          <p>Look up standard SAP table names, key fields, and related tables.</p>
+        </div>
+        <div class="tab-hero-stat">
+          <div class="tab-stat-num" id="stat-tables">–</div>
+          <div class="tab-stat-lbl">standard tables</div>
+        </div>
+      </div>
+      <div class="search-wrap">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input id="tables-input" type="text" placeholder="e.g. BKPF, vendor master, purchase order, cost center…" autocomplete="off" spellcheck="false">
+        <button class="clear-btn" id="tables-clear" title="Clear">✕</button>
       </div>
     </div>
 
-    <div class="search-wrap">
-      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      <input id="tables-input" type="text" placeholder="e.g. BKPF, vendor master, purchase order, cost center…" autocomplete="off" spellcheck="false">
-      <button class="clear-btn" id="tables-clear" title="Clear search">✕</button>
-    </div>
-
-    <div class="suggestions">
-      <span>Try:</span>
+    <div class="chip-row">
+      <span class="chip-row-label">Try</span>
       <button class="suggestion-chip" data-tables="BKPF">BKPF</button>
       <button class="suggestion-chip" data-tables="vendor master">vendor master</button>
       <button class="suggestion-chip" data-tables="purchase order">purchase order</button>
@@ -103,69 +131,97 @@
       <button class="suggestion-chip" data-tables="sales order">sales order</button>
       <button class="suggestion-chip" data-tables="authorization">authorization</button>
       <button class="suggestion-chip" data-tables="employee">employee</button>
-      <button class="suggestion-chip" data-tables="GL account">GL account</button>
-      <button class="suggestion-chip" data-tables="transport">transport</button>
     </div>
 
     <div id="tables-results" class="results"></div>
 
-    <div id="tables-empty" class="empty-state">
-      <div class="empty-icon">🗂️</div>
-      <div class="empty-title">Search for a table</div>
-      <div class="empty-text">Enter a table name or describe what you're looking for — e.g. "accounting document", "MARA", "user roles".</div>
+    <div id="tables-empty" class="tab-empty">
+      <div class="tab-empty-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <line x1="3" y1="9" x2="21" y2="9"/>
+          <line x1="3" y1="15" x2="21" y2="15"/>
+          <line x1="9" y1="9" x2="9" y2="21"/>
+        </svg>
+      </div>
+      <div class="tab-empty-title">Search for a table</div>
+      <div class="tab-empty-desc">Enter a table name like BKPF, or describe what you're looking for — e.g. "accounting document", "vendor", "user roles".</div>
     </div>
   </div>
 
   <!-- ===== DECODE TAB ===== -->
   <div id="decode" class="tab-panel">
-    <div class="page-header">
-      <h1>Decode a Problem</h1>
-      <p>Describe what's going wrong — get a likely cause, a starting transaction, and next steps.</p>
-      <div class="page-stat">
-        <span class="page-stat-count" id="stat-errors">–</span>
-        <span class="page-stat-label">error patterns</span>
+    <div class="tab-hero">
+      <div class="tab-hero-header">
+        <div class="tab-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="2 12 6 12 9 4 15 20 18 12 22 12"/>
+          </svg>
+        </div>
+        <div class="tab-hero-copy">
+          <h1>Decode a Problem</h1>
+          <p>Describe what's going wrong — get a likely cause, a starting transaction, and next steps.</p>
+        </div>
+        <div class="tab-hero-stat">
+          <div class="tab-stat-num" id="stat-errors">–</div>
+          <div class="tab-stat-lbl">error patterns</div>
+        </div>
+      </div>
+      <div class="search-wrap">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input id="decode-input" type="text" placeholder="e.g. user has no access, payment run missing invoices, service not found…" autocomplete="off" spellcheck="false">
+        <button class="clear-btn" id="decode-clear" title="Clear">✕</button>
       </div>
     </div>
 
-    <div class="search-wrap">
-      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-      </svg>
-      <input id="decode-input" type="text" placeholder="e.g. user has no access, payment run missing invoices, service not found…" autocomplete="off" spellcheck="false">
-      <button class="clear-btn" id="decode-clear" title="Clear search">✕</button>
-    </div>
-
-    <div class="suggestions">
-      <span>Try:</span>
+    <div class="chip-row">
+      <span class="chip-row-label">Try</span>
       <button class="suggestion-chip" data-decode="user has no access">user has no access</button>
       <button class="suggestion-chip" data-decode="document not posting">document not posting</button>
       <button class="suggestion-chip" data-decode="service not found">service not found</button>
       <button class="suggestion-chip" data-decode="sales order blocked">sales order blocked</button>
       <button class="suggestion-chip" data-decode="payment run not picking up">payment run empty</button>
-      <button class="suggestion-chip" data-decode="goods receipt mismatch">GR mismatch</button>
       <button class="suggestion-chip" data-decode="job failed">job failed</button>
       <button class="suggestion-chip" data-decode="workflow stuck">workflow stuck</button>
       <button class="suggestion-chip" data-decode="RFC connection failed">RFC error</button>
-      <button class="suggestion-chip" data-decode="leave quota exceeded">quota exceeded</button>
     </div>
 
     <div id="decode-results"></div>
 
-    <div id="decode-empty" class="empty-state">
-      <div class="empty-icon">🔬</div>
-      <div class="empty-title">What's going wrong?</div>
-      <div class="empty-text">Describe the symptom or error in plain language — no exact wording needed.</div>
+    <div id="decode-empty" class="tab-empty">
+      <div class="tab-empty-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="2 12 6 12 9 4 15 20 18 12 22 12"/>
+        </svg>
+      </div>
+      <div class="tab-empty-title">What's going wrong?</div>
+      <div class="tab-empty-desc">Describe the symptom or error in plain language — no exact wording needed.</div>
     </div>
   </div>
 
   <!-- ===== FLOWS TAB ===== -->
   <div id="flows" class="tab-panel">
-    <div class="page-header">
-      <h1>Troubleshooting Flows</h1>
-      <p>Step-by-step process guides for common SAP tasks and support issues. Star a flow to keep it at the top.</p>
-      <div class="page-stat">
-        <span class="page-stat-count" id="stat-flows">–</span>
-        <span class="page-stat-label">guided flows</span>
+    <div class="tab-hero tab-hero--browse">
+      <div class="tab-hero-header">
+        <div class="tab-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="5" cy="12" r="2.5"/>
+            <circle cx="19" cy="6" r="2.5"/>
+            <circle cx="19" cy="18" r="2.5"/>
+            <line x1="7.2" y1="10.9" x2="16.6" y2="7.1"/>
+            <line x1="7.2" y1="13.1" x2="16.6" y2="16.9"/>
+          </svg>
+        </div>
+        <div class="tab-hero-copy">
+          <h1>Troubleshooting Flows</h1>
+          <p>Step-by-step guides for common SAP tasks and support issues. Star a flow to pin it at the top.</p>
+        </div>
+        <div class="tab-hero-stat">
+          <div class="tab-stat-num" id="stat-flows">–</div>
+          <div class="tab-stat-lbl">guided flows</div>
+        </div>
       </div>
     </div>
     <div id="flows-container"></div>
@@ -180,7 +236,7 @@
     <span class="footer-sep">·</span>
     <span class="footer-desc">Find transactions, decode issues, and follow step-by-step troubleshooting flows.</span>
     <span class="footer-sep">·</span>
-    <a class="footer-link" href="https://github.com/your-username/sap-navigator" target="_blank" rel="noopener">GitHub</a>
+    <a class="footer-link" href="https://github.com/maurits2905/sap-navigator" target="_blank" rel="noopener">GitHub</a>
   </div>
 </footer>
 
@@ -195,28 +251,55 @@
     <div class="modal-body">
       <div class="about-features">
         <div class="about-feature">
-          <div class="about-feature-icon">🔍</div>
+          <div class="about-feature-icon about-icon--find">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="10.5" cy="10.5" r="6.5"/>
+              <line x1="15.5" y1="15.5" x2="20" y2="20"/>
+              <line x1="7.5" y1="9" x2="13.5" y2="9"/>
+              <line x1="7.5" y1="11.5" x2="13.5" y2="11.5"/>
+              <line x1="7.5" y1="14" x2="11" y2="14"/>
+            </svg>
+          </div>
           <div>
             <div class="about-feature-title">Transactions</div>
             <div class="about-feature-desc">Describe a task or area in plain language — get the right transaction to start from, with related alternatives and a clear reason for each match. Searches across 16,000+ SAP transaction codes.</div>
           </div>
         </div>
         <div class="about-feature">
-          <div class="about-feature-icon">🗂️</div>
+          <div class="about-feature-icon about-icon--tables">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <line x1="3" y1="9" x2="21" y2="9"/>
+              <line x1="3" y1="15" x2="21" y2="15"/>
+              <line x1="9" y1="9" x2="9" y2="21"/>
+            </svg>
+          </div>
           <div>
             <div class="about-feature-title">Tables</div>
             <div class="about-feature-desc">Look up SAP standard table names by name or keyword. Each result shows the table's purpose, key fields, and related tables — useful before naming your own custom tables or writing ABAP queries.</div>
           </div>
         </div>
         <div class="about-feature">
-          <div class="about-feature-icon">🔬</div>
+          <div class="about-feature-icon about-icon--decode">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="2 12 6 12 9 4 15 20 18 12 22 12"/>
+            </svg>
+          </div>
           <div>
             <div class="about-feature-title">Decode</div>
             <div class="about-feature-desc">Describe a symptom or error — get the likely category, a starting transaction, and numbered next steps to work through.</div>
           </div>
         </div>
         <div class="about-feature">
-          <div class="about-feature-icon">📋</div>
+          <div class="about-feature-icon about-icon--flows">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="5" cy="12" r="2.5"/>
+              <circle cx="19" cy="6" r="2.5"/>
+              <circle cx="19" cy="18" r="2.5"/>
+              <line x1="7.2" y1="10.9" x2="16.6" y2="7.1"/>
+              <line x1="7.2" y1="13.1" x2="16.6" y2="16.9"/>
+            </svg>
+          </div>
           <div>
             <div class="about-feature-title">Flows</div>
             <div class="about-feature-desc">Browse step-by-step process guides organised by module. Star the flows you return to often — they stay pinned at the top.</div>

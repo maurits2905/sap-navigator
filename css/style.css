@@ -213,6 +213,149 @@ main {
   opacity: .75;
 }
 
+/* ========== TAB HERO CARD ========== */
+.tab-hero {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px 24px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tab-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--tab-color), var(--tab-mid));
+  transition: background .3s;
+}
+
+.tab-hero-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.tab-hero--browse .tab-hero-header { margin-bottom: 0; }
+
+.tab-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius);
+  background: var(--tab-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tab-color);
+  flex-shrink: 0;
+  transition: background .3s, color .3s;
+}
+
+.tab-icon-wrap svg { width: 22px; height: 22px; }
+
+.tab-hero-copy { flex: 1; min-width: 0; }
+
+.tab-hero-copy h1 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.tab-hero-copy p {
+  font-size: 13.5px;
+  color: var(--gray-500);
+  line-height: 1.5;
+}
+
+.tab-hero-stat {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.tab-stat-num {
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--tab-color);
+  letter-spacing: -1.5px;
+  line-height: 1;
+  transition: color .3s;
+}
+
+.tab-stat-lbl {
+  font-size: 11px;
+  color: var(--gray-400);
+  font-weight: 500;
+  margin-top: 4px;
+  text-align: right;
+}
+
+/* Remove bottom margin from search when it lives inside the hero card */
+.tab-hero .search-wrap { margin-bottom: 0; }
+
+/* ========== CHIP ROW (suggestions) ========== */
+.chip-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.chip-row-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ========== TAB EMPTY STATE ========== */
+.tab-empty {
+  text-align: center;
+  padding: 64px 24px;
+}
+
+.tab-empty-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-lg);
+  background: var(--tab-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tab-color);
+  margin: 0 auto 20px;
+  opacity: .55;
+  transition: background .3s, color .3s;
+}
+
+.tab-empty-icon svg { width: 26px; height: 26px; }
+
+.tab-empty-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: 8px;
+}
+
+.tab-empty-desc {
+  font-size: 13.5px;
+  color: var(--gray-400);
+  line-height: 1.65;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
 /* ========== SEARCH BOX ========== */
 .search-wrap {
   position: relative;
@@ -971,11 +1114,24 @@ main {
 }
 
 .about-feature-icon {
-  font-size: 20px;
-  line-height: 1;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--gray-100);
+  color: var(--gray-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  margin-top: 2px;
 }
+
+.about-feature-icon svg { width: 18px; height: 18px; }
+
+/* Per-tab tinted icons in the about modal */
+.about-icon--find   { background: #e8f0fb; color: #0066cc; }
+.about-icon--tables { background: #ecfeff; color: #0694a2; }
+.about-icon--decode { background: #fef3c7; color: #d97706; }
+.about-icon--flows  { background: #ecfdf5; color: #059669; }
 
 .about-feature-title {
   font-size: 14px;
@@ -1187,33 +1343,11 @@ footer {
 /* Single cascade block — uses var(--tab-color) family set on <body data-tab>.
    These rules come after the base styles and win by source order. */
 
-/* Page header: colored left accent + gradient tint */
-.page-header {
-  background: linear-gradient(to right, var(--tab-light), transparent 70%);
-  border-left: 4px solid var(--tab-color);
-  padding: 18px 0 18px 20px;
-  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
-  margin-bottom: 28px;
-  transition: background .3s, border-color .3s;
-}
-
 /* Active tab button — indicator handles the background */
 .tab-btn.active {
   color: var(--tab-color);
   background: transparent;
 }
-
-/* Stat counter pill */
-.page-stat {
-  background: var(--tab-light);
-  border-color: var(--tab-mid);
-  transition: background .3s, border-color .3s;
-}
-.page-stat-count {
-  color: var(--tab-color);
-  transition: color .3s;
-}
-.page-stat-label { color: var(--tab-dark); }
 
 /* Search focus ring */
 .search-wrap input:focus {
@@ -1309,4 +1443,11 @@ footer {
   .decode-header { flex-direction: column; gap: 8px; }
   .footer-inner { gap: 6px; }
   .footer-desc { display: none; }
+  .tab-hero { padding: 18px 18px 18px; }
+  .tab-hero-header { gap: 12px; }
+  .tab-icon-wrap { width: 36px; height: 36px; }
+  .tab-icon-wrap svg { width: 18px; height: 18px; }
+  .tab-stat-num { font-size: 20px; }
+  .tab-stat-lbl { font-size: 10px; }
+  .chip-row-label { display: none; }
 }
