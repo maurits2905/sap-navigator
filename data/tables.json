@@ -135,15 +135,6 @@
     "seeAlso": ["COSS", "CSKS", "AUFK"]
   },
   {
-    "name": "MARA",
-    "title": "General Material Data",
-    "description": "General (client-level) master data for a material. Contains material type, industry sector, base unit of measure, and gross weight. Plant-specific data is in MARC.",
-    "module": "Materials Management (MM)",
-    "tags": ["material master", "material", "MATNR", "material type", "general data", "MM", "material number"],
-    "keyFields": ["MANDT", "MATNR"],
-    "seeAlso": ["MARC", "MARD", "MAKT"]
-  },
-  {
     "name": "MARC",
     "title": "Plant Data for Material",
     "description": "Material master data at plant level. Contains MRP type, procurement type, lot size, and production scheduler. One row per material per plant.",
@@ -162,15 +153,6 @@
     "seeAlso": ["MARA", "MARC", "MKPF"]
   },
   {
-    "name": "MAKT",
-    "title": "Material Descriptions",
-    "description": "Language-dependent short text descriptions for materials. Join to MARA or MARC to display the material description.",
-    "module": "Materials Management (MM)",
-    "tags": ["material description", "material text", "material name", "MATNR", "MAKTX", "SPRAS"],
-    "keyFields": ["MANDT", "MATNR", "SPRAS"],
-    "seeAlso": ["MARA"]
-  },
-  {
     "name": "MKPF",
     "title": "Header: Material Document",
     "description": "Header record for material documents (goods movements). One row per goods movement posting. Contains posting date and movement type reference.",
@@ -187,42 +169,6 @@
     "tags": ["material document line", "goods movement line", "movement type", "MBLNR", "ZEILE", "MATNR", "WERKS"],
     "keyFields": ["MANDT", "MBLNR", "MJAHR", "ZEILE"],
     "seeAlso": ["MKPF", "MARA", "EKPO"]
-  },
-  {
-    "name": "EKKO",
-    "title": "Purchasing Document Header",
-    "description": "Header data for all purchasing documents: purchase orders, scheduling agreements, and contracts. Contains vendor, purchasing organization, and document date.",
-    "module": "Materials Management (MM)",
-    "tags": ["purchase order header", "PO header", "purchasing document", "EBELN", "vendor", "LIFNR", "MM purchasing"],
-    "keyFields": ["MANDT", "EBELN"],
-    "seeAlso": ["EKPO", "LFA1"]
-  },
-  {
-    "name": "EKPO",
-    "title": "Purchasing Document Item",
-    "description": "Item data for purchasing documents. Contains material, plant, quantity, delivery date, and net price per line item.",
-    "module": "Materials Management (MM)",
-    "tags": ["purchase order item", "PO item", "purchasing item", "EBELN", "EBELP", "material", "quantity", "delivery date"],
-    "keyFields": ["MANDT", "EBELN", "EBELP"],
-    "seeAlso": ["EKKO", "MSEG", "EKET"]
-  },
-  {
-    "name": "EKET",
-    "title": "Scheduling Agreement Schedule Lines",
-    "description": "Delivery schedule lines for purchase orders and scheduling agreements. Contains planned delivery quantities and dates per schedule line.",
-    "module": "Materials Management (MM)",
-    "tags": ["schedule line", "delivery schedule", "PO schedule", "EBELN", "EBELP", "EINDT", "delivery date"],
-    "keyFields": ["MANDT", "EBELN", "EBELP", "ETENR"],
-    "seeAlso": ["EKPO", "EKKO"]
-  },
-  {
-    "name": "EBAN",
-    "title": "Purchase Requisition",
-    "description": "Purchase requisition header and item data. Contains requested material, quantity, delivery date, and account assignment.",
-    "module": "Materials Management (MM)",
-    "tags": ["purchase requisition", "PR", "BANFN", "BNFPO", "requisition", "material request"],
-    "keyFields": ["MANDT", "BANFN", "BNFPO"],
-    "seeAlso": ["EKKO", "EKPO"]
   },
   {
     "name": "LFA1",
@@ -261,24 +207,6 @@
     "seeAlso": ["T001", "MARC"]
   },
   {
-    "name": "VBAK",
-    "title": "Sales Document: Header Data",
-    "description": "Header data for all sales documents: orders, quotations, returns, and contracts. Contains sold-to party, sales area, and document date.",
-    "module": "Sales & Distribution (SD)",
-    "tags": ["sales order header", "SO header", "VBELN", "sales document", "sold-to", "KUNNR", "SD"],
-    "keyFields": ["MANDT", "VBELN"],
-    "seeAlso": ["VBAP", "VBUK", "VBFA"]
-  },
-  {
-    "name": "VBAP",
-    "title": "Sales Document: Item Data",
-    "description": "Item-level data for sales documents. Contains material, order quantity, plant, pricing, and schedule lines. One row per item.",
-    "module": "Sales & Distribution (SD)",
-    "tags": ["sales order item", "SO item", "VBELN", "POSNR", "material", "quantity", "SD item"],
-    "keyFields": ["MANDT", "VBELN", "POSNR"],
-    "seeAlso": ["VBAK", "VBUP", "LIPS"]
-  },
-  {
     "name": "VBUK",
     "title": "Sales Document: Header Status",
     "description": "Overall processing status for sales document headers. Contains delivery status, billing status, and rejection status.",
@@ -297,51 +225,6 @@
     "seeAlso": ["VBAP", "VBUK"]
   },
   {
-    "name": "VBFA",
-    "title": "Sales Document Flow",
-    "description": "Document flow table linking sales documents to subsequent documents (deliveries, invoices). Tracks the full processing chain from order to invoice.",
-    "module": "Sales & Distribution (SD)",
-    "tags": ["document flow", "order to invoice", "delivery reference", "billing reference", "VBELN", "subsequent document", "SD flow"],
-    "keyFields": ["MANDT", "VBELV", "POSNV", "VBELN", "POSNN", "VBTYP_N"],
-    "seeAlso": ["VBAK", "LIKP", "VBRK"]
-  },
-  {
-    "name": "LIKP",
-    "title": "Delivery Header Data",
-    "description": "Header data for outbound deliveries. Contains ship-to party, shipping point, goods issue date, and delivery status.",
-    "module": "Sales & Distribution (SD)",
-    "tags": ["delivery header", "outbound delivery", "VBELN", "shipping", "goods issue", "WM", "LE"],
-    "keyFields": ["MANDT", "VBELN"],
-    "seeAlso": ["LIPS", "VBAK", "VBFA"]
-  },
-  {
-    "name": "LIPS",
-    "title": "Delivery Item Data",
-    "description": "Item-level data for deliveries. Contains material, delivery quantity, storage location, and batch.",
-    "module": "Sales & Distribution (SD)",
-    "tags": ["delivery item", "VBELN", "POSNR", "material", "delivery quantity", "storage location"],
-    "keyFields": ["MANDT", "VBELN", "POSNR"],
-    "seeAlso": ["LIKP", "VBAP"]
-  },
-  {
-    "name": "VBRK",
-    "title": "Billing Document: Header Data",
-    "description": "Header data for billing documents (invoices, credit memos, debit memos). Contains customer, billing date, and net amount.",
-    "module": "Sales & Distribution (SD)",
-    "tags": ["billing header", "invoice header", "VBELN", "customer invoice", "billing document", "SD billing"],
-    "keyFields": ["MANDT", "VBELN"],
-    "seeAlso": ["VBRP", "VBFA", "KNA1"]
-  },
-  {
-    "name": "VBRP",
-    "title": "Billing Document: Item Data",
-    "description": "Item-level data for billing documents. Contains material, billed quantity, net value, and tax amount per line.",
-    "module": "Sales & Distribution (SD)",
-    "tags": ["billing item", "invoice item", "VBELN", "POSNR", "net value", "tax"],
-    "keyFields": ["MANDT", "VBELN", "POSNR"],
-    "seeAlso": ["VBRK", "VBAP"]
-  },
-  {
     "name": "KNA1",
     "title": "General Data in Customer Master",
     "description": "General customer master data at client level. Contains customer name, address, country, and search terms. Company code data is in KNB1.",
@@ -358,15 +241,6 @@
     "tags": ["customer company code", "payment terms", "reconciliation account", "KUNNR", "BUKRS", "AR"],
     "keyFields": ["MANDT", "KUNNR", "BUKRS"],
     "seeAlso": ["KNA1", "KNVV"]
-  },
-  {
-    "name": "KNVV",
-    "title": "Customer Master Sales Data",
-    "description": "Customer master data per sales area. Contains sales district, customer group, price list, and incoterms.",
-    "module": "Sales & Distribution (SD)",
-    "tags": ["customer sales data", "sales area", "KUNNR", "VKORG", "VTWEG", "SPART", "price list"],
-    "keyFields": ["MANDT", "KUNNR", "VKORG", "VTWEG", "SPART"],
-    "seeAlso": ["KNA1", "VBAK"]
   },
   {
     "name": "KONV",
@@ -466,15 +340,6 @@
     "tags": ["BOM", "bill of materials", "material BOM", "MATNR", "WERKS", "STLNR", "STLAN"],
     "keyFields": ["MANDT", "MATNR", "WERKS", "STLAN"],
     "seeAlso": ["STKO", "STPO", "MARA"]
-  },
-  {
-    "name": "STKO",
-    "title": "BOM Header",
-    "description": "Header data for Bills of Material. Contains BOM category, status, and validity period.",
-    "module": "Production Planning (PP)",
-    "tags": ["BOM header", "bill of materials", "STLNR", "STLAN", "BOM status"],
-    "keyFields": ["MANDT", "STLNR", "STLAN"],
-    "seeAlso": ["STPO", "MAST"]
   },
   {
     "name": "STPO",
@@ -646,5 +511,2831 @@
     "tags": ["role authorization", "authorization object", "auth value", "AGR_NAME", "OBJECT", "FIELD", "LOW", "HIGH", "PFCG"],
     "keyFields": ["MANDT", "AGR_NAME", "COUNTER"],
     "seeAlso": ["AGR_USERS", "USR04"]
+  },
+  {
+    "name": "VBAK",
+    "title": "Sales: Sales Document Header",
+    "description": "Header data for SD sales documents. Contains core document-level information such as sales document number, sales organization, distribution channel, division, sold-to party, shipping conditions, and sales office/group.",
+    "module": "Sales and Distribution (SD)",
+    "tags": ["sales order", "header", "SD", "sales document", "VBAK"],
+    "keyFields": ["VBELN", "AUART", "VKORG", "VTWEG", "SPART", "KUNNR"],
+    "seeAlso": ["VBAP", "VBEP", "VBPA", "VBFA", "LIKP", "VBRK"]
+  },
+  {
+    "name": "VBAP",
+    "title": "Sales: Sales Document Item",
+    "description": "Item-level data for SD sales documents. Stores material, item category, division, plant, storage location, sales unit, and links to order-related references.",
+    "module": "Sales and Distribution (SD)",
+    "tags": ["sales order item", "item", "SD", "material", "VBAP"],
+    "keyFields": ["VBELN", "POSNR", "MATNR", "PSTYV", "WERKS", "LGORT"],
+    "seeAlso": ["VBAK", "VBEP", "VBPA", "VBFA", "LIPS", "VBRP"]
+  },
+  {
+    "name": "VBEP",
+    "title": "Sales: Sales Document Schedule Line",
+    "description": "Schedule line data for SD sales document items. Holds schedule line number, category, sales unit, and planned order reference information.",
+    "module": "Sales and Distribution (SD)",
+    "tags": ["schedule line", "sales order", "SD", "planning", "VBEP"],
+    "keyFields": ["VBELN", "POSNR", "ETENR", "ETTYP", "VRKME", "PLNUM"],
+    "seeAlso": ["VBAK", "VBAP", "EKET"]
+  },
+  {
+    "name": "VBRK",
+    "title": "Billing: Billing Document Header",
+    "description": "Header data for SD billing documents. Contains billing type, billing category, sales organization, distribution channel, division, fiscal year, payer, and sold-to party.",
+    "module": "Sales and Distribution (SD)",
+    "tags": ["billing", "invoice header", "SD", "billing document", "VBRK"],
+    "keyFields": ["VBELN", "FKART", "FKTYP", "VKORG", "VTWEG", "KUNAG", "KUNRG"],
+    "seeAlso": ["VBRP", "VBAK", "VBFA"]
+  },
+  {
+    "name": "VBRP",
+    "title": "Billing: Billing Document Item",
+    "description": "Item-level data for SD billing documents. Stores billing item details such as item type, sales unit, division, sales office/group, material, material group, and order reference.",
+    "module": "Sales and Distribution (SD)",
+    "tags": ["billing item", "invoice item", "SD", "material", "VBRP"],
+    "keyFields": ["VBELN", "POSNR", "POSAR", "MATNR", "PSTYV", "AUFNR"],
+    "seeAlso": ["VBRK", "VBAP", "VBFA"]
+  },
+  {
+    "name": "VBPA",
+    "title": "Sales: Document Partner",
+    "description": "Partner table for SD documents. Stores partner function assignments such as customer, vendor/credit account, address, and country key at document/item level.",
+    "module": "Sales and Distribution (SD)",
+    "tags": ["partner", "customer", "partner function", "SD", "VBPA"],
+    "keyFields": ["VBELN", "POSNR", "PARVW", "KUNNR", "LIFNR", "ADRNR"],
+    "seeAlso": ["VBAK", "VBAP", "KNVP"]
+  },
+  {
+    "name": "LIPS",
+    "title": "Delivery: Delivery Document Item",
+    "description": "Item-level data for outbound deliveries. Includes delivery item category, plant, storage location, sales unit, sales office/group, division, distribution channel, and sales order reference.",
+    "module": "Sales and Distribution (SD)",
+    "tags": ["delivery item", "outbound delivery", "shipping", "SD", "LIPS"],
+    "keyFields": ["VBELN", "POSNR", "PSTYV", "WERKS", "LGORT", "VRKME", "KDAUF"],
+    "seeAlso": ["LIKP", "VBAP", "VBFA"]
+  },
+  {
+    "name": "LIKP",
+    "title": "Delivery: Delivery Header",
+    "description": "Header data for outbound deliveries. Contains delivery number, creator, creation date, sales district, sales organization, delivery type, shipping conditions, sold-to party, and customer group.",
+    "module": "Sales and Distribution (SD)",
+    "tags": ["delivery header", "outbound delivery", "shipping", "SD", "LIKP"],
+    "keyFields": ["VBELN", "ERNAM", "ERDAT", "VKORG", "LFART", "KUNNR"],
+    "seeAlso": ["LIPS", "VBAK", "VBFA"]
+  },
+  {
+    "name": "VBFA",
+    "title": "Sales: Document Flow",
+    "description": "Document flow table linking preceding and subsequent SD documents. Useful for tracing relationships between sales orders, deliveries, billing documents, and movement status.",
+    "module": "Sales and Distribution (SD)",
+    "tags": ["document flow", "preceding document", "subsequent document", "SD", "VBFA"],
+    "keyFields": ["VBELV", "POSNV", "VBELN", "FKTYP", "WBSTA"],
+    "seeAlso": ["VBAK", "VBAP", "LIKP", "LIPS", "VBRK", "VBRP"]
+  },
+  {
+    "name": "MARA",
+    "title": "Material Master: General Data",
+    "description": "General material master data. Contains material number, creation and change dates, material type, industry sector, material group, base unit of measure, and division.",
+    "module": "Materials Management (MM)",
+    "tags": ["material master", "general data", "MM", "material", "MARA"],
+    "keyFields": ["MATNR", "ERSDA", "LAEDA", "MTART", "MBRSH", "MATKL", "MEINS", "SPART"],
+    "seeAlso": ["MAKT", "MARM", "MARC", "MLAN", "MBEW"]
+  },
+  {
+    "name": "MAKT",
+    "title": "Material Master: Material Description",
+    "description": "Language-dependent material description table. Stores material descriptions and search-related description text by language key.",
+    "module": "Materials Management (MM)",
+    "tags": ["material description", "language dependent", "MM", "text", "MAKT"],
+    "keyFields": ["MATNR", "SPRAS", "MAKTX", "MAKTG"],
+    "seeAlso": ["MARA"]
+  },
+  {
+    "name": "MARM",
+    "title": "Material Master: Units of Measure",
+    "description": "Alternative units of measure for materials. Stores the material number, unit of measure, and related physical dimensions such as length, width, and height.",
+    "module": "Materials Management (MM)",
+    "tags": ["unit of measure", "UoM", "material", "MM", "MARM"],
+    "keyFields": ["MATNR", "MEINH"],
+    "seeAlso": ["MARA", "MAKT"]
+  },
+  {
+    "name": "MLAN",
+    "title": "Material Master: Tax Classification",
+    "description": "Material tax classification data. Stores departure country and tax classification indicators for materials, especially for purchasing scenarios.",
+    "module": "Materials Management (MM)",
+    "tags": ["tax classification", "material tax", "purchasing", "MM", "MLAN"],
+    "keyFields": ["MATNR", "ALAND", "TAXM1", "TAXIM"],
+    "seeAlso": ["MARA", "MARC"]
+  },
+  {
+    "name": "MBEW",
+    "title": "Material Master: Material Valuation",
+    "description": "Valuation data for materials. Contains valuation area, valuation type, standard price, valuation class, valuation category, and price control related information.",
+    "module": "Materials Management (MM)",
+    "tags": ["material valuation", "price", "valuation class", "MM", "MBEW"],
+    "keyFields": ["MATNR", "BWKEY", "BWTAR", "STPRS", "BKLAS", "BWTTY"],
+    "seeAlso": ["MARA", "MARC"]
+  },
+  {
+    "name": "EBAN",
+    "title": "Purchasing: Purchase Requisition",
+    "description": "General data for purchase requisitions. Contains purchase requisition number, item, document type/category, release information, purchasing group, plant, storage location, quantity, and material group.",
+    "module": "Materials Management (MM)",
+    "tags": ["purchase requisition", "PR", "purchasing", "MM", "EBAN"],
+    "keyFields": ["BANFN", "BNFPO", "BSART", "BSTYP", "WERKS", "LGORT", "MENGE", "MATKL"],
+    "seeAlso": ["EBKN", "EKKO", "EKPO"]
+  },
+  {
+    "name": "EBKN",
+    "title": "Purchasing: Purchase Requisition Account Assignment",
+    "description": "Account assignment data for purchase requisitions. Includes PR number/item, quantity, related sales document references, schedule line, and order number.",
+    "module": "Materials Management (MM)",
+    "tags": ["PR account assignment", "purchase requisition", "account assignment", "MM", "EBKN"],
+    "keyFields": ["BANFN", "BNFPO", "MENGE", "VBELN", "VBELP", "VETEN", "AUFNR"],
+    "seeAlso": ["EBAN", "EKKN"]
+  },
+  {
+    "name": "EKKN",
+    "title": "Purchasing: Purchase Order Account Assignment",
+    "description": "Account assignment data for purchase order items. Stores purchasing document/item, quantity, linked sales document references, schedule line, and order number.",
+    "module": "Materials Management (MM)",
+    "tags": ["PO account assignment", "purchase order", "account assignment", "MM", "EKKN"],
+    "keyFields": ["EBELN", "EBELP", "MENGE", "VBELN", "VBELP", "VETEN", "AUFNR"],
+    "seeAlso": ["EKKO", "EKPO", "EBKN"]
+  },
+  {
+    "name": "EKKO",
+    "title": "Purchasing: Purchase Order Header",
+    "description": "Header data for purchasing documents. Includes purchasing document number, purchasing organization, company code, document category/type, item interval, status, currency, document date, and quotation reference.",
+    "module": "Materials Management (MM)",
+    "tags": ["purchase order header", "PO", "purchasing", "MM", "EKKO"],
+    "keyFields": ["EBELN", "EKORG", "BUKRS", "BSTYP", "BSART", "WAERS", "BEDAT"],
+    "seeAlso": ["EKPO", "EKET", "EKKN"]
+  },
+  {
+    "name": "EKPO",
+    "title": "Purchasing: Purchase Order Item",
+    "description": "Item-level data for purchase orders. Stores material, order quantity, plant, storage location, company code, stock type, RFQ number, and item status.",
+    "module": "Materials Management (MM)",
+    "tags": ["purchase order item", "PO item", "purchasing", "MM", "EKPO"],
+    "keyFields": ["EBELN", "EBELP", "MATNR", "WERKS", "LGORT", "MENGE", "BUKRS"],
+    "seeAlso": ["EKKO", "EKET", "EKKN", "EBAN"]
+  },
+  {
+    "name": "EKET",
+    "title": "Purchasing: Purchase Order Schedule Line",
+    "description": "Schedule line data for purchase order items. Contains item schedule line number, delivery date, goods receipt quantity, scheduled quantity, issued quantity, and goods issue date.",
+    "module": "Materials Management (MM)",
+    "tags": ["purchase order schedule", "schedule line", "PO", "MM", "EKET"],
+    "keyFields": ["EBELN", "EBELP", "ETENR", "EINDT", "WEMNG", "MENGE", "WAMNG", "WADAT"],
+    "seeAlso": ["EKKO", "EKPO", "VBEP"]
+  },
+  {
+    "name": "KNVK",
+    "title": "Customer Master: Contact Partner",
+    "description": "Customer contact person data. Links customer numbers to contact person records and names.",
+    "module": "Customer Master",
+    "tags": ["customer contact", "contact person", "customer", "KNVK"],
+    "keyFields": ["PARNR", "KUNNR", "NAME"],
+    "seeAlso": ["KNA1"]
+  },
+  {
+    "name": "KNVV",
+    "title": "Customer Master: Sales Data",
+    "description": "Sales-area specific customer data. Stores sales organization, distribution channel, division, customer group, sales group, and sales office.",
+    "module": "Customer Master",
+    "tags": ["customer sales data", "sales area", "customer", "KNVV"],
+    "keyFields": ["VKORG", "VTWEG", "SPART", "KDGRP", "VKGRP", "VKBUR"],
+    "seeAlso": ["KNA1", "KNVP", "KNVD"]
+  },
+  {
+    "name": "KNVA",
+    "title": "Customer Master: Loading Points",
+    "description": "Customer loading point data. Stores customer assignment to unloading point and default unloading point details.",
+    "module": "Customer Master",
+    "tags": ["loading point", "customer master", "shipping", "customer", "KNVA"],
+    "keyFields": ["KUNNR", "ABLAD", "DEFAB"],
+    "seeAlso": ["KNA1"]
+  },
+  {
+    "name": "KNVI",
+    "title": "Customer Master: Tax Indicator",
+    "description": "Customer tax-related data. Stores customer number, department, country, and tax category information.",
+    "module": "Customer Master",
+    "tags": ["tax indicator", "customer tax", "customer", "KNVI"],
+    "keyFields": ["KUNNR", "ALAND", "TATYP"],
+    "seeAlso": ["KNA1", "KNVL"]
+  },
+  {
+    "name": "KNVS",
+    "title": "Customer Master: Shipping Data",
+    "description": "Customer shipping point data. Stores customer assignments to shipping and receiving points.",
+    "module": "Customer Master",
+    "tags": ["shipping data", "shipping point", "customer", "KNVS"],
+    "keyFields": ["KUNNR", "VSTEL"],
+    "seeAlso": ["KNA1", "KNVL"]
+  },
+  {
+    "name": "KNVP",
+    "title": "Customer Master: Partner Functions",
+    "description": "Customer partner function assignments in the sales area. Stores sales organization, distribution channel, partner function, partner number, and counter.",
+    "module": "Customer Master",
+    "tags": ["partner functions", "customer partner", "sales area", "customer", "KNVP"],
+    "keyFields": ["VKORG", "VTWEG", "PARVW", "PARZA"],
+    "seeAlso": ["KNVV", "VBPA"]
+  },
+  {
+    "name": "KNVD",
+    "title": "Customer Master: Output / Sales Requirement Form",
+    "description": "Customer sales-area related form/output data. Contains customer, sales organization, distribution channel, division, and output type information.",
+    "module": "Customer Master",
+    "tags": ["sales requirement", "output type", "customer", "sales area", "KNVD"],
+    "keyFields": ["KUNNR", "VKORG", "VTWEG", "SPART", "DOCTP"],
+    "seeAlso": ["KNVV"]
+  },
+  {
+    "name": "KNVL",
+    "title": "Customer Master: License Data",
+    "description": "Customer license data by country and tax category. Stores customer, department, country, tax category, and license number.",
+    "module": "Customer Master",
+    "tags": ["license", "customer license", "tax category", "customer", "KNVL"],
+    "keyFields": ["KUNNR", "ALAND", "TATYP", "LICNR"],
+    "seeAlso": ["KNVI", "KNVS"]
+  },
+  {
+    "name": "DD01L",
+    "title": "ABAP Dictionary: Domains",
+    "description": "Stores ABAP Dictionary domain definitions. Used to define technical attributes and allowed value concepts that can be reused by data elements.",
+    "module": "ABAP / Data Dictionary",
+    "tags": ["domain", "DDIC", "ABAP Dictionary", "SE11", "DD01L"],
+    "keyFields": ["DOMNAME", "AS4LOCAL", "AS4VERS"],
+    "seeAlso": ["DD07L", "DD04L"]
+  },
+  {
+    "name": "DD02L",
+    "title": "ABAP Dictionary: Table Definitions",
+    "description": "Core metadata for ABAP Dictionary tables and views. Common source when searching SAP standard table names in a system.",
+    "module": "ABAP / Data Dictionary",
+    "tags": ["table definitions", "DDIC", "SE11", "metadata", "DD02L"],
+    "keyFields": ["TABNAME", "AS4LOCAL", "AS4VERS", "TABCLASS"],
+    "seeAlso": ["DD02T", "DD03L", "DD09L"]
+  },
+  {
+    "name": "DD02T",
+    "title": "ABAP Dictionary: Table Texts",
+    "description": "Language-dependent short descriptions for ABAP Dictionary tables and views.",
+    "module": "ABAP / Data Dictionary",
+    "tags": ["table text", "DDIC", "SE11", "metadata", "DD02T"],
+    "keyFields": ["TABNAME", "DDLANGUAGE", "AS4LOCAL", "AS4VERS"],
+    "seeAlso": ["DD02L"]
+  },
+  {
+    "name": "DD02V",
+    "title": "ABAP Dictionary: Table/View Metadata View",
+    "description": "Dictionary metadata view related to table and view definitions, often used together with DD02L and DD02T for lookup scenarios.",
+    "module": "ABAP / Data Dictionary",
+    "tags": ["table view", "DDIC", "SE11", "metadata", "DD02V"],
+    "keyFields": ["TABNAME"],
+    "seeAlso": ["DD02L", "DD02T"]
+  },
+  {
+    "name": "DD03L",
+    "title": "ABAP Dictionary: Table Fields",
+    "description": "Stores field-level metadata for ABAP Dictionary tables and structures, including field names, positions, key flag, and data element references.",
+    "module": "ABAP / Data Dictionary",
+    "tags": ["table fields", "field metadata", "DDIC", "SE11", "DD03L"],
+    "keyFields": ["TABNAME", "FIELDNAME", "AS4LOCAL", "AS4VERS", "POSITION"],
+    "seeAlso": ["DD03T", "DD04L", "DD02L"]
+  },
+  {
+    "name": "DD03T",
+    "title": "ABAP Dictionary: Field Texts",
+    "description": "Language-dependent texts for fields in ABAP Dictionary objects.",
+    "module": "ABAP / Data Dictionary",
+    "tags": ["field text", "DDIC", "metadata", "SE11", "DD03T"],
+    "keyFields": ["TABNAME", "FIELDNAME", "DDLANGUAGE", "AS4LOCAL", "AS4VERS"],
+    "seeAlso": ["DD03L"]
+  },
+  {
+    "name": "DD04L",
+    "title": "ABAP Dictionary: Data Elements",
+    "description": "Stores ABAP Dictionary data element definitions used by table fields, structures, and parameters.",
+    "module": "ABAP / Data Dictionary",
+    "tags": ["data element", "DDIC", "SE11", "metadata", "DD04L"],
+    "keyFields": ["ROLLNAME", "AS4LOCAL", "AS4VERS"],
+    "seeAlso": ["DD01L", "DD03L", "DD07L"]
+  },
+  {
+    "name": "DD07L",
+    "title": "ABAP Dictionary: Domain Fixed Values",
+    "description": "Contains allowed values and fixed value definitions for domains in the ABAP Dictionary.",
+    "module": "ABAP / Data Dictionary",
+    "tags": ["domain values", "fixed values", "DDIC", "SE11", "DD07L"],
+    "keyFields": ["DOMNAME", "VALPOS", "AS4LOCAL", "AS4VERS"],
+    "seeAlso": ["DD01L", "DD04L"]
+  },
+  {
+    "name": "DD09L",
+    "title": "ABAP Dictionary: Technical Settings",
+    "description": "Stores technical settings for Dictionary tables such as data class, size category, buffering, and logging behavior.",
+    "module": "ABAP / Data Dictionary",
+    "tags": ["technical settings", "buffering", "logging", "DDIC", "DD09L"],
+    "keyFields": ["TABNAME", "AS4LOCAL", "AS4VERS"],
+    "seeAlso": ["DD02L"]
+  },
+  {
+    "name": "DD12L",
+    "title": "ABAP Dictionary: Secondary Indices",
+    "description": "Contains metadata for secondary indexes defined on Dictionary tables.",
+    "module": "ABAP / Data Dictionary",
+    "tags": ["secondary index", "index metadata", "DDIC", "SE11", "DD12L"],
+    "keyFields": ["SQLTAB", "INDEXNAME", "AS4LOCAL", "AS4VERS"],
+    "seeAlso": ["DD02L", "DD03L"]
+  },
+  {
+    "name": "TDEVC",
+    "title": "Repository: Packages",
+    "description": "Stores development packages, also known as development classes, used to organize repository objects.",
+    "module": "ABAP / Repository",
+    "tags": ["package", "development class", "repository", "SE80", "TDEVC"],
+    "keyFields": ["DEVCLASS"],
+    "seeAlso": ["TADIR"]
+  },
+  {
+    "name": "TFDIR",
+    "title": "Repository: Function Modules",
+    "description": "Directory of function modules and their technical assignment information.",
+    "module": "ABAP / Repository",
+    "tags": ["function module", "SE37", "repository", "ABAP", "TFDIR"],
+    "keyFields": ["FUNCNAME", "PNAME", "INCLUDE"],
+    "seeAlso": ["TFTIT", "ENLFDIR"]
+  },
+  {
+    "name": "TFTIT",
+    "title": "Repository: Function Module Texts",
+    "description": "Language-dependent short texts for function modules.",
+    "module": "ABAP / Repository",
+    "tags": ["function module text", "SE37", "repository", "ABAP", "TFTIT"],
+    "keyFields": ["FUNCNAME", "SPRAS"],
+    "seeAlso": ["TFDIR"]
+  },
+  {
+    "name": "ENLFDIR",
+    "title": "Repository: Additional Function Module Attributes",
+    "description": "Stores additional technical attributes for function modules.",
+    "module": "ABAP / Repository",
+    "tags": ["function module attributes", "SE37", "repository", "ABAP", "ENLFDIR"],
+    "keyFields": ["FUNCNAME"],
+    "seeAlso": ["TFDIR", "TFTIT"]
+  },
+  {
+    "name": "TMDIR",
+    "title": "ABAP Objects: Methods in Classes",
+    "description": "Directory information for methods belonging to ABAP classes.",
+    "module": "ABAP / Objects",
+    "tags": ["methods", "class method", "ABAP Objects", "class", "TMDIR"],
+    "keyFields": ["CLSNAME", "METHNAME"],
+    "seeAlso": ["SEOCLASS"]
+  },
+  {
+    "name": "D010TAB",
+    "title": "Repository: Program to Table Usage",
+    "description": "Contains relationships between ABAP reports/programs and the tables they use.",
+    "module": "ABAP / Repository",
+    "tags": ["where-used", "program table usage", "ABAP", "repository", "D010TAB"],
+    "keyFields": ["MASTER", "TABNAME"],
+    "seeAlso": ["TRDIR", "DD02L"]
+  },
+  {
+    "name": "TAPLT",
+    "title": "Repository: Program Application Long Texts",
+    "description": "Stores long texts related to ABAP programs and applications.",
+    "module": "ABAP / Repository",
+    "tags": ["program text", "long text", "repository", "ABAP", "TAPLT"],
+    "keyFields": ["PROG", "SPRAS"],
+    "seeAlso": ["TRDIR"]
+  },
+  {
+    "name": "SEOCLASS",
+    "title": "ABAP Objects: Classes",
+    "description": "Stores ABAP class definitions in the Class Builder / ABAP Objects repository.",
+    "module": "ABAP / Objects",
+    "tags": ["class", "ABAP Objects", "SE24", "OO", "SEOCLASS"],
+    "keyFields": ["CLSNAME", "VERSION"],
+    "seeAlso": ["TMDIR", "TADIR"]
+  },
+  {
+    "name": "D020S",
+    "title": "Dynpro: Screen Definitions",
+    "description": "Stores screen definitions and technical data for classic dynpros.",
+    "module": "ABAP / Dynpro",
+    "tags": ["screen", "dynpro", "SE51", "ABAP", "D020S"],
+    "keyFields": ["PROG", "DNUM"],
+    "seeAlso": ["D020T"]
+  },
+  {
+    "name": "D020T",
+    "title": "Dynpro: Screen Texts",
+    "description": "Language-dependent short descriptions for classic dynpro screens.",
+    "module": "ABAP / Dynpro",
+    "tags": ["screen text", "dynpro", "SE51", "ABAP", "D020T"],
+    "keyFields": ["PROG", "DNUM", "LANGU"],
+    "seeAlso": ["D020S"]
+  },
+  {
+    "name": "TSE05",
+    "title": "ABAP Editor: Insert Commands",
+    "description": "Customizing and definition data used by ABAP Editor insert command functionality.",
+    "module": "ABAP / Workbench",
+    "tags": ["ABAP Editor", "insert command", "workbench", "ABAP", "TSE05"],
+    "keyFields": ["MANDT"],
+    "seeAlso": []
+  },
+  {
+    "name": "DM42S",
+    "title": "ABAP Dictionary: Table Relationships",
+    "description": "Stores relationship information between tables, used by Dictionary relationship display functions such as SD11.",
+    "module": "ABAP / Data Dictionary",
+    "tags": ["table relationship", "foreign key", "DDIC", "SD11", "DM42S"],
+    "keyFields": ["TABNAME"],
+    "seeAlso": ["DD02L", "DD03L"]
+  },
+  {
+    "name": "T100",
+    "title": "Messages: Message Texts",
+    "description": "Stores SAP message class texts used across applications and custom developments.",
+    "module": "Cross Application",
+    "tags": ["message", "message class", "text", "SE91", "T100"],
+    "keyFields": ["SPRSL", "ARBGB", "MSGNR"],
+    "seeAlso": []
+  },
+  {
+    "name": "TSTCP",
+    "title": "Transactions: Transaction Parameters",
+    "description": "Stores parameter transactions and related settings for transaction code execution.",
+    "module": "System / Navigation",
+    "tags": ["transaction parameter", "parameter transaction", "SE93", "tcode", "TSTCP"],
+    "keyFields": ["TCODE"],
+    "seeAlso": ["TSTC"]
+  },
+  {
+    "name": "FILEPATH",
+    "title": "File Interface: Logical File Paths",
+    "description": "Defines logical file paths used by SAP file interface configuration.",
+    "module": "System / File Interface",
+    "tags": ["logical path", "file interface", "AL11", "FILEPATH", "path"],
+    "keyFields": ["PATHINTERN"],
+    "seeAlso": ["PATH"]
+  },
+  {
+    "name": "PATH",
+    "title": "File Interface: Physical Paths",
+    "description": "Stores physical operating system path definitions used by logical file handling.",
+    "module": "System / File Interface",
+    "tags": ["physical path", "file path", "AL11", "PATH", "filesystem"],
+    "keyFields": ["PATHEXTERN"],
+    "seeAlso": ["FILEPATH"]
+  },
+  {
+    "name": "SYST",
+    "title": "ABAP Runtime: System Fields Structure",
+    "description": "Structure containing ABAP system fields such as SY-MANDT, SY-UNAME, and SY-DATUM. Useful as a reference object, though not a normal application table.",
+    "module": "ABAP Runtime",
+    "tags": ["system fields", "SY", "structure", "ABAP runtime", "SYST"],
+    "keyFields": ["MANDT", "UNAME", "DATUM", "UZEIT"],
+    "seeAlso": []
+  },
+  {
+    "name": "VBMOD",
+    "title": "Update Task: Registered Update Function Modules",
+    "description": "Stores registered update function module entries for the SAP update task.",
+    "module": "System / Update Task",
+    "tags": ["update task", "function module", "registered update", "VBMOD", "SM13"],
+    "keyFields": ["VBKEY", "FNAME"],
+    "seeAlso": ["VBDATA"]
+  },
+  {
+    "name": "VBDATA",
+    "title": "Update Task: Update Data",
+    "description": "Stores serialized update task data processed by the SAP update system.",
+    "module": "System / Update Task",
+    "tags": ["update task", "update data", "SM13", "system", "VBDATA"],
+    "keyFields": ["VBKEY"],
+    "seeAlso": ["VBMOD"]
+  },
+  {
+    "name": "STXFADM",
+    "title": "Smart Forms: Administration",
+    "description": "Administration data for Smart Forms objects and generated function modules.",
+    "module": "Forms / Output",
+    "tags": ["Smart Forms", "form administration", "output", "STXFADM", "SMARTFORMS"],
+    "keyFields": ["FORMNAME"],
+    "seeAlso": ["STXH", "STXL"]
+  },
+  {
+    "name": "STXB",
+    "title": "Texts: Non-SAPscript Texts",
+    "description": "Stores texts in a non-SAPscript format and is used in text handling scenarios.",
+    "module": "Texts / Documentation",
+    "tags": ["text", "non SAPscript", "long text", "STXB", "text storage"],
+    "keyFields": ["TDOBJECT", "TDNAME", "TDID", "TDSPRAS"],
+    "seeAlso": ["STXH", "STXL"]
+  },
+  {
+    "name": "STXH",
+    "title": "Texts: SAPscript Text Header",
+    "description": "Header table for SAPscript and standard text objects.",
+    "module": "Texts / Documentation",
+    "tags": ["text header", "SAPscript", "long text", "STXH", "SO10"],
+    "keyFields": ["TDOBJECT", "TDNAME", "TDID", "TDSPRAS"],
+    "seeAlso": ["STXL", "TTXOB"]
+  },
+  {
+    "name": "STXL",
+    "title": "Texts: SAPscript Text Lines",
+    "description": "Cluster-like storage for SAPscript and standard text line content.",
+    "module": "Texts / Documentation",
+    "tags": ["text lines", "SAPscript", "long text", "STXL", "SO10"],
+    "keyFields": ["RELID", "TDOBJECT", "TDNAME", "TDID", "TDSPRAS"],
+    "seeAlso": ["STXH"]
+  },
+  {
+    "name": "TSP01",
+    "title": "Spool: Spool Requests",
+    "description": "Stores spool request header data for SAP print and output processing.",
+    "module": "Spool / Output",
+    "tags": ["spool request", "print", "SP01", "output", "TSP01"],
+    "keyFields": ["RQIDENT"],
+    "seeAlso": ["TSP02", "TST01", "TST03"]
+  },
+  {
+    "name": "TSP02",
+    "title": "Spool: Output Requests",
+    "description": "Stores print output request information connected to spool processing.",
+    "module": "Spool / Output",
+    "tags": ["output request", "print request", "SP01", "output", "TSP02"],
+    "keyFields": ["RQIDENT"],
+    "seeAlso": ["TSP01"]
+  },
+  {
+    "name": "TST01",
+    "title": "TemSe: Header",
+    "description": "Header table for TemSe objects used in spool and temporary sequential storage.",
+    "module": "Spool / TemSe",
+    "tags": ["TemSe", "header", "spool", "temporary storage", "TST01"],
+    "keyFields": ["DNAME"],
+    "seeAlso": ["TST03", "TSP01"]
+  },
+  {
+    "name": "TST03",
+    "title": "TemSe: Data",
+    "description": "Data storage table for TemSe objects used by spool and temporary sequential storage.",
+    "module": "Spool / TemSe",
+    "tags": ["TemSe", "data", "spool", "temporary storage", "TST03"],
+    "keyFields": ["NAME"],
+    "seeAlso": ["TST01", "TSP01"]
+  },
+  {
+    "name": "TTXOB",
+    "title": "Texts: Valid Text Objects",
+    "description": "Stores valid text object definitions used in SAP text management.",
+    "module": "Texts / Documentation",
+    "tags": ["text object", "text management", "customizing", "TTXOB", "texts"],
+    "keyFields": ["TDOBJECT"],
+    "seeAlso": ["TTXOT", "STXH"]
+  },
+  {
+    "name": "TTXOT",
+    "title": "Texts: Text Object Descriptions",
+    "description": "Language-dependent descriptions for valid text objects.",
+    "module": "Texts / Documentation",
+    "tags": ["text object text", "text management", "customizing", "TTXOT", "texts"],
+    "keyFields": ["TDOBJECT", "TDSPRAS"],
+    "seeAlso": ["TTXOB"]
+  },
+  {
+    "name": "DOKIL",
+    "title": "Documentation: Index",
+    "description": "Index table for SAP documentation objects, used to locate documentation entries.",
+    "module": "Documentation",
+    "tags": ["documentation", "index", "SAP help", "DOKIL", "text"],
+    "keyFields": ["ID", "OBJECT", "TYP", "LANGU"],
+    "seeAlso": ["DOKHL", "DOKTL"]
+  },
+  {
+    "name": "DOKHL",
+    "title": "Documentation: Header",
+    "description": "Header data for SAP documentation objects.",
+    "module": "Documentation",
+    "tags": ["documentation header", "SAP help", "text", "DOKHL", "documentation"],
+    "keyFields": ["ID", "OBJECT", "TYP", "LANGU"],
+    "seeAlso": ["DOKIL", "DOKTL"]
+  },
+  {
+    "name": "DOKTL",
+    "title": "Documentation: Text Lines",
+    "description": "Text line contents for SAP documentation objects.",
+    "module": "Documentation",
+    "tags": ["documentation text", "text lines", "SAP help", "DOKTL", "documentation"],
+    "keyFields": ["ID", "OBJECT", "TYP", "LANGU", "LINE_NO"],
+    "seeAlso": ["DOKHL", "DOKIL"]
+  },
+  {
+    "name": "NRIV",
+    "title": "Number Ranges: Intervals",
+    "description": "Stores current number range intervals and current number status for number range objects.",
+    "module": "Cross Application",
+    "tags": ["number range", "interval", "SNRO", "counter", "NRIV"],
+    "keyFields": ["OBJECT", "SUBOBJECT", "NRRANGENR", "TOYEAR"],
+    "seeAlso": ["TNRO"]
+  },
+  {
+    "name": "TNRO",
+    "title": "Number Ranges: Objects",
+    "description": "Defines number range objects used by SAP applications and custom developments.",
+    "module": "Cross Application",
+    "tags": ["number range object", "SNRO", "customizing", "numbering", "TNRO"],
+    "keyFields": ["OBJECT"],
+    "seeAlso": ["NRIV"]
+  },
+  {
+    "name": "LTDX",
+    "title": "ALV: Display Layouts",
+    "description": "Stores ALV layout variants and display layout definitions.",
+    "module": "ALV / User Settings",
+    "tags": ["ALV", "layout", "variant", "display layout", "LTDX"],
+    "keyFields": ["REPORT", "HANDLE", "LOG_GROUP"],
+    "seeAlso": ["LTDXD", "TCVIEW"]
+  },
+  {
+    "name": "LTDXD",
+    "title": "ALV: Default Display Variants",
+    "description": "Stores default ALV display variant settings.",
+    "module": "ALV / User Settings",
+    "tags": ["ALV", "default layout", "variant", "display variant", "LTDXD"],
+    "keyFields": ["REPORT", "HANDLE"],
+    "seeAlso": ["LTDX"]
+  },
+  {
+    "name": "TCVIEW",
+    "title": "Table Controls: User Views",
+    "description": "Stores user-specific settings for table control views in classic dynpro applications.",
+    "module": "UI / User Settings",
+    "tags": ["table control", "user setting", "dynpro", "view", "TCVIEW"],
+    "keyFields": ["PROG", "DNUM", "CONTROL"],
+    "seeAlso": ["D020S"]
+  },
+  {
+    "name": "USR05",
+    "title": "User Administration: Parameter IDs",
+    "description": "Stores user parameter IDs and their assigned values.",
+    "module": "Security / User Administration",
+    "tags": ["parameter ID", "user parameter", "SU3", "security", "USR05"],
+    "keyFields": ["BNAME", "PARID"],
+    "seeAlso": ["USR04"]
+  },
+  {
+    "name": "USR10",
+    "title": "User Administration: Authorization Profiles",
+    "description": "Stores authorization profile definitions and profile assignment related data.",
+    "module": "Security / Authorization",
+    "tags": ["authorization profile", "profile", "security", "PFCG", "USR10"],
+    "keyFields": ["PROFN"],
+    "seeAlso": ["UST04", "UST12"]
+  },
+  {
+    "name": "UST12",
+    "title": "Authorization: Authorizations",
+    "description": "Stores generated authorization data assigned through profiles and roles.",
+    "module": "Security / Authorization",
+    "tags": ["authorization", "profile authorization", "security", "PFCG", "UST12"],
+    "keyFields": ["OBJCT", "AUTH"],
+    "seeAlso": ["USR10", "USR12", "TOBJ"]
+  },
+  {
+    "name": "USR12",
+    "title": "Authorization: Authorization Values",
+    "description": "Stores authorization field values for generated authorizations.",
+    "module": "Security / Authorization",
+    "tags": ["authorization values", "field value", "security", "PFCG", "USR12"],
+    "keyFields": ["OBJCT", "AUTH", "FIELD"],
+    "seeAlso": ["UST12"]
+  },
+  {
+    "name": "USR21",
+    "title": "User Administration: User to Address Assignment",
+    "description": "Links SAP user IDs to Business Address Services person/address keys.",
+    "module": "Security / User Administration",
+    "tags": ["user address", "BAS", "SU01", "security", "USR21"],
+    "keyFields": ["BNAME", "PERSNUMBER", "ADDRNUMBER"],
+    "seeAlso": ["ADRP", "ADRC", "USR01"]
+  },
+  {
+    "name": "USR41",
+    "title": "User Administration: Active Logon Data",
+    "description": "Stores data related to active user sessions and logons, commonly relevant for session monitoring scenarios.",
+    "module": "Security / User Administration",
+    "tags": ["active session", "logon", "SM04", "user", "USR41"],
+    "keyFields": ["BNAME"],
+    "seeAlso": ["USR02"]
+  },
+  {
+    "name": "UST04",
+    "title": "Authorization: User to Profile Assignment",
+    "description": "Stores assignments of authorization profiles to users.",
+    "module": "Security / Authorization",
+    "tags": ["user profile", "profile assignment", "security", "PFCG", "UST04"],
+    "keyFields": ["BNAME", "PROFILE"],
+    "seeAlso": ["USR10", "UST12"]
+  },
+  {
+    "name": "DEVACCESS",
+    "title": "Workbench: Developer Access Key Data",
+    "description": "Stores developer registration and access key related information in classic SAP development scenarios.",
+    "module": "ABAP / Workbench",
+    "tags": ["developer key", "developer access", "workbench", "ABAP", "DEVACCESS"],
+    "keyFields": ["UNAME", "OBJNAME"],
+    "seeAlso": ["TADIR"]
+  },
+  {
+    "name": "USR40",
+    "title": "Security: Prohibited Passwords",
+    "description": "Stores forbidden passwords or password patterns used by SAP password checks.",
+    "module": "Security / User Administration",
+    "tags": ["password", "security", "forbidden password", "login", "USR40"],
+    "keyFields": ["BANNEDPASSWORD"],
+    "seeAlso": ["USR02"]
+  },
+  {
+    "name": "USOBT",
+    "title": "Authorization Proposal: Transaction to Authorization Object",
+    "description": "Stores transaction-based authorization proposal data used in role maintenance.",
+    "module": "Security / Authorization",
+    "tags": ["authorization proposal", "transaction authorization", "PFCG", "security", "USOBT"],
+    "keyFields": ["NAME", "OBJECT"],
+    "seeAlso": ["TSTC", "TSTCA", "TOBJ"]
+  },
+  {
+    "name": "TSTCA",
+    "title": "Authorization: Transaction to Authorization Check",
+    "description": "Stores transaction code to authorization object check relationships.",
+    "module": "Security / Authorization",
+    "tags": ["transaction authorization", "tcode auth", "security", "SE93", "TSTCA"],
+    "keyFields": ["TCODE"],
+    "seeAlso": ["TSTC", "USOBT", "TOBJ"]
+  },
+  {
+    "name": "TOBJ",
+    "title": "Authorization: Objects",
+    "description": "Stores authorization object definitions and class assignments.",
+    "module": "Security / Authorization",
+    "tags": ["authorization object", "auth object", "SU21", "security", "TOBJ"],
+    "keyFields": ["OBJCT"],
+    "seeAlso": ["USOBT", "UST12", "USR12"]
+  },
+  {
+    "name": "ADCP",
+    "title": "Business Address Services: Person to Address Assignment",
+    "description": "Links persons to addresses and communication-related assignment data in BAS.",
+    "module": "Business Address Services",
+    "tags": ["person address", "BAS", "address assignment", "ADCP", "address"],
+    "keyFields": ["PERSNUMBER", "ADDRNUMBER"],
+    "seeAlso": ["ADRP", "ADRC"]
+  },
+  {
+    "name": "ADRP",
+    "title": "Business Address Services: Persons",
+    "description": "Stores person master data used by SAP Business Address Services.",
+    "module": "Business Address Services",
+    "tags": ["person", "BAS", "address services", "ADRP", "master data"],
+    "keyFields": ["PERSNUMBER"],
+    "seeAlso": ["ADCP", "USR21"]
+  },
+  {
+    "name": "ADR2",
+    "title": "Business Address Services: Telephone Numbers",
+    "description": "Stores telephone numbers for Business Address Services address entries.",
+    "module": "Business Address Services",
+    "tags": ["telephone", "phone", "BAS", "address", "ADR2"],
+    "keyFields": ["ADDRNUMBER", "CONSNUMBER"],
+    "seeAlso": ["ADRC"]
+  },
+  {
+    "name": "ADRC",
+    "title": "Business Address Services: Addresses",
+    "description": "Central address table in Business Address Services used across many SAP applications.",
+    "module": "Business Address Services",
+    "tags": ["address", "BAS", "central address", "master data", "ADRC"],
+    "keyFields": ["ADDRNUMBER"],
+    "seeAlso": ["ADRP", "ADR2", "ADRCITY", "USR21"]
+  },
+  {
+    "name": "ADRCITY",
+    "title": "Business Address Services: Postal Cities",
+    "description": "Stores postal city information used in address handling.",
+    "module": "Business Address Services",
+    "tags": ["city", "postal city", "BAS", "address", "ADRCITY"],
+    "keyFields": ["CITY_CODE"],
+    "seeAlso": ["ADRC"]
+  },
+  {
+    "name": "BTCUEV",
+    "title": "Background Processing: User Events",
+    "description": "Stores event IDs used for background processing and job control.",
+    "module": "System Administration",
+    "tags": ["background job", "event", "SM36", "batch", "BTCUEV"],
+    "keyFields": ["EVENTID"],
+    "seeAlso": ["BTCSEV", "TBTCO"]
+  },
+  {
+    "name": "BTCSEV",
+    "title": "Background Processing: System Events",
+    "description": "Stores system event IDs used in background processing.",
+    "module": "System Administration",
+    "tags": ["background job", "system event", "SM36", "batch", "BTCSEV"],
+    "keyFields": ["EVENTID"],
+    "seeAlso": ["BTCUEV", "TBTCO"]
+  },
+  {
+    "name": "BTCJSTAT",
+    "title": "Background Processing: Job Runtime Statistics",
+    "description": "Stores runtime statistics and status-related information for background processing jobs.",
+    "module": "System Administration",
+    "tags": ["background job", "runtime statistics", "batch", "SM37", "BTCJSTAT"],
+    "keyFields": ["JOBCOUNT", "JOBNAME"],
+    "seeAlso": ["TBTCO", "TBTCP"]
+  },
+  {
+    "name": "CCCFLOW",
+    "title": "Client Administration: Client Copy Flow",
+    "description": "Stores control flow information for client copy activities.",
+    "module": "System Administration",
+    "tags": ["client copy", "system admin", "SCCL", "client", "CCCFLOW"],
+    "keyFields": ["MANDT"],
+    "seeAlso": []
+  },
+  {
+    "name": "SDBAC",
+    "title": "Database Administration: Database Actions",
+    "description": "Stores database action related administration information.",
+    "module": "System Administration",
+    "tags": ["database action", "DBA", "administration", "system", "SDBAC"],
+    "keyFields": ["ACTION"],
+    "seeAlso": []
+  },
+  {
+    "name": "VRSX",
+    "title": "Version Management: Central Table",
+    "description": "Central storage used by SAP version management for repository object versions.",
+    "module": "System Administration",
+    "tags": ["version management", "repository version", "SE39", "ABAP", "VRSX"],
+    "keyFields": ["OBJNAME", "OBJTYPE"],
+    "seeAlso": ["TADIR"]
+  },
+  {
+    "name": "CVERS",
+    "title": "System Administration: Software Component Versions",
+    "description": "Stores installed software component versions and release status in the SAP system.",
+    "module": "System Administration",
+    "tags": ["software component", "release", "system version", "SPAM", "CVERS"],
+    "keyFields": ["COMPONENT", "RELEASE", "EXTRELEASE"],
+    "seeAlso": ["PAT03"]
+  },
+  {
+    "name": "PAT03",
+    "title": "System Administration: Support / Hot Packages",
+    "description": "Stores package and support package related information in the system.",
+    "module": "System Administration",
+    "tags": ["support package", "hot package", "system version", "SPAM", "PAT03"],
+    "keyFields": ["PATCH"],
+    "seeAlso": ["CVERS"]
+  },
+  {
+    "name": "TPROT",
+    "title": "Table Logging: Logged Tables",
+    "description": "Stores configuration for tables that are subject to table logging.",
+    "module": "System Administration",
+    "tags": ["table logging", "logging", "audit", "system", "TPROT"],
+    "keyFields": ["TABNAME"],
+    "seeAlso": ["DBTABLOG", "DD09L"]
+  },
+  {
+    "name": "DBTABLOG",
+    "title": "Table Logging: Change Log Records",
+    "description": "Stores log records of changes made to logged tables.",
+    "module": "System Administration",
+    "tags": ["table log", "change log", "audit", "logging", "DBTABLOG"],
+    "keyFields": ["TABNAME", "LOGDATE", "LOGTIME"],
+    "seeAlso": ["TPROT"]
+  },
+  {
+    "name": "E070",
+    "title": "Transport Management: Requests and Tasks Header",
+    "description": "Header table for transport requests and tasks.",
+    "module": "Transports",
+    "tags": ["transport request", "task", "CTS", "SE09", "E070"],
+    "keyFields": ["TRKORR"],
+    "seeAlso": ["E071", "E070C", "TLOCK"]
+  },
+  {
+    "name": "E071",
+    "title": "Transport Management: Request Objects",
+    "description": "Stores repository and customizing objects contained in transport requests and tasks.",
+    "module": "Transports",
+    "tags": ["transport object", "CTS", "SE09", "request object", "E071"],
+    "keyFields": ["TRKORR", "PGMID", "OBJECT", "OBJ_NAME"],
+    "seeAlso": ["E070", "E071K"]
+  },
+  {
+    "name": "E071K",
+    "title": "Transport Management: Table Key Entries",
+    "description": "Stores transport key entries for transported table data.",
+    "module": "Transports",
+    "tags": ["transport key", "table transport", "CTS", "SE09", "E071K"],
+    "keyFields": ["TRKORR", "OBJNAME", "TABKEY"],
+    "seeAlso": ["E070", "E071"]
+  },
+  {
+    "name": "E070C",
+    "title": "Transport Management: Source and Target Client",
+    "description": "Stores source and target client information for transport requests and tasks.",
+    "module": "Transports",
+    "tags": ["transport client", "CTS", "source target", "SE09", "E070C"],
+    "keyFields": ["TRKORR"],
+    "seeAlso": ["E070"]
+  },
+  {
+    "name": "TLOCK",
+    "title": "Transport Management: Lock Table",
+    "description": "Stores transport-related lock information for repository and customizing objects.",
+    "module": "Transports",
+    "tags": ["transport lock", "lock table", "CTS", "change lock", "TLOCK"],
+    "keyFields": ["OBJECT", "OBJNAME"],
+    "seeAlso": ["E070", "E071"]
+  },
+  {
+    "name": "VARID",
+    "title": "Variants: Report Variants",
+    "description": "Stores report selection variants and their technical assignments.",
+    "module": "Variants",
+    "tags": ["variant", "report variant", "SE38", "selection screen", "VARID"],
+    "keyFields": ["REPORT", "VARIANT"],
+    "seeAlso": ["VARIT", "TVARV", "VARIS"]
+  },
+  {
+    "name": "VARIT",
+    "title": "Variants: Variant Texts",
+    "description": "Language-dependent descriptions for report variants.",
+    "module": "Variants",
+    "tags": ["variant text", "report variant", "SE38", "selection screen", "VARIT"],
+    "keyFields": ["REPORT", "VARIANT", "LANGU"],
+    "seeAlso": ["VARID"]
+  },
+  {
+    "name": "TVARV",
+    "title": "Variants: Selection Variables",
+    "description": "Stores variables used in report selection criteria and dynamic variant values.",
+    "module": "Variants",
+    "tags": ["selection variable", "TVARV", "variant variable", "selection screen", "variant"],
+    "keyFields": ["NAME", "TYPE", "NUMB"],
+    "seeAlso": ["VARID"]
+  },
+  {
+    "name": "VARI",
+    "title": "Variants: Variant Storage",
+    "description": "Stores variant content in a generic storage format similar to INDX-based persistence.",
+    "module": "Variants",
+    "tags": ["variant storage", "selection screen", "report variant", "VARI", "storage"],
+    "keyFields": ["REPORT", "VARIANT"],
+    "seeAlso": ["VARID", "VARIS"]
+  },
+  {
+    "name": "VARIS",
+    "title": "Variants: Variant to Selection Screen Assignment",
+    "description": "Stores assignment information between variants and selection screen definitions.",
+    "module": "Variants",
+    "tags": ["variant assignment", "selection screen", "report variant", "VARIS", "variant"],
+    "keyFields": ["REPORT", "VARIANT"],
+    "seeAlso": ["VARID", "VARI"]
+  },
+  {
+    "name": "SOFM",
+    "title": "SAP Office: Folder Contents",
+    "description": "Stores folder-related content information in SAP Office.",
+    "module": "SAP Office / Workflow",
+    "tags": ["SAP Office", "folder", "office", "workflow", "SOFM"],
+    "keyFields": ["FOLTP", "FOLYR", "FOLNO"],
+    "seeAlso": ["SOOS"]
+  },
+  {
+    "name": "SOOS",
+    "title": "SAP Office: Send Process",
+    "description": "Stores send process and send request information in SAP Office.",
+    "module": "SAP Office / Workflow",
+    "tags": ["SAP Office", "send process", "office", "workflow", "SOOS"],
+    "keyFields": ["OBJTP", "OBJYR", "OBJNO"],
+    "seeAlso": ["SOFM"]
+  },
+  {
+    "name": "SWWWIHEAD",
+    "title": "Workflow: Work Item Header",
+    "description": "Header table for SAP Business Workflow work items.",
+    "module": "SAP Office / Workflow",
+    "tags": ["workflow", "work item", "header", "SAP Business Workflow", "SWWWIHEAD"],
+    "keyFields": ["WI_ID"],
+    "seeAlso": ["PTREQ_STATUS_TRA"]
+  },
+  {
+    "name": "PTREQ_STATUS_TRA",
+    "title": "Workflow / HCM: Status Transfers",
+    "description": "Stores status transfer information used in leave request and approval related processes.",
+    "module": "SAP Office / Workflow",
+    "tags": ["status transfer", "workflow", "leave request", "HCM", "PTREQ_STATUS_TRA"],
+    "keyFields": ["REQUEST_ID", "STATUS_NO"],
+    "seeAlso": ["SWWWIHEAD"]
+  },
+  {
+    "name": "CDHDR",
+    "title": "Change Documents: Header",
+    "description": "Header table for SAP change documents. Commonly used to analyze who changed what and when.",
+    "module": "Cross Application",
+    "tags": ["change document", "header", "audit", "logging", "CDHDR"],
+    "keyFields": ["OBJECTCLAS", "OBJECTID", "CHANGENR"],
+    "seeAlso": ["CDPOS"]
+  },
+  {
+    "name": "CDPOS",
+    "title": "Change Documents: Items",
+    "description": "Item-level details for SAP change documents, including changed fields and old/new values.",
+    "module": "Cross Application",
+    "tags": ["change document item", "audit", "field change", "logging", "CDPOS"],
+    "keyFields": ["OBJECTCLAS", "OBJECTID", "CHANGENR", "TABNAME", "FNAME"],
+    "seeAlso": ["CDHDR"]
+  },
+  {
+    "name": "JCDS",
+    "title": "Status Management: Change Documents",
+    "description": "Stores change document history for system and user statuses.",
+    "module": "Cross Application",
+    "tags": ["status change", "system status", "user status", "audit", "JCDS"],
+    "keyFields": ["OBJNR", "STAT", "CHGNR"],
+    "seeAlso": ["JEST", "JSTO"]
+  },
+  {
+    "name": "JEST",
+    "title": "Status Management: Individual Object Status",
+    "description": "Stores active and inactive system/user statuses for objects.",
+    "module": "Cross Application",
+    "tags": ["status", "object status", "system status", "user status", "JEST"],
+    "keyFields": ["OBJNR", "STAT"],
+    "seeAlso": ["JCDS", "JSTO"]
+  },
+  {
+    "name": "JSTO",
+    "title": "Status Management: Status Object Information",
+    "description": "Stores header-level status object information used in SAP status management.",
+    "module": "Cross Application",
+    "tags": ["status object", "status management", "system status", "JSTO", "object"],
+    "keyFields": ["OBJNR"],
+    "seeAlso": ["JEST", "JCDS"]
+  },
+  {
+    "name": "ARCH_OBJ",
+    "title": "Archiving: Archiving Objects",
+    "description": "Stores definitions of archiving objects used in archiving and reorganization.",
+    "module": "System Administration",
+    "tags": ["archiving", "archiving object", "reorganization", "SARA", "ARCH_OBJ"],
+    "keyFields": ["ARCH_OBJ"],
+    "seeAlso": []
+  },
+  {
+    "name": "SNAP",
+    "title": "Runtime Errors: Short Dumps",
+    "description": "Stores snapshots for ABAP runtime errors and dumps.",
+    "module": "System Administration",
+    "tags": ["dump", "runtime error", "ST22", "snapshot", "SNAP"],
+    "keyFields": ["MANDT", "SEQNO"],
+    "seeAlso": []
+  },
+  {
+    "name": "TBTCO",
+    "title": "Background Processing: Job Overview",
+    "description": "Header/status overview table for SAP background jobs.",
+    "module": "System Administration",
+    "tags": ["background job", "job header", "SM37", "batch", "TBTCO"],
+    "keyFields": ["JOBNAME", "JOBCOUNT"],
+    "seeAlso": ["TBTCP", "BTCJSTAT", "BTCUEV"]
+  },
+  {
+    "name": "TBTCP",
+    "title": "Background Processing: Job Steps",
+    "description": "Stores individual job steps for SAP background jobs.",
+    "module": "System Administration",
+    "tags": ["background job step", "job step", "SM37", "batch", "TBTCP"],
+    "keyFields": ["JOBNAME", "JOBCOUNT", "STEPCOUNT"],
+    "seeAlso": ["TBTCO"]
+  },
+  {
+    "name": "DDSHPVAL5",
+    "title": "ABAP Dictionary: Personal Help Values",
+    "description": "Stores personal help values used in input help and user-specific search help scenarios.",
+    "module": "ABAP / Data Dictionary",
+    "tags": ["help value", "F4 help", "personal value", "DDIC", "DDSHPVAL5"],
+    "keyFields": ["UNAME"],
+    "seeAlso": []
+  },
+  {
+    "name": "TCURC",
+    "title": "Currency: Currency Codes",
+    "description": "Stores currency keys and core currency definitions.",
+    "module": "Cross Application",
+    "tags": ["currency", "currency code", "exchange", "finance", "TCURC"],
+    "keyFields": ["WAERS"],
+    "seeAlso": ["TCURT", "TCURR", "TCURX"]
+  },
+  {
+    "name": "TCURT",
+    "title": "Currency: Currency Texts",
+    "description": "Language-dependent descriptions for currency codes.",
+    "module": "Cross Application",
+    "tags": ["currency text", "currency code", "exchange", "finance", "TCURT"],
+    "keyFields": ["SPRSL", "WAERS"],
+    "seeAlso": ["TCURC"]
+  },
+  {
+    "name": "TCURR",
+    "title": "Currency: Exchange Rates",
+    "description": "Stores exchange rates between currencies for defined rate types and dates.",
+    "module": "Cross Application",
+    "tags": ["exchange rate", "currency conversion", "finance", "rate", "TCURR"],
+    "keyFields": ["KURST", "FCURR", "TCURR", "GDATU"],
+    "seeAlso": ["TCURC", "TCURF", "TCURX", "TCURV"]
+  },
+  {
+    "name": "TCURX",
+    "title": "Currency: Decimal Places",
+    "description": "Stores currency-specific decimal place settings.",
+    "module": "Cross Application",
+    "tags": ["currency decimals", "decimal places", "currency", "finance", "TCURX"],
+    "keyFields": ["CURRKEY"],
+    "seeAlso": ["TCURC", "TCURR"]
+  },
+  {
+    "name": "TCURF",
+    "title": "Currency: Conversion Factors",
+    "description": "Stores conversion factors used in currency conversion logic.",
+    "module": "Cross Application",
+    "tags": ["conversion factor", "currency conversion", "exchange", "finance", "TCURF"],
+    "keyFields": ["KURST", "FCURR", "TCURR"],
+    "seeAlso": ["TCURR"]
+  },
+  {
+    "name": "TCURV",
+    "title": "Currency: Exchange Rate Types",
+    "description": "Stores currency exchange rate type definitions and settings.",
+    "module": "Cross Application",
+    "tags": ["exchange rate type", "currency", "finance", "customizing", "TCURV"],
+    "keyFields": ["KURST"],
+    "seeAlso": ["TCURR"]
+  },
+  {
+    "name": "T247",
+    "title": "Calendar: Month Names",
+    "description": "Stores month names and short texts by language.",
+    "module": "Calendar / Time",
+    "tags": ["month name", "calendar", "date text", "time", "T247"],
+    "keyFields": ["SPRSL", "MNR"],
+    "seeAlso": ["T015M"]
+  },
+  {
+    "name": "T015M",
+    "title": "Calendar: Names of Months",
+    "description": "Stores names of months used in calendar-related texts.",
+    "module": "Calendar / Time",
+    "tags": ["month", "calendar", "date text", "time", "T015M"],
+    "keyFields": ["SPRAS", "MONAT"],
+    "seeAlso": ["T247"]
+  },
+  {
+    "name": "TFACD",
+    "title": "Calendar: Factory Calendar Definition",
+    "description": "Stores factory calendar definitions used in scheduling and date calculations.",
+    "module": "Calendar / Time",
+    "tags": ["factory calendar", "calendar", "working day", "time", "TFACD"],
+    "keyFields": ["IDENT"],
+    "seeAlso": ["THOCI", "TTZZ"]
+  },
+  {
+    "name": "TTZZ",
+    "title": "Time Zones: Time Zone Definitions",
+    "description": "Stores SAP time zone definitions.",
+    "module": "Calendar / Time",
+    "tags": ["time zone", "timezone", "date time", "calendar", "TTZZ"],
+    "keyFields": ["TZONE"],
+    "seeAlso": ["TTZD"]
+  },
+  {
+    "name": "TTZD",
+    "title": "Time Zones: Daylight Saving Rules",
+    "description": "Stores daylight saving time and summer time rule definitions.",
+    "module": "Calendar / Time",
+    "tags": ["daylight saving", "summer time", "timezone", "calendar", "TTZD"],
+    "keyFields": ["DSTGRP"],
+    "seeAlso": ["TTZZ"]
+  },
+  {
+    "name": "THOCI",
+    "title": "Calendar: Public Holiday Calendar Index",
+    "description": "Stores index information for public holiday calendars.",
+    "module": "Calendar / Time",
+    "tags": ["public holiday", "holiday calendar", "calendar", "time", "THOCI"],
+    "keyFields": ["IDENT"],
+    "seeAlso": ["TFACD"]
+  },
+  {
+    "name": "T012",
+    "title": "House Bank: Banks",
+    "description": "Stores house bank definitions by company code.",
+    "module": "Finance / Bank Accounting",
+    "tags": ["house bank", "bank", "finance", "FI", "T012"],
+    "keyFields": ["BUKRS", "HBKID"],
+    "seeAlso": ["T012A", "T012K", "BNKA", "TIBAN"]
+  },
+  {
+    "name": "T012A",
+    "title": "House Bank: Payment Method Assignment",
+    "description": "Stores assignment of payment methods to house banks and transfer-related configuration.",
+    "module": "Finance / Bank Accounting",
+    "tags": ["house bank", "payment method", "bank transfer", "FI", "T012A"],
+    "keyFields": ["BUKRS", "HBKID"],
+    "seeAlso": ["T012", "T012B"]
+  },
+  {
+    "name": "T012B",
+    "title": "House Bank: Payment Method Details",
+    "description": "Stores additional payment method assignment details for house bank processing.",
+    "module": "Finance / Bank Accounting",
+    "tags": ["house bank", "payment method", "bank transfer", "FI", "T012B"],
+    "keyFields": ["BUKRS", "HBKID"],
+    "seeAlso": ["T012", "T012A"]
+  },
+  {
+    "name": "T012C",
+    "title": "House Bank: Bank Transaction Terms",
+    "description": "Stores terms and settings for bank transactions in house bank processing.",
+    "module": "Finance / Bank Accounting",
+    "tags": ["house bank", "bank transaction", "finance", "FI", "T012C"],
+    "keyFields": ["BUKRS", "HBKID"],
+    "seeAlso": ["T012"]
+  },
+  {
+    "name": "T012D",
+    "title": "House Bank: DME and Foreign Payment Parameters",
+    "description": "Stores parameters for DME processing and foreign payment methods.",
+    "module": "Finance / Bank Accounting",
+    "tags": ["DME", "foreign payment", "house bank", "finance", "T012D"],
+    "keyFields": ["BUKRS", "HBKID"],
+    "seeAlso": ["T012"]
+  },
+  {
+    "name": "T012E",
+    "title": "House Bank: EDI-Compatible House Banks",
+    "description": "Stores EDI-related compatibility data for house banks and payment methods.",
+    "module": "Finance / Bank Accounting",
+    "tags": ["EDI", "house bank", "payment method", "finance", "T012E"],
+    "keyFields": ["BUKRS", "HBKID"],
+    "seeAlso": ["T012"]
+  },
+  {
+    "name": "T012K",
+    "title": "House Bank: Bank Accounts",
+    "description": "Stores house bank account definitions for company codes and house banks.",
+    "module": "Finance / Bank Accounting",
+    "tags": ["bank account", "house bank account", "finance", "FI", "T012K"],
+    "keyFields": ["BUKRS", "HBKID", "HKTID"],
+    "seeAlso": ["T012", "BNKA", "TIBAN"]
+  },
+  {
+    "name": "T012O",
+    "title": "House Bank: Additional Bank Account Details",
+    "description": "Stores additional detailed data for bank accounts in house bank scenarios.",
+    "module": "Finance / Bank Accounting",
+    "tags": ["bank account detail", "house bank", "finance", "FI", "T012O"],
+    "keyFields": ["BUKRS", "HBKID", "HKTID"],
+    "seeAlso": ["T012K"]
+  },
+  {
+    "name": "BNKA",
+    "title": "Bank Master: Bank Keys",
+    "description": "Central bank master table storing bank key and bank address data.",
+    "module": "Finance / Bank Accounting",
+    "tags": ["bank master", "bank key", "finance", "FI", "BNKA"],
+    "keyFields": ["BANKS", "BANKL"],
+    "seeAlso": ["T012", "T012K", "TIBAN"]
+  },
+  {
+    "name": "TIBAN",
+    "title": "Bank Master: IBAN",
+    "description": "Stores IBAN information connected to bank master and account data.",
+    "module": "Finance / Bank Accounting",
+    "tags": ["IBAN", "bank account", "finance", "FI", "TIBAN"],
+    "keyFields": ["BANKS", "BANKL", "BANKN"],
+    "seeAlso": ["BNKA", "T012K"]
+  },
+  {
+    "name": "T005",
+    "title": "Customizing: Countries",
+    "description": "Country definitions used across SAP customizing and master data.",
+    "module": "Customizing",
+    "tags": ["country", "customizing", "localization", "T005"],
+    "keyFields": ["LAND1"],
+    "seeAlso": ["T005T", "TTZZ"]
+  },
+  {
+    "name": "T006",
+    "title": "Customizing: Units of Measure",
+    "description": "Defines units of measure used across logistics and master data.",
+    "module": "Customizing",
+    "tags": ["unit of measure", "UoM", "customizing", "T006"],
+    "keyFields": ["MSEHI"],
+    "seeAlso": ["MARM"]
+  },
+  {
+    "name": "TTZDF",
+    "title": "Calendar: Summer Time Rules (Fixed Annual Dates)",
+    "description": "Stores fixed-date daylight saving time rules for time zone configuration.",
+    "module": "Calendar / Time",
+    "tags": ["summer time", "daylight saving", "time zone", "TTZDF"],
+    "keyFields": ["RULESET"],
+    "seeAlso": ["TTZZ", "TTZD", "TTZDV", "TTZDT"]
+  },
+  {
+    "name": "TTZDV",
+    "title": "Calendar: Summer Time Rules (Variable Dates)",
+    "description": "Stores variable-date daylight saving time rules for time zone configuration.",
+    "module": "Calendar / Time",
+    "tags": ["summer time", "daylight saving", "time zone", "TTZDV"],
+    "keyFields": ["RULESET"],
+    "seeAlso": ["TTZZ", "TTZD", "TTZDF", "TTZDT"]
+  },
+  {
+    "name": "TTZDT",
+    "title": "Calendar: Summer Time Rule Texts",
+    "description": "Language-dependent texts for daylight saving time rules.",
+    "module": "Calendar / Time",
+    "tags": ["summer time", "text", "time zone", "TTZDT"],
+    "keyFields": ["SPRAS", "RULESET"],
+    "seeAlso": ["TTZD", "TTZDF", "TTZDV"]
+  },
+  {
+    "name": "TTZ5",
+    "title": "Calendar: Assign Time Zones to Countries",
+    "description": "Maps countries to time zones.",
+    "module": "Calendar / Time",
+    "tags": ["time zone", "country", "calendar", "TTZ5"],
+    "keyFields": ["LAND1", "TZONE"],
+    "seeAlso": ["TTZZ", "TTZ5S"]
+  },
+  {
+    "name": "TTZ5S",
+    "title": "Calendar: Assign Time Zones to Regions",
+    "description": "Maps regional subdivisions to time zones.",
+    "module": "Calendar / Time",
+    "tags": ["time zone", "region", "calendar", "TTZ5S"],
+    "keyFields": ["LAND1", "BLAND", "TZONE"],
+    "seeAlso": ["TTZ5", "TTZZ"]
+  },
+  {
+    "name": "T880",
+    "title": "Enterprise Structure: Company",
+    "description": "Stores global company definitions in enterprise structure.",
+    "module": "Enterprise Structure",
+    "tags": ["company", "enterprise structure", "FI", "T880"],
+    "keyFields": ["RCOMP"],
+    "seeAlso": ["T001"]
+  },
+  {
+    "name": "T499S",
+    "title": "Enterprise Structure: Locations",
+    "description": "Stores location definitions used in logistics and maintenance contexts.",
+    "module": "Enterprise Structure",
+    "tags": ["location", "enterprise structure", "logistics", "T499S"],
+    "keyFields": ["STAND"],
+    "seeAlso": []
+  },
+  {
+    "name": "TSPA",
+    "title": "Enterprise Structure: Divisions",
+    "description": "Defines divisions used in Sales and Distribution.",
+    "module": "Enterprise Structure",
+    "tags": ["division", "SD", "enterprise structure", "TSPA"],
+    "keyFields": ["SPART"],
+    "seeAlso": ["TVKOS", "TVTA"]
+  },
+  {
+    "name": "TVKO",
+    "title": "Enterprise Structure: Sales Organization",
+    "description": "Stores sales organizations and their company code relationships.",
+    "module": "Enterprise Structure",
+    "tags": ["sales organization", "SD", "enterprise structure", "TVKO"],
+    "keyFields": ["VKORG"],
+    "seeAlso": ["TVKOV", "TVKOS", "TVTA"]
+  },
+  {
+    "name": "TVTW",
+    "title": "Enterprise Structure: Distribution Channels",
+    "description": "Defines distribution channels used in SD.",
+    "module": "Enterprise Structure",
+    "tags": ["distribution channel", "SD", "enterprise structure", "TVTW"],
+    "keyFields": ["VTWEG"],
+    "seeAlso": ["TVKOV", "TVTA"]
+  },
+  {
+    "name": "TVBUR",
+    "title": "Enterprise Structure: Sales Offices",
+    "description": "Defines sales offices used in SD organizational assignments.",
+    "module": "Enterprise Structure",
+    "tags": ["sales office", "SD", "enterprise structure", "TVBUR"],
+    "keyFields": ["VKBUR"],
+    "seeAlso": ["TVKBT", "TVKBZ", "TVBVK"]
+  },
+  {
+    "name": "TVKBT",
+    "title": "Enterprise Structure: Sales Office Texts",
+    "description": "Language-dependent texts for sales offices.",
+    "module": "Enterprise Structure",
+    "tags": ["sales office", "text", "SD", "TVKBT"],
+    "keyFields": ["SPRAS", "VKBUR"],
+    "seeAlso": ["TVBUR"]
+  },
+  {
+    "name": "TVKGR",
+    "title": "Enterprise Structure: Sales Groups",
+    "description": "Defines sales groups used in SD.",
+    "module": "Enterprise Structure",
+    "tags": ["sales group", "SD", "enterprise structure", "TVKGR"],
+    "keyFields": ["VKGRP"],
+    "seeAlso": ["TVGRT", "TVBVK"]
+  },
+  {
+    "name": "TVGRT",
+    "title": "Enterprise Structure: Sales Group Texts",
+    "description": "Language-dependent texts for sales groups.",
+    "module": "Enterprise Structure",
+    "tags": ["sales group", "text", "SD", "TVGRT"],
+    "keyFields": ["SPRAS", "VKGRP"],
+    "seeAlso": ["TVKGR"]
+  },
+  {
+    "name": "T171T",
+    "title": "Enterprise Structure: Sales District Texts",
+    "description": "Language-dependent texts for sales districts.",
+    "module": "Enterprise Structure",
+    "tags": ["sales district", "text", "SD", "T171T"],
+    "keyFields": ["SPRAS", "BZIRK"],
+    "seeAlso": []
+  },
+  {
+    "name": "T001L",
+    "title": "Enterprise Structure: Storage Locations",
+    "description": "Defines storage locations within plants.",
+    "module": "Enterprise Structure",
+    "tags": ["storage location", "MM", "plant", "T001L"],
+    "keyFields": ["WERKS", "LGORT"],
+    "seeAlso": ["T320"]
+  },
+  {
+    "name": "T024E",
+    "title": "Enterprise Structure: Purchasing Organizations",
+    "description": "Defines purchasing organizations and their assignments.",
+    "module": "Enterprise Structure",
+    "tags": ["purchasing organization", "MM", "enterprise structure", "T024E"],
+    "keyFields": ["EKORG"],
+    "seeAlso": ["T024W"]
+  },
+  {
+    "name": "T3001",
+    "title": "Enterprise Structure: Warehouse Numbers",
+    "description": "Defines warehouse numbers for Warehouse Management.",
+    "module": "Enterprise Structure",
+    "tags": ["warehouse number", "WM", "enterprise structure", "T3001"],
+    "keyFields": ["LGNUM"],
+    "seeAlso": ["T320"]
+  },
+  {
+    "name": "TVST",
+    "title": "Enterprise Structure: Shipping Points",
+    "description": "Defines shipping points in SD and LE.",
+    "module": "Enterprise Structure",
+    "tags": ["shipping point", "SD", "LE", "TVST"],
+    "keyFields": ["VSTEL"],
+    "seeAlso": ["TVSWZ"]
+  },
+  {
+    "name": "TVLA",
+    "title": "Enterprise Structure: Loading Points",
+    "description": "Defines loading points used in shipping processes.",
+    "module": "Enterprise Structure",
+    "tags": ["loading point", "shipping", "SD", "TVLA"],
+    "keyFields": ["LADGR"],
+    "seeAlso": ["TVST"]
+  },
+  {
+    "name": "TTDS",
+    "title": "Enterprise Structure: Transportation Planning Points",
+    "description": "Stores transportation-related organizational settings.",
+    "module": "Enterprise Structure",
+    "tags": ["transportation", "shipping", "enterprise structure", "TTDS"],
+    "keyFields": ["TPLST"],
+    "seeAlso": []
+  },
+  {
+    "name": "TKA02",
+    "title": "Enterprise Structure: Assign Company Code to Controlling Area",
+    "description": "Stores assignments between company codes and controlling areas.",
+    "module": "Enterprise Structure",
+    "tags": ["controlling area", "company code", "CO", "TKA02"],
+    "keyFields": ["KOKRS", "BUKRS"],
+    "seeAlso": ["TKA01", "T001"]
+  },
+  {
+    "name": "T001K",
+    "title": "Enterprise Structure: Assign Plant to Company Code",
+    "description": "Stores valuation area and plant to company code assignments.",
+    "module": "Enterprise Structure",
+    "tags": ["plant assignment", "valuation area", "company code", "T001K"],
+    "keyFields": ["BWKEY", "BUKRS"],
+    "seeAlso": ["T001", "T001W"]
+  },
+  {
+    "name": "TVKOV",
+    "title": "Enterprise Structure: Distribution Channel to Sales Organization",
+    "description": "Assignment between distribution channels and sales organizations.",
+    "module": "Enterprise Structure",
+    "tags": ["distribution channel", "sales organization", "SD", "TVKOV"],
+    "keyFields": ["VKORG", "VTWEG"],
+    "seeAlso": ["TVKO", "TVTW", "TVTA"]
+  },
+  {
+    "name": "TVKOS",
+    "title": "Enterprise Structure: Division to Sales Organization",
+    "description": "Assignment between divisions and sales organizations.",
+    "module": "Enterprise Structure",
+    "tags": ["division", "sales organization", "SD", "TVKOS"],
+    "keyFields": ["VKORG", "SPART"],
+    "seeAlso": ["TVKO", "TSPA", "TVTA"]
+  },
+  {
+    "name": "TVTA",
+    "title": "Enterprise Structure: Sales Area",
+    "description": "Defines valid sales area combinations of sales organization, distribution channel, and division.",
+    "module": "Enterprise Structure",
+    "tags": ["sales area", "SD", "enterprise structure", "TVTA"],
+    "keyFields": ["VKORG", "VTWEG", "SPART"],
+    "seeAlso": ["TVKO", "TVTW", "TSPA"]
+  },
+  {
+    "name": "TVKBZ",
+    "title": "Enterprise Structure: Sales Office to Sales Area",
+    "description": "Assigns sales offices to sales areas.",
+    "module": "Enterprise Structure",
+    "tags": ["sales office", "sales area", "SD", "TVKBZ"],
+    "keyFields": ["VKORG", "VTWEG", "SPART", "VKBUR"],
+    "seeAlso": ["TVBUR", "TVTA"]
+  },
+  {
+    "name": "TVBVK",
+    "title": "Enterprise Structure: Sales Group to Sales Office",
+    "description": "Assigns sales groups to sales offices.",
+    "module": "Enterprise Structure",
+    "tags": ["sales group", "sales office", "SD", "TVBVK"],
+    "keyFields": ["VKBUR", "VKGRP"],
+    "seeAlso": ["TVBUR", "TVKGR"]
+  },
+  {
+    "name": "TVKWZ",
+    "title": "Enterprise Structure: Plants to Sales Organization",
+    "description": "Assigns plants to sales organizations and distribution channels.",
+    "module": "Enterprise Structure",
+    "tags": ["plant", "sales organization", "SD", "TVKWZ"],
+    "keyFields": ["WERKS", "VKORG", "VTWEG"],
+    "seeAlso": ["T001W", "TVKO", "TVTW"]
+  },
+  {
+    "name": "T024W",
+    "title": "Enterprise Structure: Plant to Purchasing Organization",
+    "description": "Assignment between plants and purchasing organizations.",
+    "module": "Enterprise Structure",
+    "tags": ["plant", "purchasing organization", "MM", "T024W"],
+    "keyFields": ["WERKS", "EKORG"],
+    "seeAlso": ["T001W", "T024E"]
+  },
+  {
+    "name": "TVSWZ",
+    "title": "Enterprise Structure: Shipping Point to Plant",
+    "description": "Assignment of shipping points to plants.",
+    "module": "Enterprise Structure",
+    "tags": ["shipping point", "plant", "SD", "TVSWZ"],
+    "keyFields": ["VSTEL", "WERKS"],
+    "seeAlso": ["TVST", "T001W"]
+  },
+  {
+    "name": "T320",
+    "title": "Enterprise Structure: MM Storage Location to WM Warehouse",
+    "description": "Assignment of MM storage locations to WM warehouse numbers.",
+    "module": "Enterprise Structure",
+    "tags": ["storage location", "warehouse", "MM", "WM", "T320"],
+    "keyFields": ["WERKS", "LGORT", "LGNUM"],
+    "seeAlso": ["T001L", "T3001"]
+  },
+  {
+    "name": "T004",
+    "title": "FI Customizing: Chart of Accounts",
+    "description": "Stores chart of accounts definitions.",
+    "module": "Finance (FI)",
+    "tags": ["chart of accounts", "FI", "customizing", "T004"],
+    "keyFields": ["KTOPL"],
+    "seeAlso": ["SKA1"]
+  },
+  {
+    "name": "T077S",
+    "title": "FI Customizing: G/L Account Groups",
+    "description": "Defines account groups for general ledger accounts.",
+    "module": "Finance (FI)",
+    "tags": ["account group", "G/L", "FI", "T077S"],
+    "keyFields": ["KTOPL", "KTOKS"],
+    "seeAlso": ["SKA1"]
+  },
+  {
+    "name": "T009",
+    "title": "FI Customizing: Fiscal Year Variants",
+    "description": "Stores fiscal year variant definitions.",
+    "module": "Finance (FI)",
+    "tags": ["fiscal year variant", "FI", "customizing", "T009"],
+    "keyFields": ["PERIV"],
+    "seeAlso": ["T001"]
+  },
+  {
+    "name": "T014",
+    "title": "FI Customizing: Credit Control Areas",
+    "description": "Defines credit control areas used in credit management.",
+    "module": "Finance (FI)",
+    "tags": ["credit control area", "FI", "customizing", "T014"],
+    "keyFields": ["KKBER"],
+    "seeAlso": []
+  },
+  {
+    "name": "T010O",
+    "title": "FI Customizing: Posting Period Variant",
+    "description": "Stores posting period variant settings.",
+    "module": "Finance (FI)",
+    "tags": ["posting period", "FI", "customizing", "T010O"],
+    "keyFields": ["OPVAR"],
+    "seeAlso": ["T010P", "T001B"]
+  },
+  {
+    "name": "T010P",
+    "title": "FI Customizing: Posting Period Variant Names",
+    "description": "Language-dependent names for posting period variants.",
+    "module": "Finance (FI)",
+    "tags": ["posting period", "text", "FI", "T010P"],
+    "keyFields": ["SPRAS", "OPVAR"],
+    "seeAlso": ["T010O"]
+  },
+  {
+    "name": "T001B",
+    "title": "FI Customizing: Permitted Posting Periods",
+    "description": "Stores allowed posting periods per account type and company code.",
+    "module": "Finance (FI)",
+    "tags": ["posting period", "FI", "period control", "T001B"],
+    "keyFields": ["BUKRS", "MKOAR", "BKONT"],
+    "seeAlso": ["T010O", "T010P"]
+  },
+  {
+    "name": "T003",
+    "title": "FI Customizing: Document Types",
+    "description": "Defines FI document types and number range behavior.",
+    "module": "Finance (FI)",
+    "tags": ["document type", "FI", "customizing", "T003"],
+    "keyFields": ["BLART"],
+    "seeAlso": ["BKPF"]
+  },
+  {
+    "name": "T007A",
+    "title": "Tax: Tax Keys",
+    "description": "Stores tax code and tax key related customizing data.",
+    "module": "Cross Application",
+    "tags": ["tax key", "tax code", "customizing", "T007A"],
+    "keyFields": ["MWSKZ"],
+    "seeAlso": []
+  },
+  {
+    "name": "T134",
+    "title": "Material Master: Material Types",
+    "description": "Defines material types used in the material master.",
+    "module": "Materials Management (MM)",
+    "tags": ["material type", "customizing", "MM", "T134"],
+    "keyFields": ["MTART"],
+    "seeAlso": ["MARA"]
+  },
+  {
+    "name": "T179",
+    "title": "Material Master: Product Hierarchies",
+    "description": "Stores product hierarchy definitions.",
+    "module": "Materials Management (MM)",
+    "tags": ["product hierarchy", "material", "MM", "T179"],
+    "keyFields": ["PRODH"],
+    "seeAlso": ["T179T"]
+  },
+  {
+    "name": "T179T",
+    "title": "Material Master: Product Hierarchy Texts",
+    "description": "Language-dependent texts for product hierarchies.",
+    "module": "Materials Management (MM)",
+    "tags": ["product hierarchy", "text", "MM", "T179T"],
+    "keyFields": ["SPRAS", "PRODH"],
+    "seeAlso": ["T179"]
+  },
+  {
+    "name": "TJ02T",
+    "title": "Status Management: Status Texts",
+    "description": "Language-dependent texts for system statuses.",
+    "module": "Cross Application",
+    "tags": ["status text", "system status", "cross application", "TJ02T"],
+    "keyFields": ["SPRAS", "ISTAT"],
+    "seeAlso": ["JEST", "JCDS"]
+  },
+  {
+    "name": "TINC",
+    "title": "SD Customizing: Incoterms",
+    "description": "Stores incoterms-related customizing for customer and sales processes.",
+    "module": "Sales and Distribution (SD)",
+    "tags": ["incoterms", "shipping", "SD", "TINC"],
+    "keyFields": ["INCO1"],
+    "seeAlso": []
+  },
+  {
+    "name": "TVFK",
+    "title": "SD Customizing: Billing Document Types",
+    "description": "Defines billing document types in SD.",
+    "module": "Sales and Distribution (SD)",
+    "tags": ["billing type", "billing document type", "SD", "TVFK"],
+    "keyFields": ["FKART"],
+    "seeAlso": ["VBRK"]
+  },
+  {
+    "name": "T390",
+    "title": "PM Customizing: Shop Papers Print Control",
+    "description": "Stores print control settings for PM shop papers.",
+    "module": "Plant Maintenance (PM)",
+    "tags": ["shop papers", "print control", "PM", "T390"],
+    "keyFields": ["DRUCK"],
+    "seeAlso": []
+  },
+  {
+    "name": "TLIBG",
+    "title": "Repository: Function Group Responsible Person",
+    "description": "Stores responsible person assignments for function groups.",
+    "module": "ABAP / Repository",
+    "tags": ["function group", "responsible person", "repository", "TLIBG"],
+    "keyFields": ["AREA"],
+    "seeAlso": ["TFDIR", "TLIBT"]
+  },
+  {
+    "name": "TLIBT",
+    "title": "Repository: Function Group Short Texts",
+    "description": "Language-dependent short texts for function groups.",
+    "module": "ABAP / Repository",
+    "tags": ["function group", "text", "repository", "TLIBT"],
+    "keyFields": ["SPRAS", "AREA"],
+    "seeAlso": ["TLIBG"]
+  },
+  {
+    "name": "TDEVCT",
+    "title": "Repository: Package Texts",
+    "description": "Language-dependent texts for development classes or packages.",
+    "module": "ABAP / Repository",
+    "tags": ["package text", "development class", "repository", "TDEVCT"],
+    "keyFields": ["SPRAS", "DEVCLASS"],
+    "seeAlso": ["TDEVC"]
+  },
+  {
+    "name": "USR11",
+    "title": "User Administration: Profile Texts",
+    "description": "Stores profile text information for user master profiles.",
+    "module": "Security / User Administration",
+    "tags": ["profile text", "user", "security", "USR11"],
+    "keyFields": ["PROFILE"],
+    "seeAlso": ["USR10", "UST04"]
+  },
+  {
+    "name": "USR13",
+    "title": "Authorization: Authorization Short Texts",
+    "description": "Stores short texts for authorizations.",
+    "module": "Security / Authorization",
+    "tags": ["authorization text", "security", "USR13"],
+    "keyFields": ["AUTH"],
+    "seeAlso": ["UST12", "USR12"]
+  },
+  {
+    "name": "TOBC",
+    "title": "Authorization: Authorization Object Classes",
+    "description": "Stores authorization object class definitions.",
+    "module": "Security / Authorization",
+    "tags": ["authorization object class", "security", "TOBC"],
+    "keyFields": ["OCLSS"],
+    "seeAlso": ["TOBJ"]
+  },
+  {
+    "name": "TPRPROF",
+    "title": "Authorization: Profile Name for Activity Group",
+    "description": "Links generated profiles to activity groups or roles.",
+    "module": "Security / Authorization",
+    "tags": ["profile", "activity group", "role", "security", "TPRPROF"],
+    "keyFields": ["AGR_NAME", "PROFILE"],
+    "seeAlso": ["UST04", "USR10"]
+  },
+  {
+    "name": "APQD",
+    "title": "Batch Input: Queue Data",
+    "description": "Stores batch input queue data records.",
+    "module": "System Administration",
+    "tags": ["batch input", "queue", "BDC", "APQD"],
+    "keyFields": ["QID"],
+    "seeAlso": ["APQI"]
+  },
+  {
+    "name": "APQI",
+    "title": "Batch Input: Queue Information",
+    "description": "Stores batch input queue header and status information.",
+    "module": "System Administration",
+    "tags": ["batch input", "queue", "BDC", "APQI"],
+    "keyFields": ["QID"],
+    "seeAlso": ["APQD"]
+  },
+  {
+    "name": "TNAPR",
+    "title": "Message Control: Processing Programs",
+    "description": "Defines processing programs and forms for output determination.",
+    "module": "Cross Application",
+    "tags": ["message control", "output determination", "TNAPR"],
+    "keyFields": ["KAPPL", "KSCHL", "NACHA"],
+    "seeAlso": ["NAST", "NACH"]
+  },
+  {
+    "name": "NACH",
+    "title": "Message Control: Printer Determination",
+    "description": "Stores printer determination data for output processing.",
+    "module": "Cross Application",
+    "tags": ["printer", "output", "message control", "NACH"],
+    "keyFields": ["KAPPL", "KSCHL"],
+    "seeAlso": ["NAST", "TNAPR"]
+  },
+  {
+    "name": "EDIDD",
+    "title": "EDI / IDoc: Data Record",
+    "description": "Stores segment data records for IDocs.",
+    "module": "EDI / IDoc",
+    "tags": ["IDoc", "EDI", "segment", "EDIDD"],
+    "keyFields": ["DOCNUM", "SEGNUM"],
+    "seeAlso": ["EDIDC", "EDIDS", "EDID2"]
+  },
+  {
+    "name": "EDID2",
+    "title": "EDI / IDoc: Data Record 3.0 Version",
+    "description": "Legacy version of IDoc data records for older IDoc formats.",
+    "module": "EDI / IDoc",
+    "tags": ["IDoc", "EDI", "legacy", "EDID2"],
+    "keyFields": ["DOCNUM", "SEGNUM"],
+    "seeAlso": ["EDIDD"]
+  },
+  {
+    "name": "EDIDS",
+    "title": "EDI / IDoc: Status Record",
+    "description": "Stores processing statuses for IDocs.",
+    "module": "EDI / IDoc",
+    "tags": ["IDoc", "EDI", "status", "EDIDS"],
+    "keyFields": ["DOCNUM", "STATUS", "LOGDAT", "LOGTIM"],
+    "seeAlso": ["EDIDC", "EDIDD"]
+  },
+  {
+    "name": "EDPAR",
+    "title": "EDI / IDoc: Partner Number Conversion",
+    "description": "Stores conversions between external and internal partner numbers for EDI.",
+    "module": "EDI / IDoc",
+    "tags": ["EDI", "partner conversion", "IDoc", "EDPAR"],
+    "keyFields": ["PARVW", "EXPNR"],
+    "seeAlso": []
+  },
+  {
+    "name": "EDPVW",
+    "title": "EDI / IDoc: Partner Types",
+    "description": "Defines EDI partner types used in partner profiles.",
+    "module": "EDI / IDoc",
+    "tags": ["EDI", "partner type", "IDoc", "EDPVW"],
+    "keyFields": ["PARVW"],
+    "seeAlso": ["EDPI1", "EDPO1"]
+  },
+  {
+    "name": "EDPI1",
+    "title": "EDI / IDoc: Inbound Partner Profile",
+    "description": "Stores inbound EDI partner profile settings.",
+    "module": "EDI / IDoc",
+    "tags": ["EDI", "partner profile", "inbound", "EDPI1"],
+    "keyFields": ["RCVPRT", "RCVPRN", "MESTYP"],
+    "seeAlso": ["EDPO1", "EDPVW"]
+  },
+  {
+    "name": "EDPO1",
+    "title": "EDI / IDoc: Outbound Partner Profile",
+    "description": "Stores outbound EDI partner profile settings.",
+    "module": "EDI / IDoc",
+    "tags": ["EDI", "partner profile", "outbound", "EDPO1"],
+    "keyFields": ["SNDPRT", "SNDPRN", "MESTYP"],
+    "seeAlso": ["EDPO2", "EDPO3", "EDPI1"]
+  },
+  {
+    "name": "EDPO2",
+    "title": "EDI / IDoc: Outbound Partner Profile Additional Data",
+    "description": "Additional outbound EDI partner profile data.",
+    "module": "EDI / IDoc",
+    "tags": ["EDI", "partner profile", "outbound", "EDPO2"],
+    "keyFields": ["SNDPRT", "SNDPRN", "MESTYP"],
+    "seeAlso": ["EDPO1", "EDPO3"]
+  },
+  {
+    "name": "EDPO3",
+    "title": "EDI / IDoc: Outbound Partner Profile Detail Data",
+    "description": "Detailed outbound EDI partner profile settings.",
+    "module": "EDI / IDoc",
+    "tags": ["EDI", "partner profile", "outbound", "EDPO3"],
+    "keyFields": ["SNDPRT", "SNDPRN", "MESTYP"],
+    "seeAlso": ["EDPO1", "EDPO2"]
+  },
+  {
+    "name": "SERPTREE",
+    "title": "Reporting: Tree Structure",
+    "description": "Stores reporting tree structures.",
+    "module": "Cross Application",
+    "tags": ["reporting tree", "hierarchy", "SERPTREE"],
+    "keyFields": ["TREEID", "NODEID"],
+    "seeAlso": []
+  },
+  {
+    "name": "TMC4",
+    "title": "LIS: Info Structure Control Elements",
+    "description": "Stores global control elements for LIS information structures.",
+    "module": "Logistics Information System",
+    "tags": ["LIS", "info structure", "control", "TMC4"],
+    "keyFields": ["MCINF"],
+    "seeAlso": []
+  },
+  {
+    "name": "MAPE",
+    "title": "Material Master: Export Control File",
+    "description": "Stores export control related data for material master records.",
+    "module": "Materials Management (MM)",
+    "tags": ["material master", "export control", "MM", "MAPE"],
+    "keyFields": ["MATNR"],
+    "seeAlso": ["MARA", "MARC"]
+  },
+  {
+    "name": "MLGN",
+    "title": "Material Master: WM Inventory Data",
+    "description": "Warehouse Management data for materials at warehouse number level.",
+    "module": "Warehouse Management (WM)",
+    "tags": ["material master", "warehouse management", "warehouse number", "WM", "MLGN"],
+    "keyFields": ["MATNR", "LGNUM"],
+    "seeAlso": ["MLGT", "MARC", "LQUA"]
+  },
+  {
+    "name": "MLGT",
+    "title": "Material Master: WM Storage Type Data",
+    "description": "Warehouse Management storage type data for materials.",
+    "module": "Warehouse Management (WM)",
+    "tags": ["material master", "warehouse management", "storage type", "WM", "MLGT"],
+    "keyFields": ["MATNR", "LGNUM", "LGTYP"],
+    "seeAlso": ["MLGN", "LQUA"]
+  },
+  {
+    "name": "MDIP",
+    "title": "Material Master: MRP Profile Field Contents",
+    "description": "Stores field content definitions and values related to MRP profiles for materials.",
+    "module": "Production Planning (PP)",
+    "tags": ["MRP", "MRP profile", "material master", "PP", "MDIP"],
+    "keyFields": ["DISPR"],
+    "seeAlso": ["MDMA", "DBVM", "MARC"]
+  },
+  {
+    "name": "MKOP",
+    "title": "Consignment: Price Segment",
+    "description": "Stores consignment price segment data in older SAP versions.",
+    "module": "Materials Management (MM)",
+    "tags": ["consignment", "price", "older SAP", "MM", "MKOP"],
+    "keyFields": ["MATNR", "WERKS", "LIFNR"],
+    "seeAlso": ["EINA", "EINE", "RKWA"]
+  },
+  {
+    "name": "EBEW",
+    "title": "Valuation: Sales Order Stock",
+    "description": "Valuation data for sales order stock.",
+    "module": "Inventory Management (IM)",
+    "tags": ["valuation", "sales order stock", "inventory", "EBEW"],
+    "keyFields": ["MATNR", "BWKEY", "BWTAR", "VBELN", "POSNR"],
+    "seeAlso": ["MBEW", "MSKAH", "QBEW"]
+  },
+  {
+    "name": "QBEW",
+    "title": "Valuation: Project Stock",
+    "description": "Valuation data for project stock.",
+    "module": "Inventory Management (IM)",
+    "tags": ["valuation", "project stock", "inventory", "QBEW"],
+    "keyFields": ["MATNR", "BWKEY", "BWTAR", "PSPNR"],
+    "seeAlso": ["MBEW", "MSPRH", "EBEW"]
+  },
+  {
+    "name": "DVER",
+    "title": "Material Master: Consumption",
+    "description": "Historical or aggregated material consumption data used in planning and analysis.",
+    "module": "Materials Management (MM)",
+    "tags": ["material master", "consumption", "planning", "MM", "DVER"],
+    "keyFields": ["MATNR", "WERKS", "GJAHR", "MONAT"],
+    "seeAlso": ["MVER", "MARC"]
+  },
+  {
+    "name": "MVKE",
+    "title": "Material Master: Sales Data",
+    "description": "Sales organization and distribution channel data for materials.",
+    "module": "Sales and Distribution (SD)",
+    "tags": ["material master", "sales data", "SD", "MVKE"],
+    "keyFields": ["MATNR", "VKORG", "VTWEG"],
+    "seeAlso": ["MARA", "MARC", "MLAN"]
+  },
+  {
+    "name": "MAPR",
+    "title": "Material Master: Forecast Parameters",
+    "description": "Stores forecast parameters for material planning and forecasting.",
+    "module": "Production Planning (PP)",
+    "tags": ["forecast", "material master", "planning", "PP", "MAPR"],
+    "keyFields": ["MATNR", "WERKS"],
+    "seeAlso": ["PROP", "MARC", "MVER"]
+  },
+  {
+    "name": "MDMA",
+    "title": "MRP Area Data",
+    "description": "Material master planning data at MRP area level.",
+    "module": "Production Planning (PP)",
+    "tags": ["MRP area", "planning", "material master", "PP", "MDMA"],
+    "keyFields": ["MATNR", "BERID"],
+    "seeAlso": ["MDLV", "MDLG", "MDLW", "MDLL", "DBVM"]
+  },
+  {
+    "name": "DBVM",
+    "title": "MRP Planning File Entry: MRP Area",
+    "description": "Planning file entries for materials at MRP area level.",
+    "module": "Production Planning (PP)",
+    "tags": ["MRP", "planning file", "MRP area", "PP", "DBVM"],
+    "keyFields": ["MATNR", "BERID"],
+    "seeAlso": ["MDMA", "MDLV"]
+  },
+  {
+    "name": "MOFF",
+    "title": "Outstanding Material Master Records",
+    "description": "Stores outstanding or incomplete material master records by maintenance status.",
+    "module": "Materials Management (MM)",
+    "tags": ["material master", "maintenance status", "incomplete", "MM", "MOFF"],
+    "keyFields": ["MATNR"],
+    "seeAlso": ["MARA", "MARC", "MARD"]
+  },
+  {
+    "name": "MARCH",
+    "title": "Material Master: Plant Data History",
+    "description": "Historical records for plant-level material master data.",
+    "module": "Materials Management (MM)",
+    "tags": ["material master", "plant data", "history", "MM", "MARCH"],
+    "keyFields": ["MATNR", "WERKS", "LFGJA", "LFMON"],
+    "seeAlso": ["MARC", "MARDH", "MBEWH"]
+  },
+  {
+    "name": "MARDH",
+    "title": "Material Master: Storage Location Data History",
+    "description": "Historical records for storage location level material data.",
+    "module": "Materials Management (MM)",
+    "tags": ["material master", "storage location", "history", "MM", "MARDH"],
+    "keyFields": ["MATNR", "WERKS", "LGORT", "LFGJA", "LFMON"],
+    "seeAlso": ["MARD", "MARCH"]
+  },
+  {
+    "name": "MBEWH",
+    "title": "Material Valuation: History",
+    "description": "Historical valuation data for materials.",
+    "module": "Materials Management (MM)",
+    "tags": ["material valuation", "history", "MM", "MBEWH"],
+    "keyFields": ["MATNR", "BWKEY", "BWTAR", "LFGJA", "LFMON"],
+    "seeAlso": ["MBEW", "EBEW", "QBEW"]
+  },
+  {
+    "name": "MCHBH",
+    "title": "Batch Stock: History",
+    "description": "Historical stock records for batches.",
+    "module": "Materials Management (MM)",
+    "tags": ["batch", "stock", "history", "MM", "MCHBH"],
+    "keyFields": ["MATNR", "WERKS", "LGORT", "CHARG", "LFGJA", "LFMON"],
+    "seeAlso": ["MCHB", "MCH1", "MCHA"]
+  },
+  {
+    "name": "MKOLH",
+    "title": "Special Stocks from Vendor: History",
+    "description": "Historical records for vendor special stock quantities.",
+    "module": "Inventory Management (IM)",
+    "tags": ["special stock", "vendor stock", "history", "inventory", "MKOLH"],
+    "keyFields": ["MATNR", "WERKS", "LIFNR", "LFGJA", "LFMON"],
+    "seeAlso": ["MKOP", "MSEG"]
+  },
+  {
+    "name": "MSCAH",
+    "title": "Sales Order Stock at Vendor: History",
+    "description": "Historical records for sales order stock held at vendor level.",
+    "module": "Inventory Management (IM)",
+    "tags": ["sales order stock", "vendor", "history", "inventory", "MSCAH"],
+    "keyFields": ["MATNR", "WERKS", "LIFNR", "VBELN", "POSNR", "LFGJA", "LFMON"],
+    "seeAlso": ["MSKAH", "EBEW"]
+  },
+  {
+    "name": "MSKAH",
+    "title": "Sales Order Stock: History",
+    "description": "Historical records for sales order stock.",
+    "module": "Inventory Management (IM)",
+    "tags": ["sales order stock", "history", "inventory", "MSKAH"],
+    "keyFields": ["MATNR", "WERKS", "VBELN", "POSNR", "LFGJA", "LFMON"],
+    "seeAlso": ["EBEW", "MSCAH"]
+  },
+  {
+    "name": "MSKUH",
+    "title": "Special Stocks at Customer: History",
+    "description": "Historical records for customer special stock.",
+    "module": "Inventory Management (IM)",
+    "tags": ["special stock", "customer stock", "history", "inventory", "MSKUH"],
+    "keyFields": ["MATNR", "WERKS", "KUNNR", "LFGJA", "LFMON"],
+    "seeAlso": ["MSEG"]
+  },
+  {
+    "name": "MSLBH",
+    "title": "Special Stocks at Vendor: History",
+    "description": "Historical records for vendor special stock.",
+    "module": "Inventory Management (IM)",
+    "tags": ["special stock", "vendor stock", "history", "inventory", "MSLBH"],
+    "keyFields": ["MATNR", "WERKS", "LIFNR", "LFGJA", "LFMON"],
+    "seeAlso": ["MKOLH", "MSEG"]
+  },
+  {
+    "name": "MSPRH",
+    "title": "Project Stock: History",
+    "description": "Historical records for project stock quantities.",
+    "module": "Project System (PS)",
+    "tags": ["project stock", "history", "PS", "inventory", "MSPRH"],
+    "keyFields": ["MATNR", "WERKS", "PSPNR", "LFGJA", "LFMON"],
+    "seeAlso": ["QBEW", "MSPR"]
+  },
+  {
+    "name": "MSSAH",
+    "title": "Total Sales Order Stocks: History",
+    "description": "Historical totals for sales order stock quantities.",
+    "module": "Inventory Management (IM)",
+    "tags": ["sales order stock", "history", "totals", "inventory", "MSSAH"],
+    "keyFields": ["MATNR", "WERKS", "LFGJA", "LFMON"],
+    "seeAlso": ["MSKAH", "EBEW"]
+  },
+  {
+    "name": "MSSQH",
+    "title": "Total Project Stocks: History",
+    "description": "Historical totals for project stock quantities.",
+    "module": "Project System (PS)",
+    "tags": ["project stock", "history", "totals", "PS", "MSSQH"],
+    "keyFields": ["MATNR", "WERKS", "LFGJA", "LFMON"],
+    "seeAlso": ["MSPRH", "QBEW"]
+  },
+  {
+    "name": "STKO",
+    "title": "BOM: Header Details",
+    "description": "Header data for bills of material, including BOM usage, status, and validity information.",
+    "module": "Production Planning (PP)",
+    "tags": ["BOM", "bill of material", "header", "PP", "STKO"],
+    "keyFields": ["STLTY", "STLNR", "STLAL"],
+    "seeAlso": ["STPO", "MAST"]
+  },
+  {
+    "name": "WYT3",
+    "title": "Vendor Master: Partner Functions",
+    "description": "Stores vendor partner function assignments in purchasing.",
+    "module": "Materials Management (MM)",
+    "tags": ["vendor", "partner function", "purchasing", "MM", "WYT3"],
+    "keyFields": ["LIFNR", "EKORG", "PARVW"],
+    "seeAlso": ["LFM1", "LFM2"]
+  },
+  {
+    "name": "ASMD",
+    "title": "Service Master: Basic Data",
+    "description": "Basic master data for external services and service specifications.",
+    "module": "External Service Management",
+    "tags": ["service master", "service", "external services", "ASMD"],
+    "keyFields": ["ASNUM"],
+    "seeAlso": ["ASMDT", "ESLL", "ESSR"]
+  },
+  {
+    "name": "ASMDT",
+    "title": "Service Master: Short Texts",
+    "description": "Language-dependent short texts for service master records.",
+    "module": "External Service Management",
+    "tags": ["service master", "text", "external services", "ASMDT"],
+    "keyFields": ["SPRAS", "ASNUM"],
+    "seeAlso": ["ASMD"]
+  },
+  {
+    "name": "ESKL",
+    "title": "Service Management: Account Assignment Specification for Service Line",
+    "description": "Stores account assignment specifications for service lines.",
+    "module": "External Service Management",
+    "tags": ["service line", "account assignment", "external services", "ESKL"],
+    "keyFields": ["PACKNO", "INTROW"],
+    "seeAlso": ["ESKN", "ESLL"]
+  },
+  {
+    "name": "ESKN",
+    "title": "Service Management: Account Assignment in Service Package",
+    "description": "Stores account assignment details for service packages.",
+    "module": "External Service Management",
+    "tags": ["service package", "account assignment", "external services", "ESKN"],
+    "keyFields": ["PACKNO", "INTROW", "ZEKKN"],
+    "seeAlso": ["ESKL", "ESLH", "ESLL"]
+  },
+  {
+    "name": "ESLH",
+    "title": "Service Management: Service Package Header",
+    "description": "Header data for service packages used in external service procurement.",
+    "module": "External Service Management",
+    "tags": ["service package", "header", "external services", "ESLH"],
+    "keyFields": ["PACKNO"],
+    "seeAlso": ["ESLL", "ESSR", "ESKN"]
+  },
+  {
+    "name": "ESLL",
+    "title": "Service Management: Lines in Service Package",
+    "description": "Line items within service packages, including planned and unplanned service lines.",
+    "module": "External Service Management",
+    "tags": ["service package", "service line", "external services", "ESLL"],
+    "keyFields": ["PACKNO", "INTROW"],
+    "seeAlso": ["ESLH", "ESKL", "ESSR"]
+  },
+  {
+    "name": "ESSR",
+    "title": "Service Entry Sheet: Header Data",
+    "description": "Header data for service entry sheets used to confirm external services.",
+    "module": "External Service Management",
+    "tags": ["service entry sheet", "external services", "procurement", "ESSR"],
+    "keyFields": ["LBLNI"],
+    "seeAlso": ["ESLH", "ESLL", "EKBE"]
+  },
+  {
+    "name": "ESUC",
+    "title": "Service Management: Unplanned Limits for Contract Item",
+    "description": "Stores unplanned service limit data for contract items.",
+    "module": "External Service Management",
+    "tags": ["service limits", "contract item", "external services", "ESUC"],
+    "keyFields": ["PACKNO"],
+    "seeAlso": ["ESUH", "ESUP", "ESUS"]
+  },
+  {
+    "name": "ESUH",
+    "title": "Service Management: Unplanned Service Limits Header",
+    "description": "Header data for unplanned service limits.",
+    "module": "External Service Management",
+    "tags": ["service limits", "header", "external services", "ESUH"],
+    "keyFields": ["PACKNO"],
+    "seeAlso": ["ESUC", "ESUP", "ESUS"]
+  },
+  {
+    "name": "ESUP",
+    "title": "Service Management: Unplanned Limits for Service Packages",
+    "description": "Stores unplanned limit data at service package level.",
+    "module": "External Service Management",
+    "tags": ["service limits", "service package", "external services", "ESUP"],
+    "keyFields": ["PACKNO"],
+    "seeAlso": ["ESUH", "ESUC"]
+  },
+  {
+    "name": "ESUS",
+    "title": "Service Management: Unplanned Limits for Service Types",
+    "description": "Stores unplanned service limits by service type.",
+    "module": "External Service Management",
+    "tags": ["service limits", "service type", "external services", "ESUS"],
+    "keyFields": ["PACKNO", "SRVPOS"],
+    "seeAlso": ["ESUH", "ESUP"]
+  },
+  {
+    "name": "MDBS",
+    "title": "Purchasing: Material View of Order Item and Schedule Line",
+    "description": "Material-oriented view of purchasing document items and schedule lines, often used to analyze open purchase orders.",
+    "module": "Materials Management (MM)",
+    "tags": ["purchase order", "open PO", "schedule line", "MM", "MDBS"],
+    "keyFields": ["MATNR", "WERKS", "EBELN", "EBELP", "ETENR"],
+    "seeAlso": ["EKPO", "EKET"]
+  },
+  {
+    "name": "EIPA",
+    "title": "Purchasing: Order Price History Record",
+    "description": "Stores historical order price information for purchasing documents.",
+    "module": "Materials Management (MM)",
+    "tags": ["price history", "purchasing", "MM", "EIPA"],
+    "keyFields": ["EBELN", "EBELP"],
+    "seeAlso": ["EKPO", "EKBE", "KONH", "KONP"]
+  },
+  {
+    "name": "EKAB",
+    "title": "Purchasing: Release Documentation",
+    "description": "Stores purchasing release documentation and release history information.",
+    "module": "Materials Management (MM)",
+    "tags": ["release strategy", "release history", "purchasing", "MM", "EKAB"],
+    "keyFields": ["EBELN", "EBELP", "FRGKE"],
+    "seeAlso": ["EKKO", "EKPO", "T16FS", "T16FC"]
+  },
+  {
+    "name": "EKBE",
+    "title": "Purchasing: Document History",
+    "description": "History of purchasing document follow-on activities such as goods receipts and invoice receipts.",
+    "module": "Materials Management (MM)",
+    "tags": ["purchase order history", "GR", "IR", "MM", "EKBE"],
+    "keyFields": ["EBELN", "EBELP", "ZEKKN", "VGABE"],
+    "seeAlso": ["EKKO", "EKPO", "RBKP", "RSEG", "MSEG"]
+  },
+  {
+    "name": "EKBZ",
+    "title": "Purchasing: Document History for Delivery Costs",
+    "description": "History records for planned and unplanned delivery costs in purchasing.",
+    "module": "Materials Management (MM)",
+    "tags": ["delivery costs", "purchase order history", "MM", "EKBZ"],
+    "keyFields": ["EBELN", "EBELP", "ZEKKN"],
+    "seeAlso": ["EKBE", "EKPO"]
+  },
+  {
+    "name": "EKPB",
+    "title": "Purchasing: Material to be Provided Item",
+    "description": "Stores material provided item data within purchasing documents.",
+    "module": "Materials Management (MM)",
+    "tags": ["material provided", "purchasing", "MM", "EKPB"],
+    "keyFields": ["EBELN", "EBELP"],
+    "seeAlso": ["EKPO"]
+  },
+  {
+    "name": "ISEG",
+    "title": "Physical Inventory: Document Items",
+    "description": "Item-level data for physical inventory documents.",
+    "module": "Inventory Management (IM)",
+    "tags": ["physical inventory", "inventory document", "IM", "ISEG"],
+    "keyFields": ["IBLNR", "GJAHR", "ZEILI"],
+    "seeAlso": ["IKPF", "MSEG"]
+  },
+  {
+    "name": "RKPF",
+    "title": "Reservation: Header",
+    "description": "Header data for reservations in inventory management and production scenarios.",
+    "module": "Inventory Management (IM)",
+    "tags": ["reservation", "header", "inventory", "IM", "RKPF"],
+    "keyFields": ["RSNUM"],
+    "seeAlso": ["RESB"]
+  },
+  {
+    "name": "BSIM",
+    "title": "Accounting: Secondary Index for Material Documents",
+    "description": "Secondary index for accounting documents related to materials.",
+    "module": "Finance (FI)",
+    "tags": ["secondary index", "material document", "accounting", "FI", "BSIM"],
+    "keyFields": ["BUKRS", "BELNR", "GJAHR", "BUZEI"],
+    "seeAlso": ["BKPF", "BSEG", "MSEG"]
+  },
+  {
+    "name": "MYMFT",
+    "title": "Inventory Valuation: FIFO Results",
+    "description": "Stores FIFO valuation result data.",
+    "module": "Inventory Valuation",
+    "tags": ["FIFO", "valuation", "inventory", "MYMFT"],
+    "keyFields": ["MATNR", "BWKEY", "BWTAR"],
+    "seeAlso": ["MYML", "MYMP1"]
+  },
+  {
+    "name": "MYML",
+    "title": "Inventory Valuation: LIFO Material Layer",
+    "description": "Stores LIFO valuation layers at material level.",
+    "module": "Inventory Valuation",
+    "tags": ["LIFO", "valuation", "material layer", "MYML"],
+    "keyFields": ["MATNR", "BWKEY", "BWTAR"],
+    "seeAlso": ["MYMLM", "MYMP", "MYPL"]
+  },
+  {
+    "name": "MYMLM",
+    "title": "Inventory Valuation: LIFO Material Layer Monthly",
+    "description": "Monthly LIFO layer data at material level.",
+    "module": "Inventory Valuation",
+    "tags": ["LIFO", "monthly", "valuation", "MYMLM"],
+    "keyFields": ["MATNR", "BWKEY", "BWTAR", "LFGJA", "LFMON"],
+    "seeAlso": ["MYML", "MYMP"]
+  },
+  {
+    "name": "MYMP",
+    "title": "Inventory Valuation: LIFO Period Stocks",
+    "description": "Stores LIFO period stock data for individual materials.",
+    "module": "Inventory Valuation",
+    "tags": ["LIFO", "period stock", "valuation", "MYMP"],
+    "keyFields": ["MATNR", "BWKEY", "BWTAR", "LFGJA", "LFMON"],
+    "seeAlso": ["MYML", "MYMLM", "MYMP1"]
+  },
+  {
+    "name": "MYMP1",
+    "title": "Inventory Valuation: Receipt Data for LIFO/FIFO",
+    "description": "Stores receipt data used in LIFO and FIFO valuation.",
+    "module": "Inventory Valuation",
+    "tags": ["LIFO", "FIFO", "receipt data", "valuation", "MYMP1"],
+    "keyFields": ["MATNR", "BWKEY", "BWTAR"],
+    "seeAlso": ["MYMP", "MYMFT"]
+  },
+  {
+    "name": "MYPL",
+    "title": "Inventory Valuation: LIFO Pool Layer",
+    "description": "Stores LIFO pool layer valuation data.",
+    "module": "Inventory Valuation",
+    "tags": ["LIFO", "pool layer", "valuation", "MYPL"],
+    "keyFields": ["POOLNR", "BWKEY"],
+    "seeAlso": ["MYPLM", "MYML"]
+  },
+  {
+    "name": "MYPLM",
+    "title": "Inventory Valuation: LIFO Pool Layer Monthly",
+    "description": "Monthly LIFO pool layer valuation data.",
+    "module": "Inventory Valuation",
+    "tags": ["LIFO", "pool layer", "monthly", "valuation", "MYPLM"],
+    "keyFields": ["POOLNR", "BWKEY", "LFGJA", "LFMON"],
+    "seeAlso": ["MYPL"]
+  },
+  {
+    "name": "RBCO",
+    "title": "Invoice Verification: Incoming Invoice Account Assignment",
+    "description": "Stores account assignment data for incoming invoice document items.",
+    "module": "Invoice Verification",
+    "tags": ["invoice verification", "incoming invoice", "account assignment", "RBCO"],
+    "keyFields": ["BELNR", "GJAHR", "BUZEI", "ZEKKN"],
+    "seeAlso": ["RBKP", "RSEG"]
+  },
+  {
+    "name": "RBDIFFKO",
+    "title": "Invoice Verification: Conditions",
+    "description": "Stores pricing and condition difference data in invoice verification.",
+    "module": "Invoice Verification",
+    "tags": ["invoice verification", "conditions", "pricing", "RBDIFFKO"],
+    "keyFields": ["BELNR", "GJAHR"],
+    "seeAlso": ["RBKP", "RSEG", "RBDIFFME"]
+  },
+  {
+    "name": "RBDIFFME",
+    "title": "Invoice Verification: Quantity Differences",
+    "description": "Stores quantity difference data for invoice verification processing.",
+    "module": "Invoice Verification",
+    "tags": ["invoice verification", "quantity difference", "RBDIFFME"],
+    "keyFields": ["BELNR", "GJAHR", "BUZEI"],
+    "seeAlso": ["RBKP", "RSEG", "RBDIFFKO"]
+  },
+  {
+    "name": "RBDRSEG",
+    "title": "Invoice Verification Batch: Invoice Document Items",
+    "description": "Stores batch invoice verification item data.",
+    "module": "Invoice Verification",
+    "tags": ["invoice verification", "batch", "invoice item", "RBDRSEG"],
+    "keyFields": ["BELNR", "GJAHR", "BUZEI"],
+    "seeAlso": ["RBKPB", "RSEG"]
+  },
+  {
+    "name": "RBKP",
+    "title": "Invoice Verification: Incoming Invoice Header",
+    "description": "Header data for incoming invoice documents in Logistics Invoice Verification.",
+    "module": "Invoice Verification",
+    "tags": ["invoice verification", "incoming invoice", "header", "RBKP"],
+    "keyFields": ["BELNR", "GJAHR"],
+    "seeAlso": ["RSEG", "RBCO", "RBWT", "RBTX"]
+  },
+  {
+    "name": "RBKPB",
+    "title": "Invoice Verification: Batch Invoice Header",
+    "description": "Header data for batch invoice verification documents.",
+    "module": "Invoice Verification",
+    "tags": ["invoice verification", "batch", "header", "RBKPB"],
+    "keyFields": ["BELNR", "GJAHR"],
+    "seeAlso": ["RBDRSEG", "RBKP"]
+  },
+  {
+    "name": "RBTX",
+    "title": "Invoice Verification: Taxes",
+    "description": "Tax data for incoming invoice documents.",
+    "module": "Invoice Verification",
+    "tags": ["invoice verification", "tax", "incoming invoice", "RBTX"],
+    "keyFields": ["BELNR", "GJAHR", "BUZEI"],
+    "seeAlso": ["RBKP", "RSEG", "RBWT"]
+  },
+  {
+    "name": "RBVD",
+    "title": "Invoice Verification: Summarization Data",
+    "description": "Stores summarization data for invoice verification documents.",
+    "module": "Invoice Verification",
+    "tags": ["invoice verification", "summarization", "RBVD"],
+    "keyFields": ["BELNR", "GJAHR"],
+    "seeAlso": ["RBVDMAT", "RBKP"]
+  },
+  {
+    "name": "RBVDMAT",
+    "title": "Invoice Verification: Summarization Data by Material",
+    "description": "Material-level summarization data for invoice verification.",
+    "module": "Invoice Verification",
+    "tags": ["invoice verification", "summarization", "material", "RBVDMAT"],
+    "keyFields": ["BELNR", "GJAHR", "MATNR"],
+    "seeAlso": ["RBVD", "RBKP"]
+  },
+  {
+    "name": "RBWT",
+    "title": "Invoice Verification: Withholding Tax",
+    "description": "Withholding tax data for incoming invoices.",
+    "module": "Invoice Verification",
+    "tags": ["invoice verification", "withholding tax", "RBWT"],
+    "keyFields": ["BELNR", "GJAHR", "WT_WITHCD"],
+    "seeAlso": ["RBKP", "RBTX"]
+  },
+  {
+    "name": "RKWA",
+    "title": "Consignment: Withdrawals",
+    "description": "Stores consignment withdrawal data.",
+    "module": "Inventory Management (IM)",
+    "tags": ["consignment", "withdrawal", "inventory", "RKWA"],
+    "keyFields": ["MATNR", "WERKS", "LIFNR", "BUDAT"],
+    "seeAlso": ["MKOP", "MSEG"]
+  },
+  {
+    "name": "RSEG",
+    "title": "Invoice Verification: Incoming Invoice Item",
+    "description": "Item-level data for incoming invoice documents in Logistics Invoice Verification.",
+    "module": "Invoice Verification",
+    "tags": ["invoice verification", "incoming invoice", "item", "RSEG"],
+    "keyFields": ["BELNR", "GJAHR", "BUZEI"],
+    "seeAlso": ["RBKP", "RBCO", "EKBE", "EKPO"]
+  },
+  {
+    "name": "MDLV",
+    "title": "MRP Areas",
+    "description": "Defines MRP areas used for planning below plant level.",
+    "module": "Production Planning (PP)",
+    "tags": ["MRP area", "planning", "PP", "MDLV"],
+    "keyFields": ["BERID"],
+    "seeAlso": ["MDMA", "MDLG", "MDLW", "MDLL"]
+  },
+  {
+    "name": "MDLG",
+    "title": "MRP Areas: Storage Locations",
+    "description": "Assignment of storage locations to MRP areas.",
+    "module": "Production Planning (PP)",
+    "tags": ["MRP area", "storage location", "planning", "PP", "MDLG"],
+    "keyFields": ["BERID", "WERKS", "LGORT"],
+    "seeAlso": ["MDLV", "MDMA"]
+  },
+  {
+    "name": "MDLW",
+    "title": "MRP Areas: Plants",
+    "description": "Assignment of plants to MRP areas.",
+    "module": "Production Planning (PP)",
+    "tags": ["MRP area", "plant", "planning", "PP", "MDLW"],
+    "keyFields": ["BERID", "WERKS"],
+    "seeAlso": ["MDLV", "MDMA"]
+  },
+  {
+    "name": "MDLL",
+    "title": "MRP Areas: Subcontractor",
+    "description": "Assignment of subcontractor planning segments to MRP areas.",
+    "module": "Production Planning (PP)",
+    "tags": ["MRP area", "subcontractor", "planning", "PP", "MDLL"],
+    "keyFields": ["BERID", "WERKS", "LIFNR"],
+    "seeAlso": ["MDLV", "MDMA"]
+  },
+  {
+    "name": "T023",
+    "title": "Customizing: Material Groups",
+    "description": "Defines material groups used in purchasing and material master data.",
+    "module": "Customizing",
+    "tags": ["material group", "customizing", "MM", "T023"],
+    "keyFields": ["MATKL"],
+    "seeAlso": ["MARA", "EKPO"]
+  },
+  {
+    "name": "T024",
+    "title": "Customizing: Purchasing Groups",
+    "description": "Defines purchasing groups used in procurement documents and master data.",
+    "module": "Customizing",
+    "tags": ["purchasing group", "customizing", "MM", "T024"],
+    "keyFields": ["EKGRP"],
+    "seeAlso": ["EBAN", "EKPO", "MARC"]
+  },
+  {
+    "name": "T030",
+    "title": "Customizing: Automatic Account Determination",
+    "description": "Stores automatic account determination settings for inventory and valuation postings.",
+    "module": "Customizing",
+    "tags": ["automatic account determination", "OBYC", "MM", "FI", "T030"],
+    "keyFields": ["KTOPL", "KTOSL", "BWMOD", "KOMOK"],
+    "seeAlso": ["MBEW", "T156"]
+  },
+  {
+    "name": "T156",
+    "title": "Customizing: Movement Types",
+    "description": "Defines movement types used in inventory management and material documents.",
+    "module": "Customizing",
+    "tags": ["movement type", "inventory management", "customizing", "T156"],
+    "keyFields": ["BWART"],
+    "seeAlso": ["T156T", "MSEG", "MKPF"]
+  },
+  {
+    "name": "T156T",
+    "title": "Customizing: Movement Type Texts",
+    "description": "Language-dependent texts for movement types.",
+    "module": "Customizing",
+    "tags": ["movement type", "text", "inventory management", "T156T"],
+    "keyFields": ["SPRAS", "BWART"],
+    "seeAlso": ["T156"]
+  },
+  {
+    "name": "T16FS",
+    "title": "Purchasing Customizing: Release Strategies",
+    "description": "Defines release strategies for purchasing documents.",
+    "module": "Customizing",
+    "tags": ["release strategy", "purchasing", "customizing", "T16FS"],
+    "keyFields": ["FRGGR", "FRGSX"],
+    "seeAlso": ["T16FT", "T16FV", "T16FC", "T16FK", "EKAB"]
+  },
+  {
+    "name": "T16FT",
+    "title": "Purchasing Customizing: Release Strategy Texts",
+    "description": "Language-dependent descriptions for release strategies.",
+    "module": "Customizing",
+    "tags": ["release strategy", "text", "purchasing", "T16FT"],
+    "keyFields": ["SPRAS", "FRGGR", "FRGSX"],
+    "seeAlso": ["T16FS"]
+  },
+  {
+    "name": "T16FV",
+    "title": "Purchasing Customizing: Release Prerequisites",
+    "description": "Defines release prerequisite relationships for purchasing release procedures.",
+    "module": "Customizing",
+    "tags": ["release prerequisite", "release strategy", "purchasing", "T16FV"],
+    "keyFields": ["FRGGR", "FRGSX", "FRGCO"],
+    "seeAlso": ["T16FS", "T16FC"]
+  },
+  {
+    "name": "T16FD",
+    "title": "Purchasing Customizing: Release Code Texts",
+    "description": "Language-dependent descriptions of release codes.",
+    "module": "Customizing",
+    "tags": ["release code", "text", "purchasing", "T16FD"],
+    "keyFields": ["SPRAS", "FRGGR", "FRGCO"],
+    "seeAlso": ["T16FC"]
+  },
+  {
+    "name": "T16FK",
+    "title": "Purchasing Customizing: Release Statuses",
+    "description": "Defines release statuses used in purchasing release procedures.",
+    "module": "Customizing",
+    "tags": ["release status", "purchasing", "customizing", "T16FK"],
+    "keyFields": ["FRGGR", "FRGST"],
+    "seeAlso": ["T16FS", "T16FC"]
+  },
+  {
+    "name": "T16FC",
+    "title": "Purchasing Customizing: Release Codes",
+    "description": "Defines release codes used in purchasing release procedures.",
+    "module": "Customizing",
+    "tags": ["release code", "purchasing", "customizing", "T16FC"],
+    "keyFields": ["FRGGR", "FRGCO"],
+    "seeAlso": ["T16FD", "T16FV", "T16FS"]
+  },
+  {
+    "name": "T161",
+    "title": "Purchasing Customizing: Document Types",
+    "description": "Defines purchasing document types and related control settings.",
+    "module": "Customizing",
+    "tags": ["purchasing document type", "MM", "customizing", "T161"],
+    "keyFields": ["BSART"],
+    "seeAlso": ["EKKO", "EBAN"]
+  },
+  {
+    "name": "T052",
+    "title": "FI Customizing: Terms of Payment",
+    "description": "Defines terms of payment used in FI and MM purchasing processes.",
+    "module": "Finance (FI)",
+    "tags": ["terms of payment", "FI", "customizing", "T052"],
+    "keyFields": ["ZTERM"],
+    "seeAlso": ["LFB1", "RBKP", "EKKO"]
+  },
+  {
+    "name": "E070V",
+    "title": "Transports: Generated View for Transport Requests and Tasks",
+    "description": "Generated database view related to transport request and task header data, typically used for transport overview and reporting scenarios.",
+    "module": "Transports",
+    "tags": ["transport", "request", "task", "view", "E070V"],
+    "keyFields": ["TRKORR"],
+    "seeAlso": ["E070", "E071", "E070C", "TLOCK"]
+  },
+  {
+    "name": "T007V",
+    "title": "Tax: Tax Codes to Be Transported",
+    "description": "Stores tax code transport-related data used in transport and customizing scenarios.",
+    "module": "Transports",
+    "tags": ["tax code", "transport", "customizing", "T007V"],
+    "keyFields": ["MANDT", "KALSM", "MWSKZ"],
+    "seeAlso": ["T007A", "E070", "E071"]
+  },
+  {
+    "name": "BDCP",
+    "title": "IDoc Change Pointers",
+    "description": "Stores change pointers used to track master and transaction data changes for ALE and IDoc processing.",
+    "module": "EDI / IDoc",
+    "tags": ["IDoc", "change pointer", "ALE", "EDI", "BDCP"],
+    "keyFields": ["MESTYPE", "CPIDENT"],
+    "seeAlso": ["BDCPS", "EDIDC", "EDIDS"]
+  },
+  {
+    "name": "BDCPS",
+    "title": "IDoc Change Pointers: Status",
+    "description": "Stores status information for change pointers used in ALE and IDoc processing.",
+    "module": "EDI / IDoc",
+    "tags": ["IDoc", "change pointer", "status", "ALE", "BDCPS"],
+    "keyFields": ["CPIDENT"],
+    "seeAlso": ["BDCP", "EDIDC"]
+  },
+  {
+    "name": "EDP12",
+    "title": "EDI Partner Profile: Outbound with Message Control",
+    "description": "Stores outbound EDI partner profile settings for scenarios using message control.",
+    "module": "EDI / IDoc",
+    "tags": ["EDI", "partner profile", "outbound", "message control", "EDP12"],
+    "keyFields": ["SNDPRT", "SNDPRN", "MESTYP"],
+    "seeAlso": ["EDP13", "EDP21", "EDPP1", "EDIDC"]
+  },
+  {
+    "name": "EDP13",
+    "title": "EDI Partner Profile: Outbound Technical Parameters",
+    "description": "Stores technical outbound partner profile parameters for EDI and IDoc processing.",
+    "module": "EDI / IDoc",
+    "tags": ["EDI", "partner profile", "outbound", "technical parameters", "EDP13"],
+    "keyFields": ["SNDPRT", "SNDPRN", "MESTYP"],
+    "seeAlso": ["EDP12", "EDP21", "EDPP1"]
+  },
+  {
+    "name": "EDP21",
+    "title": "EDI Partner Profile: Inbound",
+    "description": "Stores inbound partner profile settings for EDI and IDoc processing.",
+    "module": "EDI / IDoc",
+    "tags": ["EDI", "partner profile", "inbound", "IDoc", "EDP21"],
+    "keyFields": ["RCVPRT", "RCVPRN", "MESTYP"],
+    "seeAlso": ["EDP12", "EDP13", "EDPP1", "EDIDC"]
+  },
+  {
+    "name": "EDPP1",
+    "title": "EDI Partner: General Partner Profiles",
+    "description": "Stores general EDI partner profile data used for inbound and outbound partner setup.",
+    "module": "EDI / IDoc",
+    "tags": ["EDI", "partner profile", "general", "IDoc", "EDPP1"],
+    "keyFields": ["PARTNERTYP", "PARTNERNO"],
+    "seeAlso": ["EDP12", "EDP13", "EDP21"]
+  },
+  {
+    "name": "TEDST",
+    "title": "EDI: Form Routines for Reading Master Data",
+    "description": "Stores SAP EDI form routine definitions used for reading master data in EDI processing.",
+    "module": "EDI / IDoc",
+    "tags": ["EDI", "form routine", "master data", "IDoc", "TEDST"],
+    "keyFields": ["EDIFCT"],
+    "seeAlso": ["EDIDC", "EDIDD", "EDIDS"]
+  },
+  {
+    "name": "TSP03D",
+    "title": "Spool: Device Description (New Format)",
+    "description": "Stores spool output device definitions in the newer format used by SAP spool administration.",
+    "module": "Spool / Output",
+    "tags": ["spool", "output device", "printer", "SPAD", "TSP03D"],
+    "keyFields": ["PADEST"],
+    "seeAlso": ["TSP01", "TSP02"]
+  },
+  {
+    "name": "LFBK",
+    "title": "Vendor Master: Bank Details",
+    "description": "Stores vendor bank account details used in purchasing and payment processes.",
+    "module": "Vendor Master",
+    "tags": ["vendor", "bank details", "master data", "LFBK"],
+    "keyFields": ["LIFNR", "BANKS", "BANKL", "BANKN"],
+    "seeAlso": ["LFA1", "LFB1", "BNKA", "TIBAN"]
   }
 ]
