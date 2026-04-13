@@ -1777,5 +1777,887 @@
       "Retest the affected downstream process afterwards."
     ],
     "linkedFlow": "flow-om-holder"
+  },
+  {
+    "id": "err-serial-number-missing",
+    "pattern": ["serial number missing", "enter serial number", "serial required", "goods movement requires serial number", "equipment serial missing", "serial-managed material issue"],
+    "title": "Serial Number Missing",
+    "category": "Logistics",
+    "description": "A material movement or logistics process cannot continue because a serial number is required but was not entered.",
+    "primaryTransaction": "IQ03",
+    "relatedTransactions": ["MIGO", "VL02N", "IE03"],
+    "steps": [
+      "Identify the serial-managed material and the exact document or movement where the error occurs.",
+      "Check whether the material is configured for serial number handling in the relevant business process.",
+      "Review whether the required serial number already exists and is available for use.",
+      "Enter or assign the correct serial number in the transaction if business rules allow it.",
+      "If the serial number does not exist, create or correct the master data using the approved business process.",
+      "Retest the original transaction after the serial number issue is resolved."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-serial-number-already-assigned",
+    "pattern": ["serial number already assigned", "serial already in stock", "duplicate serial number", "serial number in use", "serial exists already", "serial conflict"],
+    "title": "Serial Number Already Assigned or In Use",
+    "category": "Logistics",
+    "description": "A serial-managed process fails because the serial number is already assigned, already in stock, or inconsistent with the intended transaction.",
+    "primaryTransaction": "IQ03",
+    "relatedTransactions": ["MIGO", "VL02N", "IE03"],
+    "steps": [
+      "Identify the serial number and the material involved.",
+      "Use serial number display to review the current stock, equipment, or document history of the serial number.",
+      "Confirm whether the serial number is already assigned to another material document, delivery, or equipment.",
+      "Correct the business transaction or choose the correct serial number according to the actual stock situation.",
+      "If the serial history is inconsistent, review the preceding goods movements before making corrections.",
+      "Retest the transaction after resolving the serial assignment conflict."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-business-partner-role-missing",
+    "pattern": ["business partner role missing", "bp role missing", "supplier role missing", "customer role missing", "business partner incomplete", "bp not maintained for role"],
+    "title": "Business Partner Role Missing or Incomplete",
+    "category": "Master Data",
+    "description": "A business process fails because the business partner exists, but the required customer, supplier, or company code role is missing or incomplete.",
+    "primaryTransaction": "BP",
+    "relatedTransactions": ["VA03", "ME23N", "FBL1N", "FBL5N"],
+    "steps": [
+      "Open the business partner and identify which role is required for the failing process.",
+      "Check whether the relevant role exists and whether its mandatory data is maintained.",
+      "Review organization-specific data such as company code or sales area settings if relevant.",
+      "Add the missing role or complete the missing role data according to business rules.",
+      "Save the business partner and re-open it to verify the role is now available.",
+      "Retest the original process afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-customer-sales-area-missing",
+    "pattern": ["customer not created for sales area", "sales area data missing", "customer missing sales data", "knvv missing", "customer not maintained for sales org", "sold-to not valid for sales area"],
+    "title": "Customer Not Maintained for Required Sales Area",
+    "category": "Master Data",
+    "description": "A sales process fails because the customer exists generally but is not maintained for the required sales organization, distribution channel, or division.",
+    "primaryTransaction": "BP",
+    "relatedTransactions": ["VA01", "VA03"],
+    "steps": [
+      "Identify the customer and the sales area used in the failing transaction.",
+      "Check whether the business partner has valid customer sales-area data for that combination.",
+      "Review sales-area specific data such as pricing, shipping, partner, and billing settings.",
+      "Extend or complete the customer master for the required sales area using the approved process.",
+      "Save the master data and validate the sales-area view afterwards.",
+      "Repeat the original sales transaction."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-vendor-bank-details-missing",
+    "pattern": ["vendor bank details missing", "supplier bank missing", "bank data missing for vendor", "vendor payment bank missing", "lfbk missing", "payment cannot determine vendor bank"],
+    "title": "Vendor Bank Details Missing or Incomplete",
+    "category": "Finance & Controlling",
+    "description": "A payment or supplier process fails because the vendor master lacks valid bank details or payment-relevant bank data.",
+    "primaryTransaction": "BP",
+    "relatedTransactions": ["F110", "FBL1N", "FI12"],
+    "steps": [
+      "Identify the supplier and the payment scenario involved.",
+      "Check whether valid bank details exist in the supplier master for the required company code or payment context.",
+      "Review IBAN, bank key, account number, and payment method compatibility.",
+      "Maintain or correct the missing bank data according to business rules.",
+      "Save the supplier master and recheck the payment-relevant data.",
+      "Retest the payment or procurement scenario."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-exchange-rate-missing",
+    "pattern": ["exchange rate missing", "no rate found", "currency conversion error", "exchange rate not maintained", "tcurr missing", "currency rate unavailable"],
+    "title": "Exchange Rate Missing",
+    "category": "Finance & Controlling",
+    "description": "A posting or valuation process fails because SAP cannot find a valid exchange rate for the required currencies, date, and rate type.",
+    "primaryTransaction": "OB08",
+    "relatedTransactions": ["FB03", "MIRO", "F.05"],
+    "steps": [
+      "Capture the currencies, translation date, and rate type from the error context.",
+      "Check whether an exchange rate exists for that exact combination.",
+      "Confirm that the posting date or valuation date is correct.",
+      "Maintain the missing rate only according to finance governance.",
+      "Save the exchange rate and validate the currency conversion setup.",
+      "Retry the original posting or valuation process."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-tax-jurisdiction-missing",
+    "pattern": ["tax jurisdiction missing", "tax jurisdiction invalid", "jurisdiction code missing", "tax jurisdiction not maintained", "tax jurisdiction error"],
+    "title": "Tax Jurisdiction Missing or Invalid",
+    "category": "Finance & Controlling",
+    "description": "A tax-relevant posting fails because the required tax jurisdiction code is missing, invalid, or inconsistent with the address and tax setup.",
+    "primaryTransaction": "FB03",
+    "relatedTransactions": ["BP", "MIRO", "VA03"],
+    "steps": [
+      "Capture the exact tax error and identify whether it comes from customer, vendor, material, or document data.",
+      "Check the address and tax jurisdiction data in the relevant master or transaction.",
+      "Confirm whether the tax procedure in use requires a jurisdiction code.",
+      "Maintain or correct the missing jurisdiction code according to business rules.",
+      "Validate that the corrected data matches the intended tax scenario.",
+      "Retest the posting afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-withholding-tax-missing",
+    "pattern": ["withholding tax missing", "withholding tax not maintained", "vendor withholding tax missing", "customer withholding tax missing", "wt code missing", "withholding tax error"],
+    "title": "Withholding Tax Data Missing or Invalid",
+    "category": "Finance & Controlling",
+    "description": "A finance process fails because withholding tax settings are missing or incomplete in the vendor, customer, or document context.",
+    "primaryTransaction": "BP",
+    "relatedTransactions": ["MIRO", "FB60", "F-53"],
+    "steps": [
+      "Identify the partner and document context where withholding tax is expected.",
+      "Check whether withholding tax type and code are maintained correctly in the master data.",
+      "Review whether the document type or company code requires withholding tax processing.",
+      "Correct the withholding tax data according to local compliance rules.",
+      "Save the master or document changes and verify the setup.",
+      "Retest the original transaction."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-document-splitting-error",
+    "pattern": ["document splitting error", "profit center balancing error", "document splitting not possible", "zero balance not created", "split characteristic missing", "new gl splitting error"],
+    "title": "Document Splitting Error",
+    "category": "Finance & Controlling",
+    "description": "A financial posting fails because document splitting cannot derive or balance the required characteristics such as profit center or segment.",
+    "primaryTransaction": "FB03",
+    "relatedTransactions": ["FB50", "FAGLL03"],
+    "steps": [
+      "Capture the exact splitting or balancing error message.",
+      "Identify which line item is missing the required splitting characteristic.",
+      "Review account assignment objects such as cost center, profit center, segment, or business area.",
+      "Correct the missing derivation source in the document or master data.",
+      "Check whether the posting logic supports the intended split scenario.",
+      "Repeat the posting after the required characteristics are available."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-cost-element-missing",
+    "pattern": ["cost element missing", "secondary cost element missing", "g/l account not cost element", "co posting not possible", "cost element invalid"],
+    "title": "Cost Element Missing or Invalid",
+    "category": "Finance & Controlling",
+    "description": "A CO-relevant posting fails because the G/L account is not valid as a cost element or is not set up correctly for controlling integration.",
+    "primaryTransaction": "KA03",
+    "relatedTransactions": ["FB50", "KB11N", "KS03"],
+    "steps": [
+      "Identify the G/L account used in the failing posting.",
+      "Check whether the account is valid for the intended controlling scenario.",
+      "Review whether the posting requires a primary or secondary cost element context.",
+      "Correct the account setup only through the approved finance and controlling process.",
+      "Validate the account and receiving CO object combination afterwards.",
+      "Retry the posting once the cost element setup is correct."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-profit-center-missing",
+    "pattern": ["profit center missing", "profit center not derived", "profit center invalid", "posting requires profit center", "profit center error"],
+    "title": "Profit Center Missing or Invalid",
+    "category": "Finance & Controlling",
+    "description": "A posting fails because the required profit center is missing, blocked, or not derived correctly from the master or document data.",
+    "primaryTransaction": "FB03",
+    "relatedTransactions": ["KS03", "MM03", "VA03"],
+    "steps": [
+      "Capture the exact profit center error and identify the affected line item.",
+      "Review where the profit center should be derived from in the business process.",
+      "Check the relevant master data such as material, cost center, order, or asset.",
+      "Correct the missing or incorrect profit center source.",
+      "Validate the corrected account assignment context.",
+      "Retest the posting afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-storage-bin-missing",
+    "pattern": ["storage bin missing", "bin not found", "warehouse bin invalid", "destination bin missing", "source bin missing", "storage type bin error"],
+    "title": "Storage Bin Missing or Invalid",
+    "category": "Warehouse",
+    "description": "A warehouse process fails because the required storage bin does not exist, is not valid in the warehouse context, or is not allowed for the movement.",
+    "primaryTransaction": "LX03",
+    "relatedTransactions": ["LT03", "LT12", "LS03N"],
+    "steps": [
+      "Identify the warehouse number, storage type, and storage bin involved.",
+      "Check whether the storage bin exists and is valid for the warehouse movement.",
+      "Review whether the movement requires a source or destination bin that was not provided correctly.",
+      "Correct the bin data or choose the valid warehouse location.",
+      "Save the corrected movement data if applicable.",
+      "Retest the warehouse transaction."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-uom-conversion-missing",
+    "pattern": ["unit of measure conversion missing", "uom conversion error", "order unit not maintained", "alternative unit missing", "marm missing", "quantity conversion failed"],
+    "title": "Unit of Measure Conversion Missing or Invalid",
+    "category": "Logistics",
+    "description": "A logistics process fails because SAP cannot convert between base, order, sales, or alternative units of measure for the material.",
+    "primaryTransaction": "MM03",
+    "relatedTransactions": ["ME21N", "VA01", "MIGO"],
+    "steps": [
+      "Identify the material and the units involved in the failing transaction.",
+      "Check whether the required alternative unit of measure exists in the material master.",
+      "Review conversion factors and whether the chosen unit is allowed in the process.",
+      "Maintain or correct the missing unit conversion according to master data rules.",
+      "Validate the material's unit-of-measure setup afterwards.",
+      "Retest the original transaction."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-sales-schedule-line-missing",
+    "pattern": ["schedule line missing", "sales schedule line missing", "vbep issue", "no schedule line created", "schedule line category issue", "sales order has no schedule line"],
+    "title": "Sales Schedule Line Missing or Incorrect",
+    "category": "Logistics",
+    "description": "A sales order item is not behaving as expected because schedule lines were not created correctly or have the wrong dates, quantities, or category.",
+    "primaryTransaction": "VA03",
+    "relatedTransactions": ["VA02", "CO09", "VL01N"],
+    "steps": [
+      "Open the sales order item and review the schedule line data.",
+      "Check whether requested dates, confirmed quantities, and schedule line category are correct.",
+      "Confirm whether the item is delivery-relevant and properly scheduled.",
+      "Correct the schedule line data if business rules allow it.",
+      "Review availability and delivery implications after the change.",
+      "Retest downstream delivery or planning steps."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-inspection-lot-not-created",
+    "pattern": ["inspection lot not created", "qm lot missing", "goods receipt no inspection lot", "quality inspection not triggered", "qals missing", "inspection type not active"],
+    "title": "Inspection Lot Not Created",
+    "category": "Quality Management",
+    "description": "A quality process expects an inspection lot, but none is created because the inspection setup or trigger conditions are incomplete.",
+    "primaryTransaction": "QA03",
+    "relatedTransactions": ["MIGO", "MM03", "QMAT"],
+    "steps": [
+      "Identify the material movement or quality trigger where the lot was expected.",
+      "Check whether the material and plant are maintained for the relevant inspection type.",
+      "Review whether the movement or business process should trigger lot creation.",
+      "Correct the inspection setup or material quality data if needed.",
+      "Repeat the triggering business process if appropriate.",
+      "Verify that the inspection lot now exists."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-usage-decision-missing",
+    "pattern": ["usage decision missing", "quality lot not decided", "qa11 not done", "inspection lot still open", "stock not released from qm", "qm stock still blocked"],
+    "title": "Usage Decision Missing for Inspection Lot",
+    "category": "Quality Management",
+    "description": "Stock or follow-on processing is blocked because the inspection lot has not yet received a usage decision.",
+    "primaryTransaction": "QA11",
+    "relatedTransactions": ["QA03", "MIGO", "MMBE"],
+    "steps": [
+      "Identify the inspection lot and review its current status.",
+      "Confirm that inspection results or prerequisite checks are complete if required.",
+      "Open the usage decision transaction and review the lot details.",
+      "Enter the correct usage decision according to the quality outcome.",
+      "Save the decision and confirm the lot status is updated.",
+      "Review stock or downstream process availability afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-batch-status-restricted",
+    "pattern": ["batch restricted", "batch status not released", "restricted batch", "batch cannot be used", "batch status issue", "batch not usable"],
+    "title": "Batch Status Prevents Use",
+    "category": "Logistics",
+    "description": "A batch-managed material cannot be used because the batch is restricted, blocked, or not released for the intended business process.",
+    "primaryTransaction": "MSC3N",
+    "relatedTransactions": ["VL02N", "MIGO", "MMBE"],
+    "steps": [
+      "Identify the material, batch, plant, and storage context involved.",
+      "Check the batch status and whether it is released for the required usage.",
+      "Review stock type and whether the batch is in unrestricted, quality, or blocked stock.",
+      "Correct the business status only through the approved batch or quality process.",
+      "Validate that the batch is now eligible for the intended transaction.",
+      "Retest the process afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-serial-profile-mismatch",
+    "pattern": ["serial number profile mismatch", "serial profile invalid", "material serial profile wrong", "serial procedure mismatch", "serial configuration issue"],
+    "title": "Serial Number Profile Mismatch",
+    "category": "Logistics",
+    "description": "A serial-managed process fails because the material's serial number profile or serial handling setup does not match the transaction scenario.",
+    "primaryTransaction": "MM03",
+    "relatedTransactions": ["IQ03", "MIGO", "VL02N"],
+    "steps": [
+      "Identify the material and the serial-managed transaction that failed.",
+      "Review the serial number profile maintained on the material master.",
+      "Confirm whether the serial handling requirements fit the intended logistics process.",
+      "Correct the material setup only through the approved master data process.",
+      "Validate the serial handling configuration afterwards.",
+      "Retest the original transaction."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-output-device-missing",
+    "pattern": ["output device missing", "printer device missing", "spad device missing", "print device invalid", "output device not found", "printer not configured"],
+    "title": "Output Device Missing or Invalid",
+    "category": "Technical",
+    "description": "A report or form cannot print because the configured output device does not exist or is not valid in the current system.",
+    "primaryTransaction": "SPAD",
+    "relatedTransactions": ["SP01", "SM36"],
+    "steps": [
+      "Identify the output device name used by the failing print or spool request.",
+      "Check whether the device exists and is configured correctly in printer administration.",
+      "Review whether the device is valid for the current client or environment.",
+      "Correct the device assignment or choose a valid output device.",
+      "Save the corrected output settings if applicable.",
+      "Retest the print or spool action."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-printer-access-denied",
+    "pattern": ["printer access denied", "no authorization for printer", "cannot print to device", "spool authorization error", "printer not allowed", "output authorization missing"],
+    "title": "User Cannot Print to the Output Device",
+    "category": "Technical",
+    "description": "A user can create output but cannot send it to the intended printer or output device because of authorization or routing restrictions.",
+    "primaryTransaction": "SP01",
+    "relatedTransactions": ["SPAD", "SU53"],
+    "steps": [
+      "Confirm the exact output device the user is trying to use.",
+      "Check whether the spool request was created but failed at output stage.",
+      "Ask the user to capture authorization details immediately after the failure if needed.",
+      "Review whether the user is allowed to use that output device in the current environment.",
+      "Correct the authorization or assign a permitted printer if appropriate.",
+      "Retest the print action afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-classification-value-missing",
+    "pattern": ["classification value missing", "characteristic missing", "class value missing", "batch classification incomplete", "variant config missing value", "ausp missing value"],
+    "title": "Required Classification or Characteristic Value Missing",
+    "category": "Logistics",
+    "description": "A process such as batch determination, configuration, or product selection fails because required classification values are missing or incomplete.",
+    "primaryTransaction": "CL24N",
+    "relatedTransactions": ["MSC3N", "MM03", "CU50"],
+    "steps": [
+      "Identify which characteristic or class-dependent logic is expected in the process.",
+      "Check whether the material, batch, or object has the required class assignment.",
+      "Review whether the required characteristic values are maintained.",
+      "Maintain the missing values using the correct classification process.",
+      "Validate that the object now meets the selection or determination criteria.",
+      "Retest the original process afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-billing-plan-missing",
+    "pattern": ["billing plan missing", "billing plan not maintained", "invoice plan missing", "milestone billing missing", "periodic billing plan missing", "billing schedule missing"],
+    "title": "Billing Plan Missing or Incomplete",
+    "category": "Sales",
+    "description": "A billing-related sales process fails or does not produce expected invoices because the billing plan is missing or incomplete.",
+    "primaryTransaction": "VA03",
+    "relatedTransactions": ["VA02", "VF04", "VF01"],
+    "steps": [
+      "Open the relevant sales document and identify the item or header billing-plan context.",
+      "Check whether a billing plan exists and whether dates or milestones are maintained.",
+      "Review whether the item category or sales scenario expects billing-plan behavior.",
+      "Maintain the missing billing-plan data if business rules allow it.",
+      "Save the document and recheck billing relevance.",
+      "Retest billing due-list or invoice creation afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-customer-master-blocked",
+    "pattern": ["customer blocked", "customer master blocked", "customer blocked for sales", "billing block on customer", "posting block on customer", "bp customer blocked"],
+    "title": "Customer Master Blocked for Use",
+    "category": "Master Data",
+    "description": "A process fails because the customer is blocked for sales, billing, posting, or general business use.",
+    "primaryTransaction": "BP",
+    "relatedTransactions": ["VA01", "VF01", "FBL5N"],
+    "steps": [
+      "Identify the customer and the exact business process that is blocked.",
+      "Check whether the customer has sales, billing, posting, or central block indicators set.",
+      "Review whether the block is intentional and still valid from a business perspective.",
+      "Remove or adjust the block only with proper approval.",
+      "Save the master data and verify the block status afterwards.",
+      "Retest the original business process."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-vendor-master-blocked",
+    "pattern": ["vendor blocked", "supplier blocked", "vendor master blocked", "supplier blocked for purchasing", "posting block on vendor", "bp supplier blocked"],
+    "title": "Vendor or Supplier Master Blocked for Use",
+    "category": "Master Data",
+    "description": "A procurement or finance process fails because the supplier is blocked for purchasing, posting, or general business use.",
+    "primaryTransaction": "BP",
+    "relatedTransactions": ["ME21N", "FBL1N", "MIRO"],
+    "steps": [
+      "Identify the supplier and the blocked business process.",
+      "Check whether the supplier has purchasing, posting, or central block indicators set.",
+      "Review whether the block is intentional and still required.",
+      "Adjust the block only through the approved master-data governance process.",
+      "Save the supplier master and verify the status afterwards.",
+      "Retest the original process."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-production-version-invalid",
+    "pattern": ["production version invalid", "no valid production version", "production version missing", "version not valid for lot size", "production version issue", "c223 issue"],
+    "title": "Production Version Missing or Not Valid",
+    "category": "Production Planning",
+    "description": "Planning or order creation fails because SAP cannot find a valid production version for the material, plant, dates, or lot size.",
+    "primaryTransaction": "C223",
+    "relatedTransactions": ["MD04", "CO01", "MM03"],
+    "steps": [
+      "Identify the material, plant, date, and quantity involved in the failing process.",
+      "Check whether a production version exists for that material and plant.",
+      "Review validity dates, lot-size ranges, and version status.",
+      "Confirm the version points to the correct BOM and routing/task list.",
+      "Correct or create the valid production version as needed.",
+      "Retest planning or order creation afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-duplicate-invoice-detected",
+    "pattern": ["possible duplicate invoice", "duplicate invoice detected", "invoice already exists", "vendor invoice duplicate", "duplicate check blocked invoice", "same reference invoice exists"],
+    "title": "Possible Duplicate Vendor Invoice Detected",
+    "category": "Finance & Controlling",
+    "description": "Invoice posting is blocked or warned because SAP detects that a similar vendor invoice may already exist for the same supplier, reference, amount, or date.",
+    "primaryTransaction": "MIRO",
+    "relatedTransactions": ["FBL1N", "FB03", "MRBR"],
+    "steps": [
+      "Capture the vendor, reference number, invoice date, and amount from the attempted posting.",
+      "Check vendor line items to see whether the same invoice was already posted.",
+      "Review whether the duplicate is real or whether the reference format legitimately repeats.",
+      "If the invoice already exists, stop the posting and use the existing document.",
+      "If the duplicate check is a false positive, confirm the business rule before proceeding.",
+      "Post again only after the duplicate risk has been resolved."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-invoice-tolerance-exceeded",
+    "pattern": ["invoice tolerance exceeded", "quantity variance too high", "price variance too high", "invoice exceeds tolerance", "miro tolerance error", "tolerance key exceeded"],
+    "title": "Invoice Tolerance Exceeded",
+    "category": "Finance & Controlling",
+    "description": "Invoice verification fails or blocks the invoice because quantity or price differences exceed the configured tolerance limits.",
+    "primaryTransaction": "MIRO",
+    "relatedTransactions": ["ME23N", "MIGO", "MRBR"],
+    "steps": [
+      "Capture the exact tolerance or variance message from invoice verification.",
+      "Compare invoice quantity and price with the purchase order and goods receipt history.",
+      "Determine whether the variance is a real business issue or a tolerance configuration issue.",
+      "Correct the invoice, PO, or receipt data if the business values are wrong.",
+      "If the variance is expected, follow the approved release or exception process.",
+      "Retest invoice posting after the variance is understood and handled."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-open-item-already-cleared",
+    "pattern": ["item already cleared", "document already cleared", "invoice already cleared", "cannot clear cleared item", "open item not open anymore", "item already paid"],
+    "title": "Open Item Already Cleared",
+    "category": "Finance & Controlling",
+    "description": "A user tries to pay, clear, or process an item that is no longer open because it has already been cleared by another posting.",
+    "primaryTransaction": "FBL1N",
+    "relatedTransactions": ["FBL5N", "FB03", "F-32", "F-44"],
+    "steps": [
+      "Identify the document number and account involved.",
+      "Check the line-item display to confirm the item status is cleared rather than open.",
+      "Review the clearing document and clearing date.",
+      "Determine whether the user selected the wrong item or whether a duplicate business action was attempted.",
+      "Use the clearing document as the audit trail for what already happened.",
+      "Continue only with the correct still-open items."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-partial-payment-confusion",
+    "pattern": ["partial payment issue", "residual item unexpected", "payment not fully cleared", "invoice still open after payment", "partial payment created", "residual amount remains"],
+    "title": "Partial Payment or Residual Item Unexpected",
+    "category": "Finance & Controlling",
+    "description": "Users expect a full clearing, but SAP leaves an open balance because the payment was posted as a partial payment or residual item.",
+    "primaryTransaction": "FBL5N",
+    "relatedTransactions": ["FBL1N", "F-28", "F-53", "FB03"],
+    "steps": [
+      "Review the customer or vendor line items after the payment posting.",
+      "Check whether SAP created a partial payment, residual item, or clearing difference.",
+      "Open the payment and invoice documents to understand the posting logic used.",
+      "Determine whether the result matches the intended business clearing method.",
+      "If posted incorrectly, reverse and repost using the correct clearing option if allowed.",
+      "Validate the final open-item status afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-parked-document-not-posted",
+    "pattern": ["parked document not posted", "document parked only", "invoice parked not posted", "fbv0 needed", "parked document still pending", "not in accounting because parked"],
+    "title": "Document Parked but Not Posted",
+    "category": "Finance & Controlling",
+    "description": "A financial or invoice document exists only in parked status and has not yet been posted to accounting.",
+    "primaryTransaction": "FBV0",
+    "relatedTransactions": ["FB03", "MIR7", "FBV3"],
+    "steps": [
+      "Identify the parked document number and document type.",
+      "Confirm whether the document was intentionally parked for approval or correction.",
+      "Review the parked content for completeness and correctness.",
+      "Post the parked document if you are authorized and business approval exists.",
+      "If the document should remain parked, communicate the pending action to the responsible user.",
+      "Verify afterward whether the document is now posted in accounting."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-po-item-deleted-or-closed",
+    "pattern": ["po item deleted", "po item closed", "item no longer open", "purchase order item completed", "delivery completed indicator", "cannot use po item anymore"],
+    "title": "Purchase Order Item Deleted, Closed, or Delivery Completed",
+    "category": "Logistics",
+    "description": "A procurement or invoice process fails because the relevant PO item is marked as deleted, fully delivered, or otherwise no longer open for follow-on processing.",
+    "primaryTransaction": "ME23N",
+    "relatedTransactions": ["ME22N", "MIGO", "MIRO"],
+    "steps": [
+      "Open the purchase order and identify the affected item.",
+      "Check deletion indicator, final delivery indicator, and item completion status.",
+      "Review whether the business process is trying to use an item that is already finished.",
+      "Confirm whether the PO item should really be reopened or whether a new document is needed.",
+      "Adjust the item status only through the approved procurement process.",
+      "Retest the downstream step afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-po-confirmation-control-mismatch",
+    "pattern": ["confirmation control mismatch", "confirmation category invalid", "po confirmation setup wrong", "vendor confirmation category issue", "confirmation not allowed for item"],
+    "title": "PO Confirmation Control Mismatch",
+    "category": "Logistics",
+    "description": "A purchase order confirmation process fails because the item confirmation control setup does not match the confirmation category or business process being used.",
+    "primaryTransaction": "ME22N",
+    "relatedTransactions": ["ME23N", "ME92F"],
+    "steps": [
+      "Identify the PO item and the expected confirmation behavior.",
+      "Check the confirmation control key on the item.",
+      "Review whether the received or entered confirmation matches the configured confirmation logic.",
+      "Correct the PO item setup or the confirmation process as appropriate.",
+      "Save the corrected PO data.",
+      "Recheck the item confirmation status afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-source-list-blocked",
+    "pattern": ["source list blocked", "vendor blocked in source list", "source exists but blocked", "blocked source of supply", "source list prevents po"],
+    "title": "Source List Entry Blocked",
+    "category": "Logistics",
+    "description": "Automatic sourcing fails because a source list entry exists but is blocked or otherwise not selectable for procurement.",
+    "primaryTransaction": "ME03",
+    "relatedTransactions": ["ME01", "ME21N", "ME57"],
+    "steps": [
+      "Identify the material, plant, and supplier involved in sourcing.",
+      "Review the source list entries and their validity dates.",
+      "Check whether the desired source is marked as blocked or not fixed when expected.",
+      "Correct the source list only through the approved procurement master-data process.",
+      "Save the updated source-list entry.",
+      "Retest source determination afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-quota-arrangement-missing",
+    "pattern": ["quota arrangement missing", "quota arrangement not maintained", "quota arrangement issue", "source split not working", "quota determination missing"],
+    "title": "Quota Arrangement Missing or Not Used",
+    "category": "Logistics",
+    "description": "Procurement sourcing behaves unexpectedly because quota arrangement data is missing, expired, or not active for the material and plant.",
+    "primaryTransaction": "MEQ3",
+    "relatedTransactions": ["MEQ1", "ME57", "ME21N"],
+    "steps": [
+      "Identify the material, plant, and expected supplier selection logic.",
+      "Check whether a quota arrangement exists and is valid for the current date.",
+      "Review quota items, quota ratings, and source assignments.",
+      "Confirm whether source determination is expected to use quota arrangement in this scenario.",
+      "Maintain or correct the quota arrangement as needed.",
+      "Retest procurement source determination afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-delivery-date-in-past",
+    "pattern": ["delivery date in past", "requested date invalid", "material availability date issue", "delivery scheduling issue", "requested delivery date not possible"],
+    "title": "Requested Delivery Date Not Feasible",
+    "category": "Logistics",
+    "description": "Sales or procurement scheduling behaves unexpectedly because the requested delivery date is in the past or not feasible based on lead times and availability.",
+    "primaryTransaction": "VA02",
+    "relatedTransactions": ["VA03", "CO09", "MD04", "ME21N"],
+    "steps": [
+      "Identify the requested date and the scheduling context of the document.",
+      "Review confirmed dates, lead times, transit times, and ATP impact.",
+      "Check whether the requested date is historically invalid or operationally impossible.",
+      "Adjust the requested date or planning data according to the business need.",
+      "Redetermine dates if the transaction allows it.",
+      "Validate the new confirmed schedule afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-delivery-split-unexpected",
+    "pattern": ["delivery split", "multiple deliveries created", "delivery split unexpected", "order split into deliveries", "why two deliveries", "shipping split issue"],
+    "title": "Unexpected Delivery Split",
+    "category": "Logistics",
+    "description": "A sales order creates multiple deliveries unexpectedly because header or item data differs in a way that prevents combined delivery creation.",
+    "primaryTransaction": "VA03",
+    "relatedTransactions": ["VL03N", "VL10A"],
+    "steps": [
+      "Identify the sales order items that split into separate deliveries.",
+      "Compare shipping-relevant fields such as shipping point, route, ship-to, delivery date, and plant.",
+      "Review whether the split is actually correct based on differing logistics data.",
+      "If not intended, align the relevant delivery-splitting criteria where business rules allow it.",
+      "Regenerate or review deliveries after the data is corrected.",
+      "Confirm whether the items now combine as expected."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-credit-memo-reference-missing",
+    "pattern": ["credit memo reference missing", "cannot create credit memo", "reference document required", "credit memo needs billing reference", "returns credit reference missing"],
+    "title": "Credit Memo or Return Requires Valid Reference",
+    "category": "Sales",
+    "description": "A credit or returns-related process fails because SAP expects a valid reference document that is missing or not suitable for the scenario.",
+    "primaryTransaction": "VA01",
+    "relatedTransactions": ["VF01", "VA03", "VF03"],
+    "steps": [
+      "Identify the type of credit or returns document being created.",
+      "Check whether the process requires reference to an original sales, delivery, or billing document.",
+      "Validate that the reference document exists and is the correct one for the scenario.",
+      "Use the correct reference document when recreating or changing the transaction.",
+      "Review pricing and quantity carryover after adding the reference.",
+      "Save and verify the correction document afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-returns-movement-blocked",
+    "pattern": ["returns blocked", "cannot post return receipt", "return delivery issue", "returns stock issue", "customer return not processable"],
+    "title": "Customer Return Cannot Be Processed",
+    "category": "Logistics",
+    "description": "A returns process cannot continue because the return delivery, movement type, or stock handling setup is not aligned with the returns scenario.",
+    "primaryTransaction": "VL01N",
+    "relatedTransactions": ["VA03", "VL02N", "MIGO"],
+    "steps": [
+      "Identify the return order or delivery involved.",
+      "Review whether the return logistics process is correctly configured for the document type and item category.",
+      "Check stock destination, movement type, and serial or batch constraints if relevant.",
+      "Correct the process data or use the appropriate returns step according to business rules.",
+      "Save and continue the returns document processing.",
+      "Verify the stock and status outcome afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-wm-quant-mismatch",
+    "pattern": ["quant mismatch", "warehouse quant issue", "lqua mismatch", "wm stock not matching", "quant inconsistent", "bin stock mismatch"],
+    "title": "Warehouse Quant or Bin Stock Mismatch",
+    "category": "Warehouse",
+    "description": "Warehouse stock appears inconsistent because quant-level stock, transfer activity, or inventory results do not align with expectations.",
+    "primaryTransaction": "LX03",
+    "relatedTransactions": ["LT22", "LI20", "LQUA"],
+    "steps": [
+      "Identify the warehouse number, bin, and material involved.",
+      "Review the current quant situation and compare it with the expected warehouse status.",
+      "Check recent transfer orders, confirmations, or inventory differences affecting the bin.",
+      "Determine whether the mismatch is operational, timing-related, or master-data related.",
+      "Correct the warehouse situation through the proper WM process.",
+      "Recheck bin and quant status afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-transfer-order-not-confirmed",
+    "pattern": ["transfer order not confirmed", "to not confirmed", "lt12 pending", "warehouse transfer open", "to still open", "ltap open"],
+    "title": "Warehouse Transfer Order Still Open",
+    "category": "Warehouse",
+    "description": "A warehouse movement remains incomplete because the transfer order was created but not confirmed.",
+    "primaryTransaction": "LT22",
+    "relatedTransactions": ["LT12", "LT03", "VL03N"],
+    "steps": [
+      "Identify the transfer order and the warehouse process it belongs to.",
+      "Check whether the transfer order is still open or only partially confirmed.",
+      "Review the physical warehouse status and confirm whether execution really happened.",
+      "If appropriate, confirm the transfer order using the correct warehouse process.",
+      "Validate the resulting stock and process status afterwards.",
+      "Recheck any linked delivery or warehouse requirement if relevant."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-planned-order-firming-missing",
+    "pattern": ["planned order not firmed", "mrp changed planned order", "planning proposal changed unexpectedly", "planned order rescheduled", "firming missing"],
+    "title": "Planned Order Not Firmed",
+    "category": "Production Planning",
+    "description": "MRP changes or reschedules a planned order unexpectedly because the proposal was not firmed or protected from replanning.",
+    "primaryTransaction": "MD04",
+    "relatedTransactions": ["MD11", "MD12", "MD13"],
+    "steps": [
+      "Identify the planned order that changed unexpectedly.",
+      "Review whether the proposal is firmed or still fully changeable by MRP.",
+      "Check planning dates and why the next MRP run adjusted the proposal.",
+      "Firm the planned order if business rules require it to stay stable.",
+      "Save the planning changes and review the result.",
+      "Monitor the next planning cycle to confirm the behavior is now correct."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-backflush-not-posted",
+    "pattern": ["backflush not posted", "components not backflushed", "confirmation no goods issue", "backflush missing", "component consumption not posted"],
+    "title": "Backflush Did Not Post Component Consumption",
+    "category": "Production Planning",
+    "description": "Production confirmation completes, but expected automatic component consumption does not post.",
+    "primaryTransaction": "CO11N",
+    "relatedTransactions": ["CO03", "MIGO", "MB51"],
+    "steps": [
+      "Identify the production order, operation, and components involved.",
+      "Check whether the order and BOM components are set up for backflush behavior.",
+      "Review the confirmation result to see whether only yield posted without goods movement.",
+      "Check stock, movement type, and component assignment context.",
+      "Correct the master or order setup if backflush should have happened automatically.",
+      "Retest the confirmation or post the required movement through the approved process."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-order-status-teco-blocking",
+    "pattern": ["order teco", "technically completed order", "teco blocks posting", "order closed for processing", "co03 teco", "pm order teco"],
+    "title": "Order Status TECO or Closed Blocking Further Processing",
+    "category": "Production Planning",
+    "description": "A production or maintenance order cannot continue because it is technically completed, closed, or otherwise no longer open for the action being attempted.",
+    "primaryTransaction": "CO03",
+    "relatedTransactions": ["CO02", "IW33", "IW32"],
+    "steps": [
+      "Identify the order number and the blocked action.",
+      "Review the current system status and whether TECO, CLSD, or another closing status is set.",
+      "Confirm whether the order should really be reopened or whether the action belongs on another order.",
+      "Adjust the order status only through the approved business process.",
+      "Save the status change if one is made.",
+      "Retest the original action afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-hr-infotype-locked",
+    "pattern": ["infotype locked", "pa30 locked", "employee record locked", "hr master locked", "cannot edit infotype because locked"],
+    "title": "HR Infotype Record Locked",
+    "category": "HCM",
+    "description": "An HR master-data change cannot be made because the employee or infotype record is locked by another user or process.",
+    "primaryTransaction": "PA30",
+    "relatedTransactions": ["SM12", "PA20"],
+    "steps": [
+      "Identify the employee number and infotype being maintained.",
+      "Confirm that another HR user or process is not actively editing the same record.",
+      "Review lock entries if the record appears stuck or unavailable.",
+      "Ask the owning user to complete or exit the transaction if possible.",
+      "Clear stale locks only when you are sure no active work will be affected.",
+      "Retry the HR maintenance afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-manager-self-service-sync-delay",
+    "pattern": ["manager cannot see employee", "mss not updated", "manager self service missing employee", "org change not visible in workflow", "manager structure outdated"],
+    "title": "Manager or Workflow Structure Not Updated Yet",
+    "category": "HCM",
+    "description": "A manager, approver, or self-service process does not reflect the latest employee or organizational changes because structural data is not yet aligned or refreshed.",
+    "primaryTransaction": "PPOME",
+    "relatedTransactions": ["PPOSE", "PA30", "SBWP"],
+    "steps": [
+      "Identify the employee, manager, and missing relationship in the business process.",
+      "Review the OM structure and holder relationships for the relevant position.",
+      "Confirm whether the HR master and OM structures are aligned.",
+      "Correct any missing structural assignment using the proper OM or HR process.",
+      "Allow the process context to refresh and verify the manager relationship again.",
+      "Retest the workflow or self-service scenario afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-spool-full-or-temse-issue",
+    "pattern": ["temse full", "spool full", "cannot create spool", "temse error", "spool request creation failed", "output request not created"],
+    "title": "Spool or TemSe Storage Issue",
+    "category": "Technical",
+    "description": "Output generation or background reporting fails because spool or TemSe-related storage or administration issues prevent new spool requests from being created correctly.",
+    "primaryTransaction": "SP01",
+    "relatedTransactions": ["SM21", "SP12", "SM37"],
+    "steps": [
+      "Identify whether the issue occurs during report execution or output creation.",
+      "Check recent spool and system-log behavior around the failure.",
+      "Review whether spool administration or TemSe housekeeping is needed.",
+      "Coordinate cleanup or technical correction through the proper basis process.",
+      "Retry the report or output generation afterwards.",
+      "Confirm that spool requests can now be created normally."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-batch-job-still-scheduled-not-running",
+    "pattern": ["job scheduled but not running", "job released but not started", "background job waiting", "scheduled job stuck", "sm37 scheduled only", "job never starts"],
+    "title": "Background Job Scheduled but Not Starting",
+    "category": "Technical",
+    "description": "A background job remains scheduled or released but does not actually start at the expected time.",
+    "primaryTransaction": "SM37",
+    "relatedTransactions": ["SM36", "SM21", "SM50"],
+    "steps": [
+      "Check the job status, start condition, and planned execution time.",
+      "Review whether the execution window or server assignment is valid.",
+      "Confirm there is no dependency or event condition preventing start.",
+      "Check whether background work processes are available and healthy.",
+      "Correct the scheduling setup or technical bottleneck as appropriate.",
+      "Monitor the job again to confirm it starts normally."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-http-destination-auth-failed",
+    "pattern": ["http destination auth failed", "rest call unauthorized", "http 401 from destination", "oauth token issue", "destination logon failed", "service call unauthorized"],
+    "title": "HTTP Destination Authentication Failed",
+    "category": "Connectivity & Services",
+    "description": "An outbound HTTP or REST call fails because the configured destination authentication is missing, expired, or invalid.",
+    "primaryTransaction": "SM59",
+    "relatedTransactions": ["SICF", "STRUST", "SM21"],
+    "steps": [
+      "Identify the HTTP destination and the interface call that failed.",
+      "Test the destination and review the exact authentication error.",
+      "Check credentials, tokens, certificates, or trusted-authentication setup depending on the scenario.",
+      "Confirm whether the target service still expects the same authentication method.",
+      "Correct the destination authentication in the approved technical process.",
+      "Retest the outbound call afterwards."
+    ],
+    "linkedFlow": null
+  },
+  {
+    "id": "err-search-help-no-values",
+    "pattern": ["f4 help empty", "search help no values", "input help empty", "value help missing", "no values in search help"],
+    "title": "Search Help or Input Help Returns No Values",
+    "category": "Technical",
+    "description": "A field's input help opens but shows no values because selection context, authorizations, or underlying search-help data does not return usable entries.",
+    "primaryTransaction": "SE11",
+    "relatedTransactions": ["SM30", "SU53", "SE16N"],
+    "steps": [
+      "Identify the exact field and transaction where the empty input help occurs.",
+      "Check whether the search help depends on organizational context or prerequisite field values.",
+      "Review whether the underlying customizing or master data actually contains values.",
+      "Consider whether the user might be restricted from seeing the relevant values.",
+      "Correct the missing context or data source according to the application design.",
+      "Retest the input help afterwards."
+    ],
+    "linkedFlow": null
   }
 ]
