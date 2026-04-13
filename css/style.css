@@ -1485,6 +1485,67 @@ footer {
   border-color: var(--tab-color);
 }
 
+/* ========== COPY BUTTON ========== */
+.code-copy-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.copy-btn {
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: none;
+  color: var(--gray-400);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  transition: color .15s, background .15s;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Show copy button when parent card is hovered */
+.best-card:hover .copy-btn,
+.tx-card:hover .copy-btn,
+.table-best-card:hover .copy-btn,
+.table-card:hover .copy-btn,
+.modal-step-tx-row .copy-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.copy-btn:hover {
+  color: var(--tab-color);
+  background: var(--tab-light);
+}
+
+.copy-btn svg { width: 13px; height: 13px; }
+
+/* Default: show copy icon, hide check */
+.copy-btn .check-icon { display: none; }
+.copy-btn .copy-icon  { display: block; }
+
+/* Copied state: swap icons, turn green */
+.copy-btn.copied { color: #059669; background: #ecfdf5; opacity: 1; pointer-events: none; }
+.copy-btn.copied .copy-icon  { display: none; }
+.copy-btn.copied .check-icon { display: block; }
+
+/* Flow modal step tx row — always show copy btn (no hover needed in modal) */
+.modal-step-tx-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.modal-step-tx-row .copy-btn { opacity: 1; pointer-events: auto; }
+
 /* ========== LEGAL MODALS ========== */
 .legal-modal { max-width: 600px; }
 

@@ -265,7 +265,10 @@ function renderBestCard(tx, reason) {
   <div class="best-card">
     <div class="best-badge">★ Best Starting Point</div>
     <div class="card-header">
-      <div class="card-code">${escHtml(tx.code)}</div>
+      <div class="code-copy-row">
+        <div class="card-code">${escHtml(tx.code)}</div>
+        ${COPY_BTN(tx.code)}
+      </div>
       ${tx.category ? `<span class="card-cat-badge">${escHtml(tx.category)}</span>` : ''}
     </div>
     <div class="card-name">${escHtml(tx.name)}</div>
@@ -280,7 +283,10 @@ function renderTxCard(tx, reason) {
   const hasFooter = tx.report || tx.category;
   return `
   <div class="tx-card">
-    <div class="card-code">${escHtml(tx.code)}</div>
+    <div class="code-copy-row">
+      <div class="card-code">${escHtml(tx.code)}</div>
+      ${COPY_BTN(tx.code)}
+    </div>
     <div class="card-name">${escHtml(tx.name)}</div>
     <div class="card-desc">${escHtml(tx.description)}</div>
     ${reason ? `<div class="card-reason">${escHtml(reason)}</div>` : ''}
@@ -411,7 +417,10 @@ function renderBestTableCard(tbl, reason) {
   <div class="table-best-card">
     <div class="best-badge">★ Best Match</div>
     <div class="card-header">
-      <div class="table-name">${escHtml(tbl.name)}</div>
+      <div class="code-copy-row">
+        <div class="table-name">${escHtml(tbl.name)}</div>
+        ${COPY_BTN(tbl.name)}
+      </div>
       ${tbl.module ? `<span class="table-module-tag">${escHtml(tbl.module)}</span>` : ''}
     </div>
     <div class="table-title">${escHtml(tbl.title)}</div>
@@ -427,7 +436,10 @@ function renderTableCard(tbl, reason) {
   return `
   <div class="table-card">
     <div class="card-header">
-      <div class="table-name" style="font-size:15px">${escHtml(tbl.name)}</div>
+      <div class="code-copy-row">
+        <div class="table-name" style="font-size:15px">${escHtml(tbl.name)}</div>
+        ${COPY_BTN(tbl.name)}
+      </div>
       ${tbl.module ? `<span class="table-module-tag">${escHtml(tbl.module)}</span>` : ''}
     </div>
     <div class="table-title" style="font-size:13px">${escHtml(tbl.title)}</div>
@@ -825,7 +837,7 @@ function openFlowModal(flowId) {
     <div class="modal-step">
       <div class="modal-step-num">${step.order}</div>
       <div class="modal-step-content">
-        ${step.transaction ? `<div class="modal-step-tx">${escHtml(step.transaction)}</div>` : ''}
+        ${step.transaction ? `<div class="code-copy-row modal-step-tx-row"><div class="modal-step-tx">${escHtml(step.transaction)}</div>${COPY_BTN(step.transaction)}</div>` : ''}
         <div class="modal-step-action">${escHtml(step.action)}</div>
         <div class="modal-step-reason">${escHtml(step.reason)}</div>
       </div>
@@ -870,6 +882,20 @@ function switchTab(tabId) {
   moveIndicator(tabId);
   animateTabStat(tabId);
 }
+
+// ========== COPY UTIL ==========
+function copyCode(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    setTimeout(() => btn.classList.remove('copied'), 1800);
+  });
+}
+
+const COPY_BTN = (code) =>
+  `<button class="copy-btn" onclick="event.stopPropagation();copyCode('${escHtml(code)}',this)" title="Copy ${escHtml(code)}">
+    <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </button>`;
 
 // ========== UTILS ==========
 function escHtml(str) {
