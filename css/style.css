@@ -345,45 +345,65 @@ main {
   margin-bottom: 20px;
 }
 
-.chip-dropdown[open] .chip-dropdown-toggle svg {
-  transform: rotate(180deg);
-}
-
 .chip-dropdown-toggle {
-  display: inline-flex;
+  width: 100%;
+  display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 12px;
-  font-weight: 600;
+  justify-content: space-between;
+  padding: 9px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--gray-200);
+  background: var(--white);
   color: var(--gray-500);
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: var(--font);
   cursor: pointer;
   list-style: none;
   user-select: none;
-  padding: 4px 10px 4px 8px;
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--gray-200);
-  background: var(--white);
-  transition: color .15s, border-color .15s, background .15s;
-  margin-bottom: 10px;
+  transition: border-color .15s, color .15s, background .15s;
 }
 
 .chip-dropdown-toggle::-webkit-details-marker { display: none; }
 
-.chip-dropdown-toggle svg {
-  width: 13px;
-  height: 13px;
-  transition: transform .2s;
-  order: -1;
+.chip-dropdown-toggle .toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
+.chip-dropdown-toggle .toggle-label svg {
+  width: 14px;
+  height: 14px;
+  color: var(--gray-400);
+}
+
+.chip-dropdown-toggle .toggle-chevron {
+  width: 14px;
+  height: 14px;
+  transition: transform .2s cubic-bezier(.4,0,.2,1);
+  color: var(--gray-400);
+  flex-shrink: 0;
+}
+
+.chip-dropdown[open] .toggle-chevron { transform: rotate(180deg); }
+
 .chip-dropdown-toggle:hover {
-  color: var(--tab-color);
   border-color: var(--tab-mid);
+  color: var(--tab-dark);
   background: var(--tab-light);
 }
 
+.chip-dropdown-toggle:hover .toggle-label svg,
+.chip-dropdown-toggle:hover .toggle-chevron { color: var(--tab-color); }
+
 .chip-dropdown .chip-row {
+  margin-top: 12px;
   margin-bottom: 0;
+  padding: 12px 14px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
 }
 
 /* ========== CHIP ROW (suggestions) ========== */
@@ -922,53 +942,6 @@ main {
   font-weight: 600;
 }
 
-/* ========== FLOWS MODULE MORE DROPDOWN ========== */
-.module-more {
-  display: inline-block;
-  position: relative;
-}
-
-.module-more-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 5px 12px;
-  font-size: 12.5px;
-  font-weight: 500;
-  background: var(--white);
-  border: 1.5px solid var(--gray-200);
-  border-radius: 20px;
-  color: var(--gray-600);
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
-  font-family: var(--font);
-  transition: all .15s;
-}
-
-.module-more-toggle::-webkit-details-marker { display: none; }
-
-.module-more-toggle svg {
-  width: 13px;
-  height: 13px;
-  transition: transform .2s;
-}
-
-.module-more[open] .module-more-toggle svg { transform: rotate(180deg); }
-
-.module-more-toggle:hover,
-.module-more-toggle.active {
-  border-color: var(--tab-color);
-  color: var(--tab-color);
-  background: var(--tab-light);
-}
-
-.module-more-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
-}
 
 /* ========== FLOWS TAB ========== */
 .flows-section { margin-bottom: 32px; }

@@ -773,28 +773,11 @@ function renderFlows() {
     ...allModules.filter(m => !MODULE_ORDER.includes(m)).sort()
   ];
 
-  // Split modules into pinned (always visible) and overflow (inside "More")
-  const pinnedVisible = orderedModules.filter(m => PINNED_MODULES.includes(m));
-  const overflowModules = orderedModules.filter(m => !PINNED_MODULES.includes(m));
-  const overflowHasActive = overflowModules.includes(activeModule);
-
   const filterHtml = `<div class="module-filters">
     <button class="module-chip ${activeModule === '' ? 'active' : ''}" onclick="setModuleFilter('')">All</button>
-    ${pinnedVisible.map(m =>
+    ${orderedModules.map(m =>
       `<button class="module-chip ${activeModule === m ? 'active' : ''}" onclick="setModuleFilter('${escHtml(m)}')">${escHtml(m)}</button>`
     ).join('')}
-    ${overflowModules.length > 0 ? `
-    <details class="module-more"${overflowHasActive ? ' open' : ''}>
-      <summary class="module-more-toggle${overflowHasActive ? ' active' : ''}">
-        More
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </summary>
-      <div class="module-more-chips">
-        ${overflowModules.map(m =>
-          `<button class="module-chip ${activeModule === m ? 'active' : ''}" onclick="setModuleFilter('${escHtml(m)}')">${escHtml(m)}</button>`
-        ).join('')}
-      </div>
-    </details>` : ''}
   </div>`;
 
   const visibleFlows = activeModule ? flows.filter(f => getFlowModule(f) === activeModule) : flows;
