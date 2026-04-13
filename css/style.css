@@ -340,6 +340,52 @@ main {
 /* Remove bottom margin from search when it lives inside the hero card */
 .tab-hero .search-wrap { margin-bottom: 0; }
 
+/* ========== CHIP DROPDOWN (suggestions) ========== */
+.chip-dropdown {
+  margin-bottom: 20px;
+}
+
+.chip-dropdown[open] .chip-dropdown-toggle svg {
+  transform: rotate(180deg);
+}
+
+.chip-dropdown-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gray-500);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  padding: 4px 10px 4px 8px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--gray-200);
+  background: var(--white);
+  transition: color .15s, border-color .15s, background .15s;
+  margin-bottom: 10px;
+}
+
+.chip-dropdown-toggle::-webkit-details-marker { display: none; }
+
+.chip-dropdown-toggle svg {
+  width: 13px;
+  height: 13px;
+  transition: transform .2s;
+  order: -1;
+}
+
+.chip-dropdown-toggle:hover {
+  color: var(--tab-color);
+  border-color: var(--tab-mid);
+  background: var(--tab-light);
+}
+
+.chip-dropdown .chip-row {
+  margin-bottom: 0;
+}
+
 /* ========== CHIP ROW (suggestions) ========== */
 .chip-row {
   display: flex;
@@ -874,6 +920,54 @@ main {
   border-color: var(--blue);
   color: var(--white);
   font-weight: 600;
+}
+
+/* ========== FLOWS MODULE MORE DROPDOWN ========== */
+.module-more {
+  display: inline-block;
+  position: relative;
+}
+
+.module-more-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  border-radius: 20px;
+  color: var(--gray-600);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  font-family: var(--font);
+  transition: all .15s;
+}
+
+.module-more-toggle::-webkit-details-marker { display: none; }
+
+.module-more-toggle svg {
+  width: 13px;
+  height: 13px;
+  transition: transform .2s;
+}
+
+.module-more[open] .module-more-toggle svg { transform: rotate(180deg); }
+
+.module-more-toggle:hover,
+.module-more-toggle.active {
+  border-color: var(--tab-color);
+  color: var(--tab-color);
+  background: var(--tab-light);
+}
+
+.module-more-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
 }
 
 /* ========== FLOWS TAB ========== */
