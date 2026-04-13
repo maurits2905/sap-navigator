@@ -873,6 +873,7 @@ function moveIndicator(tabId, instant) {
 
 function switchTab(tabId) {
   document.body.dataset.tab = tabId;
+  document.documentElement.dataset.tab = tabId;
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.tab === tabId);
   });

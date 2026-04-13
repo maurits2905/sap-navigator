@@ -68,7 +68,39 @@ body[data-tab="flows"] {
   --tab-glow:  rgba(5,150,105,.13);
 }
 
-html { font-size: 16px; height: 100%; }
+html {
+  font-size: 16px;
+  height: 100%;
+  scrollbar-gutter: stable;
+  /* Custom scrollbar — light mode defaults (find/blue) */
+  --sb-track: var(--gray-100);
+  --sb-thumb: var(--tab-mid, #ccddf7);
+  --sb-thumb-hover: var(--tab-color, #0066cc);
+}
+
+/* Per-tab scrollbar accent mirrors the tab palette on <html data-tab> */
+html[data-tab="find"]   { --sb-thumb: #ccddf7; --sb-thumb-hover: #0066cc; }
+html[data-tab="tables"] { --sb-thumb: #a5f3fc; --sb-thumb-hover: #0694a2; }
+html[data-tab="decode"] { --sb-thumb: #fde68a; --sb-thumb-hover: #d97706; }
+html[data-tab="flows"]  { --sb-thumb: #a7f3d0; --sb-thumb-hover: #059669; }
+
+/* Dark mode per-tab */
+html.dark[data-tab="find"]   { --sb-track: #1a1d27; --sb-thumb: #1c3456; --sb-thumb-hover: #4da6ff; }
+html.dark[data-tab="tables"] { --sb-track: #1a1d27; --sb-thumb: #0c3a40; --sb-thumb-hover: #22d3ee; }
+html.dark[data-tab="decode"] { --sb-track: #1a1d27; --sb-thumb: #3d2a00; --sb-thumb-hover: #fbbf24; }
+html.dark[data-tab="flows"]  { --sb-track: #1a1d27; --sb-thumb: #08362a; --sb-thumb-hover: #34d399; }
+
+/* Webkit scrollbar styling */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--sb-track); }
+::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb);
+  border-radius: 99px;
+  border: 2px solid var(--sb-track);
+  transition: background .2s;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--sb-thumb-hover); }
+::-webkit-scrollbar-corner { background: var(--sb-track); }
 body {
   font-family: var(--font);
   background: var(--gray-50);
@@ -1697,10 +1729,6 @@ html.dark .about-icon--flows  { background: #052418; color: #34d399; }
 /* Modal step numbers */
 html.dark .step-num { background: var(--gray-300); color: var(--gray-600); }
 
-/* Scrollbar tint */
-html.dark ::-webkit-scrollbar { width: 8px; height: 8px; }
-html.dark ::-webkit-scrollbar-track { background: var(--gray-100); }
-html.dark ::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 4px; }
 
 /* ========== THEME TOGGLE BUTTON ========== */
 .theme-btn {
