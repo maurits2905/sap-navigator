@@ -798,8 +798,8 @@ main {
 .step-num {
   width: 20px;
   height: 20px;
-  background: var(--gray-200);
-  color: var(--gray-600);
+  background: var(--tab-light);
+  color: var(--tab-dark);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1156,7 +1156,7 @@ main {
 .modal-step-num {
   width: 26px;
   height: 26px;
-  background: var(--blue);
+  background: var(--tab-color);
   color: var(--white);
   border-radius: 50%;
   display: flex;
@@ -1862,8 +1862,6 @@ html.dark .about-icon--tables { background: #082830; color: #22d3ee; }
 html.dark .about-icon--decode { background: #261a00; color: #fbbf24; }
 html.dark .about-icon--flows  { background: #052418; color: #34d399; }
 
-/* Modal step numbers */
-html.dark .step-num { background: var(--gray-300); color: var(--gray-600); }
 
 
 /* ========== THEME TOGGLE BUTTON ========== */
