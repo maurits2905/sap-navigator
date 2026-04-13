@@ -134,12 +134,13 @@ header {
 /* ========== TABS ========== */
 nav.tabs {
   display: flex;
-  gap: 4px;
+  gap: 0;
   margin-left: auto;
+  position: relative;
 }
 
 .tab-btn {
-  padding: 8px 18px;
+  padding: 8px 16px;
   border: none;
   background: transparent;
   color: var(--gray-500);
@@ -147,12 +148,26 @@ nav.tabs {
   font-weight: 500;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all .15s;
+  transition: color .2s;
   font-family: var(--font);
+  position: relative;
+  z-index: 1;
 }
 
-.tab-btn:hover { color: var(--gray-800); background: var(--gray-100); }
-.tab-btn.active { color: var(--blue); background: var(--blue-light); font-weight: 600; }
+.tab-btn:hover { color: var(--gray-800); background: transparent; }
+.tab-btn.active { color: var(--blue); background: transparent; font-weight: 600; }
+
+#tab-indicator {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: var(--tab-light);
+  transition: left .28s cubic-bezier(.4,0,.2,1), width .28s cubic-bezier(.4,0,.2,1), background .3s;
+  pointer-events: none;
+  z-index: 0;
+}
 
 /* ========== MAIN LAYOUT ========== */
 main {
@@ -1182,10 +1197,10 @@ footer {
   transition: background .3s, border-color .3s;
 }
 
-/* Active tab button */
+/* Active tab button — indicator handles the background */
 .tab-btn.active {
   color: var(--tab-color);
-  background: var(--tab-light);
+  background: transparent;
 }
 
 /* Stat counter pill */

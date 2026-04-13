@@ -755,6 +755,16 @@ function closeAbout() {
 }
 
 // ========== TABS ==========
+function moveIndicator(tabId, instant) {
+  const btn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+  const indicator = document.getElementById('tab-indicator');
+  if (!btn || !indicator) return;
+  if (instant) indicator.style.transition = 'none';
+  indicator.style.left = btn.offsetLeft + 'px';
+  indicator.style.width = btn.offsetWidth + 'px';
+  if (instant) requestAnimationFrame(() => { indicator.style.transition = ''; });
+}
+
 function switchTab(tabId) {
   document.body.dataset.tab = tabId;
   document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -763,6 +773,7 @@ function switchTab(tabId) {
   document.querySelectorAll('.tab-panel').forEach(panel => {
     panel.classList.toggle('active', panel.id === tabId);
   });
+  moveIndicator(tabId);
   animateTabStat(tabId);
 }
 
@@ -826,6 +837,11 @@ async function init() {
   // Tab switching
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+  moveIndicator('find', true);
+  window.addEventListener('resize', () => {
+    const active = document.querySelector('.tab-btn.active');
+    if (active) moveIndicator(active.dataset.tab, true);
   });
 
   // Find tab
