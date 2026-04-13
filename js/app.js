@@ -1054,8 +1054,41 @@ async function init() {
     if (e.target === aboutOverlay) closeAbout();
   });
 
+  // Terms modal
+  const termsOverlay = document.getElementById('terms-overlay');
+  document.getElementById('terms-btn').addEventListener('click', () => {
+    termsOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('terms-close-btn').addEventListener('click', () => {
+    termsOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+  termsOverlay.addEventListener('click', (e) => {
+    if (e.target === termsOverlay) { termsOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+  });
+
+  // Privacy modal
+  const privacyOverlay = document.getElementById('privacy-overlay');
+  document.getElementById('privacy-btn').addEventListener('click', () => {
+    privacyOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  document.getElementById('privacy-close-btn').addEventListener('click', () => {
+    privacyOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+  privacyOverlay.addEventListener('click', (e) => {
+    if (e.target === privacyOverlay) { privacyOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+  });
+
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { closeModal(); closeAbout(); }
+    if (e.key === 'Escape') {
+      closeModal(); closeAbout();
+      termsOverlay.classList.remove('open');
+      privacyOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
   });
 
   // Initial empty states

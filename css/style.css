@@ -1478,6 +1478,77 @@ footer {
   border-color: var(--tab-color);
 }
 
+/* ========== LEGAL MODALS ========== */
+.legal-modal { max-width: 600px; }
+
+.legal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.legal-section {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.legal-section:last-child { border-bottom: none; }
+
+.legal-section h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 7px;
+  letter-spacing: .01em;
+}
+
+.legal-section p {
+  font-size: 13px;
+  color: var(--gray-600);
+  line-height: 1.65;
+  margin-bottom: 6px;
+}
+
+.legal-section p:last-child { margin-bottom: 0; }
+
+.legal-section ul {
+  margin: 6px 0 8px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.legal-section ul li {
+  font-size: 13px;
+  color: var(--gray-600);
+  line-height: 1.55;
+}
+
+.legal-section a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.legal-section a:hover { text-decoration: underline; }
+
+.legal-section code {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 12px;
+  background: var(--gray-100);
+  color: var(--gray-700);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.footer-legal-btn {
+  background: none;
+  border: none;
+  font-family: var(--font);
+  font-size: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
 /* ========== DARK MODE ========== */
 html.dark {
   color-scheme: dark;

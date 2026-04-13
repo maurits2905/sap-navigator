@@ -255,6 +255,10 @@
     <span class="footer-sep">·</span>
     <span class="footer-desc">Find transactions, decode issues, and follow step-by-step troubleshooting flows.</span>
     <span class="footer-sep">·</span>
+    <button class="footer-link footer-legal-btn" id="terms-btn">Terms of Use</button>
+    <span class="footer-sep">·</span>
+    <button class="footer-link footer-legal-btn" id="privacy-btn">Privacy Policy</button>
+    <span class="footer-sep">·</span>
     <a class="footer-link" href="https://github.com/maurits2905/sap-navigator" target="_blank" rel="noopener">GitHub</a>
   </div>
 </footer>
@@ -326,6 +330,101 @@
         </div>
       </div>
       <p class="about-note">Everything runs locally — no backend, no tracking, no account needed.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== TERMS OF USE MODAL ========== -->
+<div id="terms-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Terms of Use">
+  <div class="modal legal-modal">
+    <div class="modal-header">
+      <button id="terms-close-btn" class="modal-close" aria-label="Close">✕</button>
+      <div class="modal-title">Terms of Use</div>
+      <div class="modal-subtitle">Last updated: April 2026</div>
+    </div>
+    <div class="modal-body legal-body">
+      <div class="legal-section">
+        <h3>1. Nature of the Tool</h3>
+        <p>SAP Navigator is a free, static reference tool for SAP support professionals, administrators, and consultants. It runs entirely in your browser — there is no server, no account, and no data collection of any kind. All content is loaded locally from bundled data files.</p>
+      </div>
+      <div class="legal-section">
+        <h3>2. Data Sources</h3>
+        <p>Transaction code data was aggregated from SAP system exports and supplemented using the publicly available listing at <a href="http://www.easymarketplace.de/transactions.php" target="_blank" rel="noopener">easymarketplace.de/transactions.php</a>. SAP standard table names were sourced from SAP system metadata. This data is provided for informational reference only. SAP SE is the owner of SAP transaction codes, table names, and all associated intellectual property. SAP Navigator is an independent tool and is not affiliated with, endorsed by, or associated with SAP SE.</p>
+      </div>
+      <div class="legal-section">
+        <h3>3. Accuracy and Completeness</h3>
+        <p>The information in SAP Navigator — including transaction descriptions, table definitions, troubleshooting flows, and error patterns — is provided on a best-effort basis. It may be incomplete, out of date, or not applicable to your specific SAP version or system configuration. Always verify critical decisions against your system documentation, SAP Help Portal, or a qualified SAP consultant. Do not rely solely on this tool when making changes to production systems.</p>
+      </div>
+      <div class="legal-section">
+        <h3>4. Disclaimer of Warranties</h3>
+        <p>SAP Navigator is provided "as is", without warranty of any kind, express or implied. The authors make no representations about the suitability, accuracy, or completeness of the content for any purpose. Use of this tool is entirely at your own risk.</p>
+      </div>
+      <div class="legal-section">
+        <h3>5. Limitation of Liability</h3>
+        <p>To the fullest extent permitted by applicable law, the authors of SAP Navigator shall not be liable for any direct, indirect, incidental, consequential, or special damages arising from the use of or inability to use this tool — including but not limited to system misconfiguration, data loss, or incorrect conclusions drawn from the reference content.</p>
+      </div>
+      <div class="legal-section">
+        <h3>6. Third-Party Trademarks</h3>
+        <p>SAP®, R/3®, ABAP®, and other SAP product and service names are registered trademarks of SAP SE. All other trademarks mentioned belong to their respective owners. Their use in SAP Navigator is purely descriptive and does not imply any affiliation or endorsement.</p>
+      </div>
+      <div class="legal-section">
+        <h3>7. Acceptable Use</h3>
+        <p>SAP Navigator may be used freely for personal and professional reference purposes. Systematic scraping or automated harvesting of the bundled data files for redistribution or commercial use is not permitted without written permission.</p>
+      </div>
+      <div class="legal-section">
+        <h3>8. Changes to These Terms</h3>
+        <p>These terms may be updated at any time. Continued use of SAP Navigator following any update constitutes acceptance of the revised terms. The date at the top of this page reflects the most recent revision.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PRIVACY POLICY MODAL ========== -->
+<div id="privacy-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Privacy Policy">
+  <div class="modal legal-modal">
+    <div class="modal-header">
+      <button id="privacy-close-btn" class="modal-close" aria-label="Close">✕</button>
+      <div class="modal-title">Privacy Policy</div>
+      <div class="modal-subtitle">Last updated: April 2026</div>
+    </div>
+    <div class="modal-body legal-body">
+      <div class="legal-section">
+        <h3>1. No Data Collection</h3>
+        <p>SAP Navigator does not collect, store, or transmit any personal data. There is no backend server, no analytics, no cookies, and no tracking of any kind. The tool is a fully static site hosted on GitHub Pages.</p>
+      </div>
+      <div class="legal-section">
+        <h3>2. What Stays on Your Device</h3>
+        <p>The only data written to your browser is stored in <strong>localStorage</strong> on your own device. This includes:</p>
+        <ul>
+          <li>Your <strong>favourited flows</strong> (a list of flow IDs you have starred)</li>
+          <li>Your <strong>theme preference</strong> (light or dark mode)</li>
+        </ul>
+        <p>This data never leaves your device. It is not sent anywhere, not shared, and not accessible to anyone but you. You can clear it at any time by clearing your browser's site data for this page.</p>
+      </div>
+      <div class="legal-section">
+        <h3>3. No Cookies</h3>
+        <p>SAP Navigator does not set or read any cookies. The localStorage keys used are <code>sap-nav-favorites</code> and <code>sap-nav-theme</code>.</p>
+      </div>
+      <div class="legal-section">
+        <h3>4. External Resources</h3>
+        <p>SAP Navigator loads the Inter typeface from Google Fonts. This causes your browser to make a request to Google's servers, which may log your IP address as part of standard web server logging. Google's privacy practices are governed by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>. No other external resources are loaded.</p>
+      </div>
+      <div class="legal-section">
+        <h3>5. GitHub Pages Hosting</h3>
+        <p>This site is hosted on GitHub Pages. GitHub may collect basic access logs (IP address, browser type, pages visited) as part of their standard hosting infrastructure. This is outside the control of SAP Navigator's authors. Refer to <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub's Privacy Statement</a> for details.</p>
+      </div>
+      <div class="legal-section">
+        <h3>6. Search Input</h3>
+        <p>Text you type into the search boxes is processed entirely within your browser using JavaScript. It is never sent to a server, never logged, and never stored beyond the current browser session.</p>
+      </div>
+      <div class="legal-section">
+        <h3>7. Children's Privacy</h3>
+        <p>SAP Navigator is a professional reference tool not directed at children. No personal data is collected from any user, regardless of age.</p>
+      </div>
+      <div class="legal-section">
+        <h3>8. Contact</h3>
+        <p>Questions about this privacy policy can be directed via the <a href="https://github.com/maurits2905/sap-navigator" target="_blank" rel="noopener">GitHub repository</a>.</p>
+      </div>
     </div>
   </div>
 </div>
