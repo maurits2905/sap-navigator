@@ -79,16 +79,16 @@ html {
 }
 
 /* Per-tab scrollbar accent mirrors the tab palette on <html data-tab> */
-html[data-tab="find"]   { --sb-thumb: #ccddf7; --sb-thumb-hover: #0066cc; }
-html[data-tab="tables"] { --sb-thumb: #a5f3fc; --sb-thumb-hover: #0694a2; }
-html[data-tab="decode"] { --sb-thumb: #fde68a; --sb-thumb-hover: #d97706; }
-html[data-tab="flows"]  { --sb-thumb: #a7f3d0; --sb-thumb-hover: #059669; }
+html[data-tab="find"]   { --sb-thumb: #99bff0; --sb-thumb-hover: #0066cc; }
+html[data-tab="tables"] { --sb-thumb: #67d8e8; --sb-thumb-hover: #0694a2; }
+html[data-tab="decode"] { --sb-thumb: #f9c74f; --sb-thumb-hover: #d97706; }
+html[data-tab="flows"]  { --sb-thumb: #6edbb8; --sb-thumb-hover: #059669; }
 
 /* Dark mode per-tab */
-html.dark[data-tab="find"]   { --sb-track: #1a1d27; --sb-thumb: #1c3456; --sb-thumb-hover: #4da6ff; }
-html.dark[data-tab="tables"] { --sb-track: #1a1d27; --sb-thumb: #0c3a40; --sb-thumb-hover: #22d3ee; }
-html.dark[data-tab="decode"] { --sb-track: #1a1d27; --sb-thumb: #3d2a00; --sb-thumb-hover: #fbbf24; }
-html.dark[data-tab="flows"]  { --sb-track: #1a1d27; --sb-thumb: #08362a; --sb-thumb-hover: #34d399; }
+html.dark[data-tab="find"]   { --sb-track: #1a1d27; --sb-thumb: #2a4e7a; --sb-thumb-hover: #4da6ff; }
+html.dark[data-tab="tables"] { --sb-track: #1a1d27; --sb-thumb: #0e5460; --sb-thumb-hover: #22d3ee; }
+html.dark[data-tab="decode"] { --sb-track: #1a1d27; --sb-thumb: #5a3d00; --sb-thumb-hover: #fbbf24; }
+html.dark[data-tab="flows"]  { --sb-track: #1a1d27; --sb-thumb: #0d4f38; --sb-thumb-hover: #34d399; }
 
 /* Webkit scrollbar styling */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
