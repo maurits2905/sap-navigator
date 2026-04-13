@@ -3337,5 +3337,554 @@
     "tags": ["vendor", "bank details", "master data", "LFBK"],
     "keyFields": ["LIFNR", "BANKS", "BANKL", "BANKN"],
     "seeAlso": ["LFA1", "LFB1", "BNKA", "TIBAN"]
+  },
+{
+    "name": "BSAD",
+    "title": "Accounting: Secondary Index for Customers (Cleared Items)",
+    "description": "Secondary index for cleared customer line items in Accounts Receivable. Open items are stored in BSID until clearing.",
+    "module": "Finance (FI)",
+    "tags": ["customer cleared items", "AR", "secondary index", "cleared items", "BSAD"],
+    "keyFields": ["MANDT", "BUKRS", "KUNNR", "GJAHR", "BELNR", "BUZEI"],
+    "seeAlso": ["BSID", "BKPF", "BSEG"]
+  },
+  {
+    "name": "BSAK",
+    "title": "Accounting: Secondary Index for Vendors (Cleared Items)",
+    "description": "Secondary index for cleared vendor line items in Accounts Payable. Open items are stored in BSIK until clearing.",
+    "module": "Finance (FI)",
+    "tags": ["vendor cleared items", "AP", "secondary index", "cleared items", "BSAK"],
+    "keyFields": ["MANDT", "BUKRS", "LIFNR", "GJAHR", "BELNR", "BUZEI"],
+    "seeAlso": ["BSIK", "BKPF", "BSEG"]
+  },
+  {
+    "name": "SKAT",
+    "title": "G/L Account Master: Texts",
+    "description": "Language-dependent descriptions for G/L accounts. Used together with SKA1 and SKB1 to display account names.",
+    "module": "Finance (FI)",
+    "tags": ["G/L account text", "account description", "finance", "SKAT", "general ledger"],
+    "keyFields": ["MANDT", "KTOPL", "SAKNR", "SPRAS"],
+    "seeAlso": ["SKA1", "SKB1"]
+  },
+  {
+    "name": "COEP",
+    "title": "CO Object: Line Items by Period",
+    "description": "Line-item postings for controlling objects such as cost centers, internal orders, and profitability objects.",
+    "module": "Controlling (CO)",
+    "tags": ["CO line items", "controlling", "actual postings", "COEP", "OBJNR"],
+    "keyFields": ["MANDT", "OBJNR", "GJAHR", "PERIO", "BELNR", "BUZEI"],
+    "seeAlso": ["COBK", "COSP", "AUFK", "CSKS"]
+  },
+  {
+    "name": "COBK",
+    "title": "CO Object: Document Header",
+    "description": "Header data for controlling documents, used together with COEP line items.",
+    "module": "Controlling (CO)",
+    "tags": ["CO document", "document header", "controlling", "COBK"],
+    "keyFields": ["MANDT", "KOKRS", "BELNR", "GJAHR"],
+    "seeAlso": ["COEP", "COSP"]
+  },
+  {
+    "name": "VBKD",
+    "title": "Sales: Sales Document Business Data",
+    "description": "Business data for sales documents at header and item level, including customer PO number, incoterms, and payment terms.",
+    "module": "Sales and Distribution (SD)",
+    "tags": ["sales business data", "customer PO", "incoterms", "payment terms", "VBKD"],
+    "keyFields": ["MANDT", "VBELN", "POSNR"],
+    "seeAlso": ["VBAK", "VBAP", "KNA1"]
+  },
+  {
+    "name": "VTTK",
+    "title": "Shipping: Shipment Header",
+    "description": "Header data for shipments in LE-TRA, including shipment type, route, and transportation planning details.",
+    "module": "Logistics Execution (LE)",
+    "tags": ["shipment", "transportation", "header", "LE", "VTTK"],
+    "keyFields": ["MANDT", "TKNUM"],
+    "seeAlso": ["VTTP", "VTTS", "VTPA"]
+  },
+  {
+    "name": "VTTP",
+    "title": "Shipping: Shipment Item",
+    "description": "Item-level assignment of deliveries to shipments.",
+    "module": "Logistics Execution (LE)",
+    "tags": ["shipment item", "delivery assignment", "transportation", "LE", "VTTP"],
+    "keyFields": ["MANDT", "TKNUM", "TPNUM"],
+    "seeAlso": ["VTTK", "LIKP", "LIPS"]
+  },
+  {
+    "name": "VEKP",
+    "title": "Handling Unit: Header",
+    "description": "Header data for handling units used in packing and shipping processes.",
+    "module": "Logistics Execution (LE)",
+    "tags": ["handling unit", "packing", "shipping", "header", "VEKP"],
+    "keyFields": ["MANDT", "VENUM"],
+    "seeAlso": ["VEPO", "LIKP", "LIPS"]
+  },
+  {
+    "name": "VEPO",
+    "title": "Handling Unit: Item Contents",
+    "description": "Contents of handling units, linking packed materials or delivery items to a handling unit.",
+    "module": "Logistics Execution (LE)",
+    "tags": ["handling unit item", "packing", "shipping", "contents", "VEPO"],
+    "keyFields": ["MANDT", "VENUM", "VELIN"],
+    "seeAlso": ["VEKP", "LIPS"]
+  },
+  {
+    "name": "KONH",
+    "title": "Pricing: Condition Header",
+    "description": "Header records for pricing conditions used in sales and purchasing.",
+    "module": "Cross Application Pricing",
+    "tags": ["pricing", "conditions", "condition header", "KONH"],
+    "keyFields": ["MANDT", "KNUMH"],
+    "seeAlso": ["KONP", "KONV"]
+  },
+  {
+    "name": "KONP",
+    "title": "Pricing: Condition Item",
+    "description": "Item records for pricing conditions, including rates, calculation types, and scales.",
+    "module": "Cross Application Pricing",
+    "tags": ["pricing", "conditions", "condition item", "KONP"],
+    "keyFields": ["MANDT", "KNUMH", "KOPOS"],
+    "seeAlso": ["KONH", "KONV"]
+  },
+  {
+    "name": "EINA",
+    "title": "Purchasing: Info Record General Data",
+    "description": "General data for purchasing info records, typically at vendor-material level.",
+    "module": "Materials Management (MM)",
+    "tags": ["purchasing info record", "vendor material", "MM", "EINA"],
+    "keyFields": ["MANDT", "INFNR"],
+    "seeAlso": ["EINE", "LFA1", "MARA"]
+  },
+  {
+    "name": "EINE",
+    "title": "Purchasing: Info Record Purchasing Organization Data",
+    "description": "Purchasing organization data for purchasing info records, including prices, order unit, and planned delivery time.",
+    "module": "Materials Management (MM)",
+    "tags": ["purchasing info record", "purchasing org", "price", "MM", "EINE"],
+    "keyFields": ["MANDT", "INFNR", "EKORG", "ESOKZ", "WERKS"],
+    "seeAlso": ["EINA", "EKKO", "EKPO"]
+  },
+  {
+    "name": "EORD",
+    "title": "Purchasing: Source List",
+    "description": "Source list for materials, defining allowed or fixed sources of supply by plant and validity period.",
+    "module": "Materials Management (MM)",
+    "tags": ["source list", "source of supply", "vendor", "MM", "EORD"],
+    "keyFields": ["MANDT", "MATNR", "WERKS", "VDATU", "BDATU"],
+    "seeAlso": ["EINA", "EINE", "LFA1"]
+  },
+  {
+    "name": "EKBE",
+    "title": "Purchasing: Document History",
+    "description": "History of purchasing document follow-on activities such as goods receipts, invoice receipts, and subsequent debits/credits.",
+    "module": "Materials Management (MM)",
+    "tags": ["PO history", "goods receipt", "invoice receipt", "MM", "EKBE"],
+    "keyFields": ["MANDT", "EBELN", "EBELP", "ZEKKN", "VGABE"],
+    "seeAlso": ["EKKO", "EKPO", "MSEG", "RBKP", "RSEG"]
+  },
+  {
+    "name": "EKES",
+    "title": "Purchasing: Vendor Confirmations",
+    "description": "Vendor confirmations and order acknowledgment data for purchasing documents.",
+    "module": "Materials Management (MM)",
+    "tags": ["vendor confirmation", "order acknowledgment", "MM", "EKES"],
+    "keyFields": ["MANDT", "EBELN", "EBELP", "ETENS"],
+    "seeAlso": ["EKKO", "EKPO", "EKET"]
+  },
+  {
+    "name": "MVER",
+    "title": "Material Master: Consumption",
+    "description": "Historical material consumption data used for forecasting and planning.",
+    "module": "Materials Management (MM)",
+    "tags": ["material consumption", "forecasting", "planning", "MM", "MVER"],
+    "keyFields": ["MANDT", "MATNR", "WERKS", "GJAHR", "MONAT"],
+    "seeAlso": ["MARC", "MAPR", "MDKP"]
+  },
+  {
+    "name": "MVKE",
+    "title": "Material Master: Sales Data",
+    "description": "Sales organization and distribution channel data for materials, including sales status and delivering plant defaults.",
+    "module": "Sales and Distribution (SD)",
+    "tags": ["material sales data", "sales org", "distribution channel", "SD", "MVKE"],
+    "keyFields": ["MANDT", "MATNR", "VKORG", "VTWEG"],
+    "seeAlso": ["MARA", "MARC", "MLAN"]
+  },
+  {
+    "name": "MEAN",
+    "title": "Material Master: International Article Numbers",
+    "description": "Stores EAN/UPC and other international article numbers for materials and units of measure.",
+    "module": "Materials Management (MM)",
+    "tags": ["EAN", "UPC", "barcode", "material", "MEAN"],
+    "keyFields": ["MANDT", "MATNR", "MEINH", "LFNUM"],
+    "seeAlso": ["MARA", "MARM"]
+  },
+  {
+    "name": "MDTB",
+    "title": "MRP: Planning Table",
+    "description": "MRP planning table used in material requirements planning processing.",
+    "module": "Production Planning (PP)",
+    "tags": ["MRP", "planning", "requirements", "PP", "MDTB"],
+    "keyFields": ["MANDT", "MATNR", "WERKS", "DAT00"],
+    "seeAlso": ["MDKP", "MARC", "MDMA"]
+  },
+  {
+    "name": "MDKP",
+    "title": "MRP: Document Header",
+    "description": "Header data for MRP documents created during planning runs.",
+    "module": "Production Planning (PP)",
+    "tags": ["MRP", "planning run", "document header", "PP", "MDKP"],
+    "keyFields": ["MANDT", "DTNUM"],
+    "seeAlso": ["MDTB", "MARC"]
+  },
+  {
+    "name": "QALS",
+    "title": "Quality Management: Inspection Lot",
+    "description": "Header table for inspection lots in Quality Management.",
+    "module": "Quality Management (QM)",
+    "tags": ["inspection lot", "quality", "QM", "QALS"],
+    "keyFields": ["MANDT", "PRUEFLOS"],
+    "seeAlso": ["QAMB", "QAVE", "QMAT"]
+  },
+  {
+    "name": "QMEL",
+    "title": "Quality Management: Notification Header",
+    "description": "Header data for quality notifications, including notification type, object references, and status-related information.",
+    "module": "Quality Management (QM)",
+    "tags": ["quality notification", "notification", "QM", "QMEL"],
+    "keyFields": ["MANDT", "QMNUM"],
+    "seeAlso": ["QMFE", "QMUR", "QMSM", "QMMA"]
+  },
+  {
+    "name": "CRHD",
+    "title": "Production Planning: Work Center Header",
+    "description": "Header data for work centers and resources used in routings and orders.",
+    "module": "Production Planning (PP)",
+    "tags": ["work center", "resource", "routing", "PP", "CRHD"],
+    "keyFields": ["MANDT", "OBJID"],
+    "seeAlso": ["CRTX", "CRCO", "CRCA"]
+  },
+  {
+    "name": "PLKO",
+    "title": "Production Planning: Task List Header",
+    "description": "Header data for task lists such as routings and rate routings.",
+    "module": "Production Planning (PP)",
+    "tags": ["routing", "task list", "header", "PP", "PLKO"],
+    "keyFields": ["MANDT", "PLNTY", "PLNNR", "PLNAL"],
+    "seeAlso": ["PLPO", "PLFL", "MAPL"]
+  },
+  {
+    "name": "PLPO",
+    "title": "Production Planning: Task List Operation",
+    "description": "Operations and activities within task lists such as routings.",
+    "module": "Production Planning (PP)",
+    "tags": ["routing operation", "task list", "operation", "PP", "PLPO"],
+    "keyFields": ["MANDT", "PLNTY", "PLNNR", "PLNKN", "ZAEHL"],
+    "seeAlso": ["PLKO", "PLFL", "CRHD"]
+  },
+  {
+    "name": "STKO",
+    "title": "BOM: Header",
+    "description": "Header data for Bills of Material, including usage, validity, and status information.",
+    "module": "Production Planning (PP)",
+    "tags": ["BOM header", "bill of materials", "PP", "STKO"],
+    "keyFields": ["MANDT", "STLTY", "STLNR", "STLAL"],
+    "seeAlso": ["STPO", "MAST"]
+  },
+  {
+    "name": "AFVC",
+    "title": "Production Order: Operations",
+    "description": "Operations for orders, especially production and process orders, including operation control data and references to work centers.",
+    "module": "Production Planning (PP)",
+    "tags": ["order operation", "production order", "operation", "PP", "AFVC"],
+    "keyFields": ["MANDT", "AUFPL", "APLZL"],
+    "seeAlso": ["AFKO", "AFPO", "CRHD", "AFVV"]
+  },
+  {
+    "name": "ILOA",
+    "title": "Plant Maintenance: Location and Account Assignment",
+    "description": "Location and account assignment data shared by technical objects such as equipment and functional locations.",
+    "module": "Plant Maintenance (PM)",
+    "tags": ["technical object", "location", "account assignment", "PM", "ILOA"],
+    "keyFields": ["MANDT", "ILOAN"],
+    "seeAlso": ["EQUI", "IFLOT", "AUFK"]
+  },
+{
+    "name": "QAMB",
+    "title": "Quality Management: Inspection Lot to Material Document Link",
+    "description": "Links inspection lots to related material document items, useful for tracing goods movements to QM inspection processing.",
+    "module": "Quality Management (QM)",
+    "tags": ["inspection lot", "material document", "QM", "goods receipt", "QAMB"],
+    "keyFields": ["MANDT", "PRUEFLOS", "MBLNR", "MJAHR", "ZEILE"],
+    "seeAlso": ["QALS", "MKPF", "MSEG"]
+  },
+  {
+    "name": "QAVE",
+    "title": "Quality Management: Usage Decision",
+    "description": "Stores usage decision data for inspection lots, including accepted, rejected, or other inspection outcomes.",
+    "module": "Quality Management (QM)",
+    "tags": ["usage decision", "inspection lot", "quality decision", "QM", "QAVE"],
+    "keyFields": ["MANDT", "PRUEFLOS"],
+    "seeAlso": ["QALS", "QAMB"]
+  },
+  {
+    "name": "QMAT",
+    "title": "Quality Management: Inspection Type Parameters",
+    "description": "Material-specific QM inspection settings, including inspection types and control parameters.",
+    "module": "Quality Management (QM)",
+    "tags": ["inspection type", "material QM", "quality settings", "QM", "QMAT"],
+    "keyFields": ["MANDT", "MATNR", "WERKS", "ART"],
+    "seeAlso": ["QALS", "MARA", "MARC"]
+  },
+  {
+    "name": "QINF",
+    "title": "Quality Management: Inspection Info Record",
+    "description": "Vendor-material inspection info records used in procurement quality control.",
+    "module": "Quality Management (QM)",
+    "tags": ["inspection info record", "vendor quality", "procurement quality", "QM", "QINF"],
+    "keyFields": ["MANDT", "MATNR", "LIFNR", "WERKS"],
+    "seeAlso": ["QMAT", "LFA1", "MARA"]
+  },
+  {
+    "name": "QDQL",
+    "title": "Quality Management: Quality Level",
+    "description": "Stores quality level data used to influence inspection processing over time.",
+    "module": "Quality Management (QM)",
+    "tags": ["quality level", "inspection control", "QM", "QDQL"],
+    "keyFields": ["MANDT", "MATNR", "WERKS", "ART"],
+    "seeAlso": ["QMAT", "QALS"]
+  },
+  {
+    "name": "TQ80",
+    "title": "Quality Management: Notification Types",
+    "description": "Customizing table for quality notification types and their control settings.",
+    "module": "Quality Management (QM)",
+    "tags": ["notification type", "QM notification", "customizing", "QM", "TQ80"],
+    "keyFields": ["MANDT", "QMART"],
+    "seeAlso": ["QMEL", "QMFE"]
+  },
+  {
+    "name": "QMFE",
+    "title": "Quality Management: Notification Items",
+    "description": "Item data for quality notifications, such as defects or issue items recorded in a notification.",
+    "module": "Quality Management (QM)",
+    "tags": ["quality notification item", "defect item", "QM", "QMFE"],
+    "keyFields": ["MANDT", "QMNUM", "FENUM"],
+    "seeAlso": ["QMEL", "QMUR", "QMSM"]
+  },
+  {
+    "name": "QMUR",
+    "title": "Quality Management: Notification Causes",
+    "description": "Cause records for quality notifications, describing why a defect or issue occurred.",
+    "module": "Quality Management (QM)",
+    "tags": ["quality notification cause", "defect cause", "QM", "QMUR"],
+    "keyFields": ["MANDT", "QMNUM", "URNUM"],
+    "seeAlso": ["QMEL", "QMFE"]
+  },
+  {
+    "name": "QMSM",
+    "title": "Quality Management: Notification Tasks",
+    "description": "Tasks assigned within quality notifications to resolve or follow up on quality issues.",
+    "module": "Quality Management (QM)",
+    "tags": ["quality notification task", "follow-up", "QM", "QMSM"],
+    "keyFields": ["MANDT", "QMNUM", "MANUM"],
+    "seeAlso": ["QMEL", "QMMA"]
+  },
+  {
+    "name": "QMMA",
+    "title": "Quality Management: Notification Activities",
+    "description": "Activities performed as part of quality notification processing and resolution.",
+    "module": "Quality Management (QM)",
+    "tags": ["quality notification activity", "resolution", "QM", "QMMA"],
+    "keyFields": ["MANDT", "QMNUM", "MANUM"],
+    "seeAlso": ["QMEL", "QMSM"]
+  },
+  {
+    "name": "QMIH",
+    "title": "Quality Management: Notification Maintenance Data",
+    "description": "Maintenance-related excerpt data for quality messages and notifications.",
+    "module": "Quality Management (QM)",
+    "tags": ["quality notification", "maintenance data", "QM", "QMIH"],
+    "keyFields": ["MANDT", "QMNUM"],
+    "seeAlso": ["QMEL", "ILOA", "EQUI"]
+  },
+  {
+    "name": "QCVK",
+    "title": "Quality Management: Certificate Profile Header",
+    "description": "Header data for certificate profiles used in quality certificates.",
+    "module": "Quality Management (QM)",
+    "tags": ["certificate profile", "quality certificate", "QM", "QCVK"],
+    "keyFields": ["MANDT", "ZERTPROFIL"],
+    "seeAlso": ["QCVM", "QCVMT"]
+  },
+  {
+    "name": "QCVM",
+    "title": "Quality Management: Certificate Profile Characteristic Level",
+    "description": "Characteristic-level configuration for quality certificate profiles.",
+    "module": "Quality Management (QM)",
+    "tags": ["certificate profile", "characteristic", "quality certificate", "QM", "QCVM"],
+    "keyFields": ["MANDT", "ZERTPROFIL", "MERKNR"],
+    "seeAlso": ["QCVK", "QCVMT"]
+  },
+  {
+    "name": "QCVMT",
+    "title": "Quality Management: Certificate Profile Characteristic Texts",
+    "description": "Language-dependent texts for certificate profile characteristics.",
+    "module": "Quality Management (QM)",
+    "tags": ["certificate profile text", "characteristic text", "QM", "QCVMT"],
+    "keyFields": ["MANDT", "SPRAS", "ZERTPROFIL", "MERKNR"],
+    "seeAlso": ["QCVK", "QCVM"]
+  },
+  {
+    "name": "CRTX",
+    "title": "Production Planning: Work Center Texts",
+    "description": "Language-dependent texts for work centers and production resources/tools.",
+    "module": "Production Planning (PP)",
+    "tags": ["work center text", "resource text", "PP", "CRTX"],
+    "keyFields": ["MANDT", "OBJTY", "OBJID", "SPRAS"],
+    "seeAlso": ["CRHD", "CRCO", "CRCA"]
+  },
+  {
+    "name": "CRCO",
+    "title": "Production Planning: Work Center to Cost Center Assignment",
+    "description": "Assignment of work centers to cost centers, used in capacity and cost planning.",
+    "module": "Production Planning (PP)",
+    "tags": ["work center", "cost center", "assignment", "PP", "CRCO"],
+    "keyFields": ["MANDT", "OBJID", "KOKRS", "KOSTL", "BEGDA", "ENDDA"],
+    "seeAlso": ["CRHD", "CSKS", "CRCA"]
+  },
+  {
+    "name": "CRCA",
+    "title": "Production Planning: Work Center Capacity Allocation",
+    "description": "Capacity allocation records for work centers and resources.",
+    "module": "Production Planning (PP)",
+    "tags": ["work center capacity", "capacity allocation", "PP", "CRCA"],
+    "keyFields": ["MANDT", "OBJID", "KAPID"],
+    "seeAlso": ["CRHD", "KAKO"]
+  },
+  {
+    "name": "KAKO",
+    "title": "Production Planning: Capacity Header",
+    "description": "Header data for capacities assigned to work centers and resources.",
+    "module": "Production Planning (PP)",
+    "tags": ["capacity", "work center", "header", "PP", "KAKO"],
+    "keyFields": ["MANDT", "KAPID"],
+    "seeAlso": ["CRCA", "CRHD"]
+  },
+  {
+    "name": "MAPL",
+    "title": "Production Planning: Task List to Material Assignment",
+    "description": "Assignment of materials to task lists such as routings.",
+    "module": "Production Planning (PP)",
+    "tags": ["routing assignment", "task list", "material", "PP", "MAPL"],
+    "keyFields": ["MANDT", "MATNR", "WERKS", "PLNTY", "PLNNR", "PLNAL"],
+    "seeAlso": ["PLKO", "PLPO", "MARA"]
+  },
+  {
+    "name": "PLFL",
+    "title": "Production Planning: Task List Sequences",
+    "description": "Sequence data for task lists, including alternative and parallel sequences in routings.",
+    "module": "Production Planning (PP)",
+    "tags": ["routing sequence", "task list", "PP", "PLFL"],
+    "keyFields": ["MANDT", "PLNTY", "PLNNR", "PLNAL", "PLNFL"],
+    "seeAlso": ["PLKO", "PLPO"]
+  },
+  {
+    "name": "PLAS",
+    "title": "Production Planning: Operation Selection",
+    "description": "Selection data for operations and activities in task lists.",
+    "module": "Production Planning (PP)",
+    "tags": ["operation selection", "routing", "task list", "PP", "PLAS"],
+    "keyFields": ["MANDT", "PLNTY", "PLNNR", "PLNAL", "PLNKN"],
+    "seeAlso": ["PLKO", "PLPO"]
+  },
+  {
+    "name": "PLFH",
+    "title": "Production Planning: Production Resources and Tools in Task Lists",
+    "description": "Assignments of production resources and tools within task list operations.",
+    "module": "Production Planning (PP)",
+    "tags": ["PRT", "production resources and tools", "routing", "PP", "PLFH"],
+    "keyFields": ["MANDT", "PLNTY", "PLNNR", "PLNKN", "ZAEHL"],
+    "seeAlso": ["PLPO", "CRHD"]
+  },
+  {
+    "name": "PLPH",
+    "title": "Production Planning: Phases and Suboperations",
+    "description": "Stores phase and suboperation data within task lists and routings.",
+    "module": "Production Planning (PP)",
+    "tags": ["phase", "suboperation", "routing", "PP", "PLPH"],
+    "keyFields": ["MANDT", "PLNTY", "PLNNR", "PLNKN", "ZAEHL"],
+    "seeAlso": ["PLPO", "PLKO"]
+  },
+  {
+    "name": "PLMZ",
+    "title": "Production Planning: BOM Item Allocation to Operations",
+    "description": "Links BOM components to specific routing or task list operations.",
+    "module": "Production Planning (PP)",
+    "tags": ["BOM allocation", "operation component", "routing", "PP", "PLMZ"],
+    "keyFields": ["MANDT", "PLNTY", "PLNNR", "PLNKN", "STLKN"],
+    "seeAlso": ["PLPO", "STPO", "STKO"]
+  },
+  {
+    "name": "STAS",
+    "title": "BOM: Item Selection",
+    "description": "Selection data for BOM items, including alternative and validity-related selection rules.",
+    "module": "Production Planning (PP)",
+    "tags": ["BOM selection", "item selection", "PP", "STAS"],
+    "keyFields": ["MANDT", "STLTY", "STLNR", "STLKN", "STASZ"],
+    "seeAlso": ["STKO", "STPO", "STZU"]
+  },
+  {
+    "name": "STPN",
+    "title": "BOM: Follow-Up Control",
+    "description": "Follow-up control data for BOM processing and alternative handling.",
+    "module": "Production Planning (PP)",
+    "tags": ["BOM follow-up", "control", "PP", "STPN"],
+    "keyFields": ["MANDT", "STLTY", "STLNR", "STLKN"],
+    "seeAlso": ["STKO", "STPO"]
+  },
+  {
+    "name": "STPU",
+    "title": "BOM: Sub-Items",
+    "description": "Sub-item data for BOM components, used when one BOM item has subordinate components.",
+    "module": "Production Planning (PP)",
+    "tags": ["BOM sub-item", "component detail", "PP", "STPU"],
+    "keyFields": ["MANDT", "STLTY", "STLNR", "STLKN", "UPOSZ"],
+    "seeAlso": ["STPO", "STKO"]
+  },
+  {
+    "name": "STZU",
+    "title": "BOM: Permanent Data",
+    "description": "Permanent administrative data for Bills of Material.",
+    "module": "Production Planning (PP)",
+    "tags": ["BOM admin", "permanent data", "PP", "STZU"],
+    "keyFields": ["MANDT", "STLTY", "STLNR"],
+    "seeAlso": ["STKO", "STPO", "STAS"]
+  },
+  {
+    "name": "AFVV",
+    "title": "Production Order: Operation Quantities, Dates, and Values",
+    "description": "Quantities, scheduled dates, standard values, and execution-related values for order operations.",
+    "module": "Production Planning (PP)",
+    "tags": ["operation dates", "operation values", "production order", "PP", "AFVV"],
+    "keyFields": ["MANDT", "AUFPL", "APLZL"],
+    "seeAlso": ["AFVC", "AFKO", "AFPO"]
+  },
+  {
+    "name": "AFVU",
+    "title": "Production Order: Operation User Fields",
+    "description": "User-defined and supplementary fields for order operations.",
+    "module": "Production Planning (PP)",
+    "tags": ["operation user fields", "production order", "PP", "AFVU"],
+    "keyFields": ["MANDT", "AUFPL", "APLZL"],
+    "seeAlso": ["AFVC", "AFVV"]
+  },
+  {
+    "name": "AFFL",
+    "title": "Production Order: Sequence Data",
+    "description": "Sequence information for production orders and work orders, including parallel or alternative sequences.",
+    "module": "Production Planning (PP)",
+    "tags": ["order sequence", "production order", "routing sequence", "PP", "AFFL"],
+    "keyFields": ["MANDT", "AUFPL", "APLFL"],
+    "seeAlso": ["AFKO", "AFVC", "AFFH"]
   }
 ]
