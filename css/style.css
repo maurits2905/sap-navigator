@@ -93,12 +93,20 @@ header {
 }
 
 .header-inner {
-  max-width: 900px;
+  max-width: 1100px;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 60px;
+  padding: 0 4px;
+}
+
+.header-actions {
   display: flex;
   align-items: center;
-  gap: 32px;
-  height: 60px;
+  gap: 8px;
+  justify-content: flex-end;
 }
 
 .logo {
@@ -135,8 +143,8 @@ header {
 nav.tabs {
   display: flex;
   gap: 0;
-  margin-left: auto;
   position: relative;
+  justify-self: center;
 }
 
 .tab-btn {
@@ -1134,7 +1142,6 @@ body.app-loading .tab-stat-num {
   justify-content: center;
   flex-shrink: 0;
   transition: all .15s;
-  margin-left: 8px;
 }
 
 .about-btn:hover {
@@ -1675,7 +1682,9 @@ header, .tab-hero, .best-card, .table-best-card, .tx-card, .table-card,
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 600px) {
-  .header-inner { gap: 16px; height: 56px; }
+  .header-inner { height: 56px; }
+  nav.tabs { gap: 0; }
+  .tab-btn { padding: 7px 10px; font-size: 13px; }
   .logo-text { display: none; }
   .tab-btn { padding: 7px 12px; font-size: 13px; }
   main { padding: 20px 16px 48px; }
