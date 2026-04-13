@@ -174,6 +174,20 @@ function findTransactions(query) {
   return scored;
 }
 
+// ========== PINNED RESULT STATE ==========
+let findPinnedCode   = null;
+let tablePinnedName  = null;
+
+function pinFindResult(code) {
+  findPinnedCode = code;
+  renderFind(document.getElementById('find-input').value);
+}
+
+function pinTableResult(name) {
+  tablePinnedName = name;
+  renderTables(document.getElementById('tables-input').value);
+}
+
 // ========== FIND TAB ==========
 function renderFind(query) {
   document.getElementById('find-input').closest('.search-wrap').classList.remove('searching');
@@ -202,8 +216,16 @@ function renderFind(query) {
     return;
   }
 
-  const best = scored[0];
-  const related = scored.slice(1, 6);
+  // Determine which result is promoted to "best"
+  let bestIdx = 0;
+  if (findPinnedCode) {
+    const idx = scored.findIndex(r => r.tx.code === findPinnedCode);
+    if (idx > 0) bestIdx = idx;
+  }
+
+  const best = scored[bestIdx];
+  const origTopCode = scored[0].tx.code;
+  const related = scored.filter((_, i) => i !== bestIdx).slice(0, 5);
 
   let html = `<div class="results-section">
     <div class="results-label">Best starting point</div>
@@ -214,7 +236,7 @@ function renderFind(query) {
     html += `<div class="results-section">
       <div class="results-label">Related transactions</div>
       <div class="cards-grid">
-        ${related.map(r => renderTxCard(r.tx, matchReason(r.tx, query))).join('')}
+        ${related.map(r => renderTxCard(r.tx, matchReason(r.tx, query), bestIdx !== 0 && r.tx.code === origTopCode)).join('')}
       </div>
     </div>`;
   }
@@ -279,10 +301,11 @@ function renderBestCard(tx, reason) {
   </div>`;
 }
 
-function renderTxCard(tx, reason) {
+function renderTxCard(tx, reason, isOrigTop = false) {
   const hasFooter = tx.report || tx.category;
   return `
-  <div class="tx-card">
+  <div class="tx-card clickable-card" onclick="pinFindResult('${escHtml(tx.code)}')">
+    ${isOrigTop ? '<div class="orig-top-tag">★ Top pick</div>' : ''}
     <div class="code-copy-row">
       <div class="card-code">${escHtml(tx.code)}</div>
       ${COPY_BTN(tx.code)}
@@ -431,10 +454,11 @@ function renderBestTableCard(tbl, reason) {
   </div>`;
 }
 
-function renderTableCard(tbl, reason) {
+function renderTableCard(tbl, reason, isOrigTop = false) {
   const keyFields = (tbl.keyFields || []).slice(0, 4);
   return `
-  <div class="table-card">
+  <div class="table-card clickable-card" onclick="pinTableResult('${escHtml(tbl.name)}')">
+    ${isOrigTop ? '<div class="orig-top-tag">★ Top pick</div>' : ''}
     <div class="card-header">
       <div class="code-copy-row">
         <div class="table-name" style="font-size:15px">${escHtml(tbl.name)}</div>
@@ -480,8 +504,16 @@ function renderTables(query) {
     return;
   }
 
-  const best = scored[0];
-  const related = scored.slice(1, 6);
+  // Determine which result is promoted to "best"
+  let bestIdx = 0;
+  if (tablePinnedName) {
+    const idx = scored.findIndex(r => r.tbl.name === tablePinnedName);
+    if (idx > 0) bestIdx = idx;
+  }
+
+  const best = scored[bestIdx];
+  const origTopName = scored[0].tbl.name;
+  const related = scored.filter((_, i) => i !== bestIdx).slice(0, 5);
 
   let html = `<div class="results-section">
     <div class="results-label">Best match</div>
@@ -492,7 +524,7 @@ function renderTables(query) {
     html += `<div class="results-section">
       <div class="results-label">Related tables</div>
       <div class="cards-grid">
-        ${related.map(r => renderTableCard(r.tbl, matchTableReason(r.tbl, query))).join('')}
+        ${related.map(r => renderTableCard(r.tbl, matchTableReason(r.tbl, query), bestIdx !== 0 && r.tbl.name === origTopName)).join('')}
       </div>
     </div>`;
   }
@@ -972,10 +1004,12 @@ async function init() {
   const debouncedFind = debounce(q => renderFind(q), 180);
 
   findInput.addEventListener('input', () => {
+    findPinnedCode = null;
     if (findInput.value.trim()) findInput.closest('.search-wrap').classList.add('searching');
     debouncedFind(findInput.value);
   });
   findClear.addEventListener('click', () => {
+    findPinnedCode = null;
     findInput.value = '';
     renderFind('');
     findInput.focus();
@@ -995,10 +1029,12 @@ async function init() {
   const debouncedTables = debounce(q => renderTables(q), 180);
 
   tablesInput.addEventListener('input', () => {
+    tablePinnedName = null;
     if (tablesInput.value.trim()) tablesInput.closest('.search-wrap').classList.add('searching');
     debouncedTables(tablesInput.value);
   });
   tablesClear.addEventListener('click', () => {
+    tablePinnedName = null;
     tablesInput.value = '';
     renderTables('');
     tablesInput.focus();
