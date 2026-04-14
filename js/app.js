@@ -993,7 +993,7 @@ function renderFlows() {
     const favFlows = [...flows.filter(f => favorites.has(f.id))].sort(byTitle);
     const nav = flowsNav('← Back', "setModuleFilter('')", 'Saved flows', 'Saved flows');
     container.innerHTML = nav + (favFlows.length > 0
-      ? `<div class="flows-overview-grid">${favFlows.map(f => renderFlowOverviewCard(f)).join('')}</div>`
+      ? `<div class="flows-overview-grid">${favFlows.map(f => renderFlowOverviewCard(f, true)).join('')}</div>`
       : `<div class="tab-empty"><div class="tab-empty-icon">${TAB_ICON.flows}</div>
          <div class="tab-empty-title">No saved flows yet</div>
          <div class="tab-empty-desc">Star any flow to save it here for quick access.</div></div>`);
