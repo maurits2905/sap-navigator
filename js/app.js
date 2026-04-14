@@ -995,11 +995,13 @@ function renderFlows() {
 
   let html = filterHtml;
 
+  const byTitle = (a, b) => a.title.localeCompare(b.title);
+
   if (favFlows.length > 0) {
     html += `<div class="flows-section">
       <div class="flows-section-title">Favorites</div>
       <div class="flows-grid">
-        ${favFlows.map(f => renderFlowCard(f, true)).join('')}
+        ${[...favFlows].sort(byTitle).map(f => renderFlowCard(f, true)).join('')}
       </div>
     </div>`;
   }
@@ -1009,7 +1011,7 @@ function renderFlows() {
       html += `<div class="flows-section">
         <div class="flows-section-title">${escHtml(activeModule)}</div>
         <div class="flows-grid">
-          ${otherFlows.map(f => renderFlowCard(f, false)).join('')}
+          ${[...otherFlows].sort(byTitle).map(f => renderFlowCard(f, false)).join('')}
         </div>
       </div>`;
     }
@@ -1025,7 +1027,7 @@ function renderFlows() {
       html += `<div class="flows-section">
         <div class="flows-section-title">${escHtml(m)}</div>
         <div class="flows-grid">
-          ${grouped[m].map(f => renderFlowCard(f, false)).join('')}
+          ${[...grouped[m]].sort(byTitle).map(f => renderFlowCard(f, false)).join('')}
         </div>
       </div>`;
     }
