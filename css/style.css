@@ -402,10 +402,15 @@ main {
 .chip-dropdown-toggle:hover .toggle-chevron { color: var(--tab-color); }
 
 .chip-dropdown .chip-row {
+  display: none;
   margin: 0;
   padding: 12px 14px 14px;
   border-top: 1px solid var(--gray-200);
   background: var(--gray-50);
+}
+
+.chip-dropdown.open .chip-row {
+  display: flex;
 }
 
 /* ========== CHIP ROW (suggestions) ========== */
