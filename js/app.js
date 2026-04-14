@@ -959,13 +959,11 @@ function renderFlows() {
   const byTitle = (a, b) => a.title.localeCompare(b.title);
   const hasFav = favorites.size > 0;
 
-  // Filter strip — single scrollable row, always visible
+  // Filter strip — purposeful quick-access pills only (categories handled by overview cards)
   const filterHtml = `<div class="module-filters">
     <button class="module-chip ${activeModule === '' ? 'active' : ''}" onclick="setModuleFilter('')">All</button>
     ${hasFav ? `<button class="module-chip module-chip--fav ${activeModule === '__favorites__' ? 'active' : ''}" onclick="setModuleFilter('__favorites__')">★ Saved</button>` : ''}
-    ${orderedModules.map(m =>
-      `<button class="module-chip ${activeModule === m ? 'active' : ''}" onclick="setModuleFilter('${escHtml(m)}')">${escHtml(m)}</button>`
-    ).join('')}
+    <button class="module-chip module-chip--quick ${activeModule === '__quick__' ? 'active' : ''}" onclick="setModuleFilter('__quick__')">⚡ Quick</button>
   </div>`;
 
   // ── Search mode ──────────────────────────────────────────────────
@@ -980,7 +978,7 @@ function renderFlows() {
          <div class="tab-empty-desc">Try a different keyword — e.g. "user access", "payment run", "goods receipt".</div></div>`
       : `<div class="flows-section">
            <div class="flows-section-title">${scored.length} result${scored.length !== 1 ? 's' : ''}</div>
-           <div class="flows-grid">${scored.map(r => renderFlowCard(r.f, favorites.has(r.f.id))).join('')}</div>
+           <div class="flows-overview-grid">${scored.map(r => renderFlowOverviewCard(r.f)).join('')}</div>
          </div>`);
     return;
   }
@@ -991,11 +989,24 @@ function renderFlows() {
     container.innerHTML = filterHtml + (favFlows.length > 0
       ? `<div class="flows-section">
            <div class="flows-section-title">★ Saved flows</div>
-           <div class="flows-grid">${favFlows.map(f => renderFlowCard(f, true)).join('')}</div>
+           <div class="flows-overview-grid">${favFlows.map(f => renderFlowOverviewCard(f)).join('')}</div>
          </div>`
       : `<div class="tab-empty"><div class="tab-empty-icon">${TAB_ICON.flows}</div>
          <div class="tab-empty-title">No saved flows yet</div>
          <div class="tab-empty-desc">Star any flow to save it here for quick access.</div></div>`);
+    return;
+  }
+
+  // ── Quick view (≤3 steps) ────────────────────────────────────────
+  if (activeModule === '__quick__') {
+    const quickFlows = [...flows.filter(f => f.steps && f.steps.length <= 3)].sort(byTitle);
+    container.innerHTML = filterHtml + (quickFlows.length === 0
+      ? `<div class="tab-empty"><div class="tab-empty-icon">${TAB_ICON.flows}</div>
+         <div class="tab-empty-title">No quick flows found</div></div>`
+      : `<div class="flows-section">
+           <div class="flows-section-title">⚡ Quick flows — 3 steps or fewer</div>
+           <div class="flows-overview-grid">${quickFlows.map(f => renderFlowOverviewCard(f)).join('')}</div>
+         </div>`);
     return;
   }
 
@@ -1014,13 +1025,13 @@ function renderFlows() {
     if (favInMod.length > 0) {
       html += `<div class="flows-section">
         <div class="flows-section-title">★ Saved</div>
-        <div class="flows-grid">${favInMod.map(f => renderFlowCard(f, true)).join('')}</div>
+        <div class="flows-overview-grid">${favInMod.map(f => renderFlowOverviewCard(f)).join('')}</div>
       </div>`;
     }
     if (otherInMod.length > 0) {
       html += `<div class="flows-section">
         ${favInMod.length > 0 ? '<div class="flows-section-title">All flows</div>' : ''}
-        <div class="flows-grid">${otherInMod.map(f => renderFlowCard(f, false)).join('')}</div>
+        <div class="flows-overview-grid">${otherInMod.map(f => renderFlowOverviewCard(f)).join('')}</div>
       </div>`;
     }
     container.innerHTML = html;
@@ -1064,6 +1075,26 @@ function renderFlowCard(flow, isFav) {
       <span class="flow-tx-badge">${escHtml(flow.startingTransaction)}</span>
       <span class="flow-steps-count">${flow.steps.length} steps</span>
       <span class="category-badge ${catClass}" style="font-size:10.5px;padding:2px 8px">${escHtml(flow.category)}</span>
+    </div>
+  </div>`;
+}
+
+// Compact overview card used inside drill-down and quick view
+function renderFlowOverviewCard(flow) {
+  const isFav = favorites.has(flow.id);
+  return `<div class="flows-overview-card flows-overview-card--flow ${isFav ? 'is-fav' : ''}" onclick="openFlowModal('${escHtml(flow.id)}')">
+    <div class="flows-overview-header">
+      <span class="flows-overview-name">${escHtml(flow.title)}</span>
+      <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite('${escHtml(flow.id)}', this)" title="${isFav ? 'Remove from saved' : 'Save flow'}">
+        ${isFav ? '★' : '☆'}
+      </button>
+    </div>
+    <div class="flows-overview-list">
+      <div class="flows-overview-item">${escHtml(flow.description)}</div>
+    </div>
+    <div class="flows-overview-meta">
+      <span class="flow-tx-badge">${escHtml(flow.startingTransaction)}</span>
+      <span class="flow-steps-count">${flow.steps.length} step${flow.steps.length !== 1 ? 's' : ''}</span>
     </div>
   </div>`;
 }
