@@ -2066,16 +2066,27 @@ header, .tab-hero, .best-card, .table-best-card, .tx-card, .table-card,
 
 /* Mobile */
 @media (max-width: 600px) {
-  /* Header — logo left, actions right, tabs move below on very small */
+  /* Header — two rows: logo+actions on top, tabs full-width below */
+  header { padding: 0 12px; }
   .header-inner {
     grid-template-columns: auto 1fr auto;
-    height: 52px;
+    grid-template-rows: 46px auto;
+    height: auto;
     padding: 0;
+    gap: 0;
   }
+  .logo           { grid-column: 1; grid-row: 1; }
+  nav.tabs        { grid-column: 1 / -1; grid-row: 2; justify-self: stretch;
+                    border-top: 1px solid var(--gray-100); padding: 0; overflow-x: auto; }
+  .header-actions { grid-column: 3; grid-row: 1; }
+
+  nav.tabs { display: flex; }
+  .tab-btn { flex: 1; padding: 8px 4px; font-size: 12px; white-space: nowrap; text-align: center; }
+  #tab-indicator { display: none; } /* sliding indicator not needed in full-width mobile tabs */
+
   .logo-text span { display: none; } /* hide "Navigator", keep "SAP" */
-  .tab-btn { padding: 6px 9px; font-size: 12.5px; }
-  .theme-btn { width: 26px; height: 26px; }
-  .about-pill { height: 26px; padding: 0 10px; font-size: 12px; }
+  .theme-btn { width: 28px; height: 28px; }
+  .about-pill { height: 28px; padding: 0 10px; font-size: 12px; }
   .theme-btn svg { width: 13px; height: 13px; }
 
   /* Main */
@@ -2132,10 +2143,9 @@ header, .tab-hero, .best-card, .table-best-card, .tx-card, .table-card,
   .modal-step-num { width: 22px; height: 22px; font-size: 11px; }
 
   /* Footer */
-  .footer-inner { gap: 5px; font-size: 12px; }
+  .footer-inner { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 4px 10px; padding: 10px 12px; font-size: 12px; }
   .footer-desc { display: none; }
   .footer-sep { display: none; }
-  .footer-inner { flex-direction: column; align-items: center; padding: 4px 0; }
 
   /* Results label */
   .results-label { font-size: 11px; }
