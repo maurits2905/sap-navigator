@@ -1892,23 +1892,101 @@ header, .tab-hero, .best-card, .table-best-card, .tx-card, .table-card,
 }
 
 /* ========== RESPONSIVE ========== */
-@media (max-width: 600px) {
-  .header-inner { height: 56px; }
-  nav.tabs { gap: 0; }
-  .tab-btn { padding: 7px 10px; font-size: 13px; }
-  .logo-text { display: none; }
-  .tab-btn { padding: 7px 12px; font-size: 13px; }
-  main { padding: 20px 16px 48px; }
+
+/* Tablet — moderate tweaks */
+@media (max-width: 860px) {
+  .header-inner { grid-template-columns: auto 1fr auto; gap: 0; }
+  nav.tabs { justify-self: center; }
+  .tab-btn { padding: 7px 12px; font-size: 13.5px; }
   .cards-grid { grid-template-columns: 1fr; }
-  .flows-grid { grid-template-columns: 1fr; }
-  .decode-header { flex-direction: column; gap: 8px; }
-  .footer-inner { gap: 6px; }
-  .footer-desc { display: none; }
-  .tab-hero { padding: 18px 18px 18px; }
+  .flows-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
   .tab-hero-header { gap: 12px; }
-  .tab-icon-wrap { width: 36px; height: 36px; }
-  .tab-icon-wrap svg { width: 18px; height: 18px; }
+  .tab-stat-num { font-size: 24px; }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  /* Header — logo left, actions right, tabs move below on very small */
+  .header-inner {
+    grid-template-columns: auto 1fr auto;
+    height: 52px;
+    padding: 0;
+  }
+  .logo-text span { display: none; } /* hide "Navigator", keep "SAP" */
+  .tab-btn { padding: 6px 9px; font-size: 12.5px; }
+  .theme-btn, .about-btn { width: 26px; height: 26px; }
+  .theme-btn svg { width: 13px; height: 13px; }
+
+  /* Main */
+  main { padding: 16px 12px 48px; }
+
+  /* Hero card */
+  .tab-hero { padding: 16px; }
+  .tab-hero-header {
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .tab-icon-wrap { width: 34px; height: 34px; flex-shrink: 0; }
+  .tab-icon-wrap svg { width: 17px; height: 17px; }
+  .tab-hero-copy h1 { font-size: 15px; }
+  .tab-hero-copy p { font-size: 12.5px; }
+  .tab-hero-stat { text-align: right; flex-shrink: 0; }
   .tab-stat-num { font-size: 20px; }
   .tab-stat-lbl { font-size: 10px; }
-  .chip-row-label { display: none; }
+
+  /* Search */
+  .search-wrap input { font-size: 14px; padding: 12px 14px 12px 42px; }
+
+  /* Results grids */
+  .cards-grid { grid-template-columns: 1fr; }
+  .flows-grid { grid-template-columns: 1fr; }
+
+  /* Cards */
+  .best-card, .table-best-card { padding: 16px; }
+  .tx-card, .table-card, .flow-card, .decode-card { padding: 14px; }
+  .card-code { font-size: 15px; }
+  .card-name { font-size: 13px; }
+  .card-desc { font-size: 12px; }
+  .table-name { font-size: 14px !important; }
+
+  /* Flow cards */
+  .flow-title { font-size: 13px; }
+  .flow-desc { font-size: 12px; }
+  .module-filters { gap: 5px; }
+  .module-chip { padding: 4px 10px; font-size: 12px; }
+  .flows-section-title { font-size: 11px; }
+
+  /* Decode */
+  .decode-header { flex-direction: column; gap: 6px; }
+  .decode-title { font-size: 14px; }
+  .decode-desc { font-size: 12.5px; }
+  .step-list { gap: 0; }
+
+  /* Modal */
+  .modal { padding: 0; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+  .modal-header { padding: 16px 16px 12px; }
+  .modal-body { padding: 0 16px 20px; }
+  .modal-overlay { align-items: flex-end; }
+  .modal-step-num { width: 22px; height: 22px; font-size: 11px; }
+
+  /* Footer */
+  .footer-inner { gap: 5px; font-size: 12px; }
+  .footer-desc { display: none; }
+  .footer-sep { display: none; }
+  .footer-inner { flex-direction: column; align-items: center; padding: 4px 0; }
+
+  /* Results label */
+  .results-label { font-size: 11px; }
+  .best-badge { font-size: 10px; }
+
+  /* See also chips — smaller */
+  .seealso-chip { font-size: 11px; padding: 3px 8px; }
+  .table-chip { font-size: 11px; padding: 3px 8px; }
+
+  /* Copy button always visible on mobile (no hover) */
+  .copy-btn { opacity: 1; pointer-events: auto; }
+
+  /* "View details" hint — hide on mobile */
+  .clickable-card::after { display: none; }
 }
