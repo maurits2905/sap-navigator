@@ -775,8 +775,39 @@ main {
   border: 1px solid var(--blue-mid);
   border-radius: var(--radius);
   padding: 12px 14px;
-  margin-bottom: 12px;
+  margin-bottom: 0;
 }
+
+/* Accordion toggle */
+.decode-summary { cursor: pointer; }
+
+.decode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 14px;
+  color: var(--tab-color);
+  font-size: 12px;
+  font-weight: 600;
+  user-select: none;
+}
+
+.decode-chevron { transition: transform .2s; }
+.decode-card.is-open .decode-chevron { transform: rotate(180deg); }
+
+.decode-card.is-open { border-color: var(--tab-mid); }
+
+.decode-detail {
+  display: none;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--gray-100);
+}
+
+.decode-card.is-open .decode-detail { display: block; }
+
+.decode-related { margin-top: 12px; }
+.decode-flow-link { margin-top: 14px; }
 
 .decode-primary-label {
   font-size: 11px;
