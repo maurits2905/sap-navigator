@@ -343,6 +343,8 @@ main {
 /* ========== CHIP DROPDOWN (suggestions) ========== */
 .chip-dropdown {
   margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
   border: 1px solid var(--gray-200);
   border-radius: var(--radius);
   background: var(--white);
