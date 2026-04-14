@@ -2434,7 +2434,6 @@ header, .tab-hero, .best-card, .table-best-card, .tx-card, .table-card,
   .tab-btn { flex: 1; padding: 8px 4px; font-size: 12px; white-space: nowrap; text-align: center; }
   #tab-indicator { display: none; } /* sliding indicator not needed in full-width mobile tabs */
 
-  .logo-text span { display: none; } /* hide "Navigator", keep "SAP" */
   .theme-btn { width: 28px; height: 28px; }
   .about-pill { height: 28px; padding: 0 10px; font-size: 12px; }
   .theme-btn svg { width: 13px; height: 13px; }
