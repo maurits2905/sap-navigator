@@ -921,54 +921,87 @@ main {
 }
 
 /* ========== MODULE FILTER BAR (Flows tab) ========== */
-.module-filters {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  gap: 6px;
+/* ========== FLOWS NAV BAR ========== */
+.flows-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
   margin-bottom: 20px;
-  padding-bottom: 2px;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
+  min-height: 32px;
 }
-.module-filters::-webkit-scrollbar { display: none; }
+.flows-nav-left  { justify-self: start; }
+.flows-nav-center { justify-self: center; }
+.flows-nav-right { justify-self: end; }
 
-.module-chip {
-  padding: 5px 14px;
-  font-size: 12.5px;
-  font-weight: 500;
-  background: var(--white);
+/* "All" label — overview state, not a button */
+.flows-nav-all {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tab-color);
+  background: var(--tab-light);
+  border: 1.5px solid var(--tab-color);
+  border-radius: 20px;
+  padding: 4px 14px;
+  opacity: 0.7;
+}
+
+/* "← Back" button */
+.flows-nav-back {
+  background: none;
   border: 1.5px solid var(--gray-200);
   border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 13px;
+  font-weight: 500;
   color: var(--gray-600);
+  font-family: var(--font);
   cursor: pointer;
   transition: all .15s;
-  font-family: var(--font);
   white-space: nowrap;
-  flex-shrink: 0;
 }
-
-.module-chip:hover {
+.flows-nav-back:hover {
   border-color: var(--tab-color);
   color: var(--tab-color);
   background: var(--tab-light);
 }
 
-.module-chip.active {
-  background: var(--tab-color);
-  border-color: var(--tab-color);
-  color: var(--white);
+/* Center context label */
+.flows-nav-context {
+  font-size: 13px;
   font-weight: 600;
+  color: var(--gray-700);
+  letter-spacing: 0.01em;
+  transition: color .15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
 }
 
-/* Saved/favorites chip */
-.module-chip--fav { border-color: #fde68a; color: #d97706; }
-.module-chip--fav:hover { background: #fef3c7; border-color: #fbbf24; color: #b45309; }
-.module-chip--fav.active { background: #f59e0b; border-color: #f59e0b; color: #fff; }
+/* "★ Saved" pill — always visible */
+.flows-nav-saved {
+  background: none;
+  border: 1.5px solid #fde68a;
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #d97706;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.flows-nav-saved:hover { background: #fef3c7; border-color: #fbbf24; color: #b45309; }
+.flows-nav-saved.active { background: #f59e0b; border-color: #f59e0b; color: #fff; }
 
-/* Quick chip */
-.module-chip--quick { border-color: var(--gray-200); color: var(--gray-600); }
-.module-chip--quick.active { background: var(--tab-color); border-color: var(--tab-color); color: #fff; }
+/* Dark mode */
+html.dark .flows-nav-back { border-color: var(--gray-300); color: var(--gray-700); }
+html.dark .flows-nav-back:hover { border-color: var(--tab-color); color: var(--tab-color); }
+html.dark .flows-nav-context { color: var(--gray-800); }
+html.dark .flows-nav-saved { border-color: #4a3000; color: #fbbf24; }
+html.dark .flows-nav-saved:hover { background: #261a00; border-color: #d97706; }
+html.dark .flows-nav-saved.active { background: #d97706; border-color: #d97706; color: #fff; }
 
 /* ========== FLOWS OVERVIEW ========== */
 .flows-overview-grid {
@@ -1123,9 +1156,6 @@ html.dark .flows-overview-card:hover { border-color: var(--tab-color); }
 html.dark .flows-overview-name { color: var(--gray-900); }
 html.dark .flows-overview-item { color: var(--gray-600); }
 html.dark .flows-breadcrumb-current { color: var(--gray-800); }
-html.dark .module-chip { background: var(--gray-200); border-color: var(--gray-300); color: var(--gray-700); }
-html.dark .module-chip--fav { background: var(--gray-200); border-color: #4a3000; color: #fbbf24; }
-html.dark .module-chip--fav.active { background: #d97706; border-color: #d97706; color: #fff; }
 
 
 /* ========== FLOWS TAB ========== */
@@ -2407,9 +2437,9 @@ header, .tab-hero, .best-card, .table-best-card, .tx-card, .table-card,
   /* Flow cards */
   .flow-title { font-size: 13px; }
   .flow-desc { font-size: 12px; }
-  .module-filters { gap: 5px; }
-  .module-chip { padding: 4px 10px; font-size: 12px; }
   .flows-section-title { font-size: 11px; }
+  .flows-nav-context { max-width: 140px; font-size: 12px; }
+  .flows-nav-back, .flows-nav-saved, .flows-nav-all { padding: 3px 10px; font-size: 12px; }
 
   /* Decode */
   .decode-header { flex-direction: column; gap: 6px; }

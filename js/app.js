@@ -957,14 +957,20 @@ function renderFlows() {
     ...allModules.filter(m => !MODULE_ORDER.includes(m)).sort()
   ];
   const byTitle = (a, b) => a.title.localeCompare(b.title);
-  const hasFav = favorites.size > 0;
+  const isSaved = activeModule === '__favorites__';
 
-  // Filter strip — purposeful quick-access pills only (categories handled by overview cards)
-  const filterHtml = `<div class="module-filters">
-    <button class="module-chip ${activeModule === '' ? 'active' : ''}" onclick="setModuleFilter('')">All</button>
-    ${hasFav ? `<button class="module-chip module-chip--fav ${activeModule === '__favorites__' ? 'active' : ''}" onclick="setModuleFilter('__favorites__')">★ Saved</button>` : ''}
-    <button class="module-chip module-chip--quick ${activeModule === '__quick__' ? 'active' : ''}" onclick="setModuleFilter('__quick__')">⚡ Quick</button>
-  </div>`;
+  // ── Nav bar builder ──────────────────────────────────────────────
+  function flowsNav(leftLabel, leftAction, centerText, contextDefault) {
+    const leftBtn = leftAction
+      ? `<button class="flows-nav-back" onclick="${leftAction}">${leftLabel}</button>`
+      : `<span class="flows-nav-all">All</span>`;
+    const savedCls = isSaved ? ' active' : '';
+    return `<div class="flows-nav" data-context-default="${escHtml(contextDefault || '')}">
+      <div class="flows-nav-left">${leftBtn}</div>
+      <div class="flows-nav-center"><span id="flows-context-label" class="flows-nav-context">${escHtml(centerText)}</span></div>
+      <div class="flows-nav-right"><button class="flows-nav-saved${savedCls}" onclick="setModuleFilter('__favorites__')">★ Saved</button></div>
+    </div>`;
+  }
 
   // ── Search mode ──────────────────────────────────────────────────
   if (activeFlowSearch.trim()) {
@@ -972,41 +978,25 @@ function renderFlows() {
       .map(f => ({ f, score: scoreFlow(f, activeFlowSearch) }))
       .filter(r => r.score > 0)
       .sort((a, b) => b.score - a.score);
-    container.innerHTML = filterHtml + (scored.length === 0
+    const countLabel = scored.length === 0 ? 'No results' : `${scored.length} result${scored.length !== 1 ? 's' : ''}`;
+    const nav = flowsNav('← Back', 'clearFlowSearch()', countLabel, countLabel);
+    container.innerHTML = nav + (scored.length === 0
       ? `<div class="tab-empty"><div class="tab-empty-icon">${TAB_ICON.flows}</div>
          <div class="tab-empty-title">No flows found</div>
          <div class="tab-empty-desc">Try a different keyword — e.g. "user access", "payment run", "goods receipt".</div></div>`
-      : `<div class="flows-section">
-           <div class="flows-section-title">${scored.length} result${scored.length !== 1 ? 's' : ''}</div>
-           <div class="flows-overview-grid">${scored.map(r => renderFlowOverviewCard(r.f)).join('')}</div>
-         </div>`);
+      : `<div class="flows-overview-grid">${scored.map(r => renderFlowOverviewCard(r.f, true)).join('')}</div>`);
     return;
   }
 
   // ── Saved view ───────────────────────────────────────────────────
-  if (activeModule === '__favorites__') {
+  if (isSaved) {
     const favFlows = [...flows.filter(f => favorites.has(f.id))].sort(byTitle);
-    container.innerHTML = filterHtml + (favFlows.length > 0
-      ? `<div class="flows-section">
-           <div class="flows-section-title">★ Saved flows</div>
-           <div class="flows-overview-grid">${favFlows.map(f => renderFlowOverviewCard(f)).join('')}</div>
-         </div>`
+    const nav = flowsNav('← Back', "setModuleFilter('')", 'Saved flows', 'Saved flows');
+    container.innerHTML = nav + (favFlows.length > 0
+      ? `<div class="flows-overview-grid">${favFlows.map(f => renderFlowOverviewCard(f)).join('')}</div>`
       : `<div class="tab-empty"><div class="tab-empty-icon">${TAB_ICON.flows}</div>
          <div class="tab-empty-title">No saved flows yet</div>
          <div class="tab-empty-desc">Star any flow to save it here for quick access.</div></div>`);
-    return;
-  }
-
-  // ── Quick view (≤3 steps) ────────────────────────────────────────
-  if (activeModule === '__quick__') {
-    const quickFlows = [...flows.filter(f => f.steps && f.steps.length <= 3)].sort(byTitle);
-    container.innerHTML = filterHtml + (quickFlows.length === 0
-      ? `<div class="tab-empty"><div class="tab-empty-icon">${TAB_ICON.flows}</div>
-         <div class="tab-empty-title">No quick flows found</div></div>`
-      : `<div class="flows-section">
-           <div class="flows-section-title">⚡ Quick flows — 3 steps or fewer</div>
-           <div class="flows-overview-grid">${quickFlows.map(f => renderFlowOverviewCard(f)).join('')}</div>
-         </div>`);
     return;
   }
 
@@ -1015,31 +1005,23 @@ function renderFlows() {
     const modFlows = [...flows.filter(f => getFlowModule(f) === activeModule)].sort(byTitle);
     const favInMod = modFlows.filter(f => favorites.has(f.id));
     const otherInMod = modFlows.filter(f => !favorites.has(f.id));
-    let html = filterHtml;
-    html += `<div class="flows-breadcrumb">
-      <button class="flows-back-btn" onclick="setModuleFilter('')">← All categories</button>
-      <span class="flows-breadcrumb-sep">/</span>
-      <span class="flows-breadcrumb-current">${escHtml(activeModule)}</span>
-      <span class="flows-breadcrumb-count">${modFlows.length} flow${modFlows.length !== 1 ? 's' : ''}</span>
-    </div>`;
+    const centerLabel = `${escHtml(activeModule)} · ${modFlows.length} flow${modFlows.length !== 1 ? 's' : ''}`;
+    let html = flowsNav('← Back', "setModuleFilter('')", centerLabel, centerLabel);
     if (favInMod.length > 0) {
-      html += `<div class="flows-section">
-        <div class="flows-section-title">★ Saved</div>
-        <div class="flows-overview-grid">${favInMod.map(f => renderFlowOverviewCard(f)).join('')}</div>
-      </div>`;
+      html += `<div class="flows-section"><div class="flows-section-title">★ Saved</div>
+        <div class="flows-overview-grid">${favInMod.map(f => renderFlowOverviewCard(f)).join('')}</div></div>`;
     }
     if (otherInMod.length > 0) {
       html += `<div class="flows-section">
         ${favInMod.length > 0 ? '<div class="flows-section-title">All flows</div>' : ''}
-        <div class="flows-overview-grid">${otherInMod.map(f => renderFlowOverviewCard(f)).join('')}</div>
-      </div>`;
+        <div class="flows-overview-grid">${otherInMod.map(f => renderFlowOverviewCard(f)).join('')}</div></div>`;
     }
     container.innerHTML = html;
     return;
   }
 
   // ── Overview (All) ───────────────────────────────────────────────
-  let html = filterHtml;
+  let html = flowsNav(null, null, '', '');
   html += `<div class="flows-overview-grid">`;
   for (const m of orderedModules) {
     const mFlows = [...flows.filter(f => getFlowModule(f) === m)].sort(byTitle);
@@ -1058,6 +1040,24 @@ function renderFlows() {
   }
   html += `</div>`;
   container.innerHTML = html;
+}
+
+function clearFlowSearch() {
+  const input = document.getElementById('flows-input');
+  if (input) input.value = '';
+  activeFlowSearch = '';
+  renderFlows();
+}
+
+function setFlowContextLabel(text) {
+  const el = document.getElementById('flows-context-label');
+  if (el) el.textContent = text;
+}
+
+function resetFlowContextLabel() {
+  const nav = document.querySelector('.flows-nav');
+  const el = document.getElementById('flows-context-label');
+  if (nav && el) el.textContent = nav.dataset.contextDefault || '';
 }
 
 function renderFlowCard(flow, isFav) {
@@ -1079,10 +1079,14 @@ function renderFlowCard(flow, isFav) {
   </div>`;
 }
 
-// Compact overview card used inside drill-down and quick view
-function renderFlowOverviewCard(flow) {
+// Compact overview card used inside drill-down, search, and saved views
+function renderFlowOverviewCard(flow, searchMode = false) {
   const isFav = favorites.has(flow.id);
-  return `<div class="flows-overview-card flows-overview-card--flow ${isFav ? 'is-fav' : ''}" onclick="openFlowModal('${escHtml(flow.id)}')">
+  const mod = getFlowModule(flow);
+  const hoverAttrs = searchMode
+    ? `onmouseenter="setFlowContextLabel('${escHtml(mod)}')" onmouseleave="resetFlowContextLabel()"`
+    : '';
+  return `<div class="flows-overview-card flows-overview-card--flow ${isFav ? 'is-fav' : ''}" onclick="openFlowModal('${escHtml(flow.id)}')" ${hoverAttrs}>
     <div class="flows-overview-header">
       <span class="flows-overview-name">${escHtml(flow.title)}</span>
       <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite('${escHtml(flow.id)}', this)" title="${isFav ? 'Remove from saved' : 'Save flow'}">
