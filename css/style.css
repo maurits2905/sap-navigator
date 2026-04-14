@@ -169,7 +169,7 @@ header {
   color: var(--gray-900);
 }
 
-.logo-text span { color: var(--blue); }
+.logo-text span { color: var(--tab-color); transition: color 0.2s; }
 
 /* ========== TABS ========== */
 nav.tabs {
@@ -1255,9 +1255,9 @@ body.app-loading .tab-stat-num {
 }
 
 .about-pill:hover {
-  border-color: var(--blue);
-  color: var(--blue);
-  background: var(--blue-light);
+  border-color: var(--tab-color);
+  color: var(--tab-color);
+  background: var(--tab-light);
 }
 
 /* ========== ABOUT MODAL ========== */
