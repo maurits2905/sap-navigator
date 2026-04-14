@@ -73,15 +73,15 @@
       </div>
     </div>
 
-    <details class="chip-dropdown">
-      <summary class="chip-dropdown-toggle">
+    <div class="chip-dropdown">
+      <button class="chip-dropdown-toggle" onclick="toggleExamples(this)" aria-expanded="false">
         <span class="toggle-label">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M11 8v3l2 2"/></svg>
           Try an example
         </span>
         <svg class="toggle-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </summary>
-      <div class="chip-row">
+      </button>
+      <div class="chip-row" hidden>
         <button class="suggestion-chip" data-find="display purchase order">display purchase order</button>
         <button class="suggestion-chip" data-find="user authorization">user authorization</button>
         <button class="suggestion-chip" data-find="post GL document">post GL document</button>
@@ -95,7 +95,7 @@
         <button class="suggestion-chip" data-find="cost center planning">cost center planning</button>
         <button class="suggestion-chip" data-find="workflow inbox">workflow inbox</button>
       </div>
-    </details>
+    </div>
 
     <div id="find-results" class="results"></div>
 
@@ -145,15 +145,15 @@
       </div>
     </div>
 
-    <details class="chip-dropdown">
-      <summary class="chip-dropdown-toggle">
+    <div class="chip-dropdown">
+      <button class="chip-dropdown-toggle" onclick="toggleExamples(this)" aria-expanded="false">
         <span class="toggle-label">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M11 8v3l2 2"/></svg>
           Try an example
         </span>
         <svg class="toggle-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </summary>
-      <div class="chip-row">
+      </button>
+      <div class="chip-row" hidden>
         <button class="suggestion-chip" data-tables="BKPF">BKPF</button>
         <button class="suggestion-chip" data-tables="vendor master">vendor master</button>
         <button class="suggestion-chip" data-tables="purchase order">purchase order</button>
@@ -165,7 +165,7 @@
         <button class="suggestion-chip" data-tables="profit center">profit center</button>
         <button class="suggestion-chip" data-tables="plant">plant</button>
       </div>
-    </details>
+    </div>
 
     <div id="tables-results" class="results"></div>
 
@@ -211,15 +211,15 @@
       </div>
     </div>
 
-    <details class="chip-dropdown">
-      <summary class="chip-dropdown-toggle">
+    <div class="chip-dropdown">
+      <button class="chip-dropdown-toggle" onclick="toggleExamples(this)" aria-expanded="false">
         <span class="toggle-label">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M11 8v3l2 2"/></svg>
           Try an example
         </span>
         <svg class="toggle-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </summary>
-      <div class="chip-row">
+      </button>
+      <div class="chip-row" hidden>
         <button class="suggestion-chip" data-decode="user has no access">user has no access</button>
         <button class="suggestion-chip" data-decode="document not posting">document not posting</button>
         <button class="suggestion-chip" data-decode="service not found">service not found</button>
@@ -231,7 +231,7 @@
         <button class="suggestion-chip" data-decode="transport import error">transport error</button>
         <button class="suggestion-chip" data-decode="missing authorization object">missing auth object</button>
       </div>
-    </details>
+    </div>
 
     <div id="decode-results"></div>
 

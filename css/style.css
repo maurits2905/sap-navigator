@@ -342,10 +342,7 @@ main {
 
 /* ========== CHIP DROPDOWN (suggestions) ========== */
 .chip-dropdown {
-  display: block;
   margin-bottom: 20px;
-  width: 100%;
-  box-sizing: border-box;
   border: 1px solid var(--gray-200);
   border-radius: var(--radius);
   background: var(--white);
@@ -370,12 +367,8 @@ main {
   font-weight: 500;
   font-family: var(--font);
   cursor: pointer;
-  list-style: none;
-  user-select: none;
   transition: color .15s, background .15s;
 }
-
-.chip-dropdown-toggle::-webkit-details-marker { display: none; }
 
 .chip-dropdown-toggle .toggle-label {
   display: flex;
@@ -398,7 +391,7 @@ main {
   flex-shrink: 0;
 }
 
-.chip-dropdown[open] .toggle-chevron { transform: rotate(180deg); }
+.chip-dropdown.open .toggle-chevron { transform: rotate(180deg); }
 
 .chip-dropdown-toggle:hover {
   color: var(--tab-dark);

@@ -918,6 +918,15 @@ function switchTab(tabId) {
   animateTabStat(tabId);
 }
 
+// ========== EXAMPLE TOGGLE ==========
+function toggleExamples(btn) {
+  const container = btn.closest('.chip-dropdown');
+  const panel = container.querySelector('.chip-row');
+  const isOpen = container.classList.toggle('open');
+  panel.hidden = !isOpen;
+  btn.setAttribute('aria-expanded', isOpen);
+}
+
 // ========== COPY UTIL ==========
 function copyCode(text, btn) {
   navigator.clipboard.writeText(text).then(() => {
