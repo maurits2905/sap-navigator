@@ -951,96 +951,101 @@ function renderFlows() {
   const clearBtn = document.getElementById('flows-clear');
   if (clearBtn) clearBtn.classList.toggle('visible', activeFlowSearch.length > 0);
 
-  // Search mode — flat relevance-sorted list, no module filter
-  if (activeFlowSearch.trim()) {
-    const scored = flows
-      .map(f => ({ f, score: scoreFlow(f, activeFlowSearch) }))
-      .filter(r => r.score > 0)
-      .sort((a, b) => b.score - a.score);
-
-    if (scored.length === 0) {
-      container.innerHTML = `<div class="tab-empty">
-        <div class="tab-empty-icon">${TAB_ICON.flows}</div>
-        <div class="tab-empty-title">No flows found</div>
-        <div class="tab-empty-desc">Try a different keyword — e.g. "user access", "payment run", "goods receipt".</div>
-      </div>`;
-    } else {
-      container.innerHTML = `<div class="flows-section">
-        <div class="flows-section-title">${scored.length} result${scored.length !== 1 ? 's' : ''}</div>
-        <div class="flows-grid">
-          ${scored.map(r => renderFlowCard(r.f, favorites.has(r.f.id))).join('')}
-        </div>
-      </div>`;
-    }
-    return;
-  }
-
-  // Browse mode — module filter + grouped layout
   const allModules = [...new Set(flows.map(getFlowModule))];
   const orderedModules = [
     ...MODULE_ORDER.filter(m => allModules.includes(m)),
     ...allModules.filter(m => !MODULE_ORDER.includes(m)).sort()
   ];
+  const byTitle = (a, b) => a.title.localeCompare(b.title);
+  const hasFav = favorites.size > 0;
 
+  // Filter strip — single scrollable row, always visible
   const filterHtml = `<div class="module-filters">
     <button class="module-chip ${activeModule === '' ? 'active' : ''}" onclick="setModuleFilter('')">All</button>
+    ${hasFav ? `<button class="module-chip module-chip--fav ${activeModule === '__favorites__' ? 'active' : ''}" onclick="setModuleFilter('__favorites__')">★ Saved</button>` : ''}
     ${orderedModules.map(m =>
       `<button class="module-chip ${activeModule === m ? 'active' : ''}" onclick="setModuleFilter('${escHtml(m)}')">${escHtml(m)}</button>`
     ).join('')}
   </div>`;
 
-  const visibleFlows = activeModule ? flows.filter(f => getFlowModule(f) === activeModule) : flows;
-  const favFlows = visibleFlows.filter(f => favorites.has(f.id));
-  const otherFlows = visibleFlows.filter(f => !favorites.has(f.id));
+  // ── Search mode ──────────────────────────────────────────────────
+  if (activeFlowSearch.trim()) {
+    const scored = flows
+      .map(f => ({ f, score: scoreFlow(f, activeFlowSearch) }))
+      .filter(r => r.score > 0)
+      .sort((a, b) => b.score - a.score);
+    container.innerHTML = filterHtml + (scored.length === 0
+      ? `<div class="tab-empty"><div class="tab-empty-icon">${TAB_ICON.flows}</div>
+         <div class="tab-empty-title">No flows found</div>
+         <div class="tab-empty-desc">Try a different keyword — e.g. "user access", "payment run", "goods receipt".</div></div>`
+      : `<div class="flows-section">
+           <div class="flows-section-title">${scored.length} result${scored.length !== 1 ? 's' : ''}</div>
+           <div class="flows-grid">${scored.map(r => renderFlowCard(r.f, favorites.has(r.f.id))).join('')}</div>
+         </div>`);
+    return;
+  }
 
+  // ── Saved view ───────────────────────────────────────────────────
+  if (activeModule === '__favorites__') {
+    const favFlows = [...flows.filter(f => favorites.has(f.id))].sort(byTitle);
+    container.innerHTML = filterHtml + (favFlows.length > 0
+      ? `<div class="flows-section">
+           <div class="flows-section-title">★ Saved flows</div>
+           <div class="flows-grid">${favFlows.map(f => renderFlowCard(f, true)).join('')}</div>
+         </div>`
+      : `<div class="tab-empty"><div class="tab-empty-icon">${TAB_ICON.flows}</div>
+         <div class="tab-empty-title">No saved flows yet</div>
+         <div class="tab-empty-desc">Star any flow to save it here for quick access.</div></div>`);
+    return;
+  }
+
+  // ── Module drill-down ────────────────────────────────────────────
+  if (activeModule) {
+    const modFlows = [...flows.filter(f => getFlowModule(f) === activeModule)].sort(byTitle);
+    const favInMod = modFlows.filter(f => favorites.has(f.id));
+    const otherInMod = modFlows.filter(f => !favorites.has(f.id));
+    let html = filterHtml;
+    html += `<div class="flows-breadcrumb">
+      <button class="flows-back-btn" onclick="setModuleFilter('')">← All categories</button>
+      <span class="flows-breadcrumb-sep">/</span>
+      <span class="flows-breadcrumb-current">${escHtml(activeModule)}</span>
+      <span class="flows-breadcrumb-count">${modFlows.length} flow${modFlows.length !== 1 ? 's' : ''}</span>
+    </div>`;
+    if (favInMod.length > 0) {
+      html += `<div class="flows-section">
+        <div class="flows-section-title">★ Saved</div>
+        <div class="flows-grid">${favInMod.map(f => renderFlowCard(f, true)).join('')}</div>
+      </div>`;
+    }
+    if (otherInMod.length > 0) {
+      html += `<div class="flows-section">
+        ${favInMod.length > 0 ? '<div class="flows-section-title">All flows</div>' : ''}
+        <div class="flows-grid">${otherInMod.map(f => renderFlowCard(f, false)).join('')}</div>
+      </div>`;
+    }
+    container.innerHTML = html;
+    return;
+  }
+
+  // ── Overview (All) ───────────────────────────────────────────────
   let html = filterHtml;
-
-  const byTitle = (a, b) => a.title.localeCompare(b.title);
-
-  if (favFlows.length > 0) {
-    html += `<div class="flows-section">
-      <div class="flows-section-title">Favorites</div>
-      <div class="flows-grid">
-        ${[...favFlows].sort(byTitle).map(f => renderFlowCard(f, true)).join('')}
+  html += `<div class="flows-overview-grid">`;
+  for (const m of orderedModules) {
+    const mFlows = [...flows.filter(f => getFlowModule(f) === m)].sort(byTitle);
+    if (mFlows.length === 0) continue;
+    const preview = mFlows.slice(0, 3);
+    html += `<div class="flows-overview-card" onclick="setModuleFilter('${escHtml(m)}')">
+      <div class="flows-overview-header">
+        <span class="flows-overview-name">${escHtml(m)}</span>
+        <span class="flows-overview-count">${mFlows.length}</span>
+      </div>
+      <div class="flows-overview-list">
+        ${preview.map(f => `<div class="flows-overview-item">${escHtml(f.title)}</div>`).join('')}
+        ${mFlows.length > 3 ? `<div class="flows-overview-more">+${mFlows.length - 3} more</div>` : ''}
       </div>
     </div>`;
   }
-
-  if (activeModule) {
-    if (otherFlows.length > 0) {
-      html += `<div class="flows-section">
-        <div class="flows-section-title">${escHtml(activeModule)}</div>
-        <div class="flows-grid">
-          ${[...otherFlows].sort(byTitle).map(f => renderFlowCard(f, false)).join('')}
-        </div>
-      </div>`;
-    }
-  } else {
-    const grouped = {};
-    for (const f of otherFlows) {
-      const m = getFlowModule(f);
-      if (!grouped[m]) grouped[m] = [];
-      grouped[m].push(f);
-    }
-    for (const m of orderedModules) {
-      if (!grouped[m] || grouped[m].length === 0) continue;
-      html += `<div class="flows-section">
-        <div class="flows-section-title">${escHtml(m)}</div>
-        <div class="flows-grid">
-          ${[...grouped[m]].sort(byTitle).map(f => renderFlowCard(f, false)).join('')}
-        </div>
-      </div>`;
-    }
-  }
-
-  if (visibleFlows.length === 0) {
-    html += `<div class="tab-empty">
-      <div class="tab-empty-icon">${TAB_ICON.flows}</div>
-      <div class="tab-empty-title">No flows in this module yet</div>
-      <div class="tab-empty-desc">More flows are being added across all modules.</div>
-    </div>`;
-  }
-
+  html += `</div>`;
   container.innerHTML = html;
 }
 

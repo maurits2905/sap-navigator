@@ -923,10 +923,15 @@ main {
 /* ========== MODULE FILTER BAR (Flows tab) ========== */
 .module-filters {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
   gap: 6px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
+.module-filters::-webkit-scrollbar { display: none; }
 
 .module-chip {
   padding: 5px 14px;
@@ -939,19 +944,131 @@ main {
   cursor: pointer;
   transition: all .15s;
   font-family: var(--font);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .module-chip:hover {
-  border-color: var(--gray-400);
-  color: var(--gray-800);
+  border-color: var(--tab-color);
+  color: var(--tab-color);
+  background: var(--tab-light);
 }
 
 .module-chip.active {
-  background: var(--blue);
-  border-color: var(--blue);
+  background: var(--tab-color);
+  border-color: var(--tab-color);
   color: var(--white);
   font-weight: 600;
 }
+
+/* Saved/favorites chip */
+.module-chip--fav { border-color: #fde68a; color: #d97706; }
+.module-chip--fav:hover { background: #fef3c7; border-color: #fbbf24; color: #b45309; }
+.module-chip--fav.active { background: #f59e0b; border-color: #f59e0b; color: #fff; }
+
+/* ========== FLOWS OVERVIEW ========== */
+.flows-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 12px;
+}
+
+.flows-overview-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  cursor: pointer;
+  transition: all .18s;
+  box-shadow: var(--shadow-sm);
+}
+
+.flows-overview-card:hover {
+  border-color: var(--tab-color);
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.flows-overview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 11px;
+}
+
+.flows-overview-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gray-900);
+  line-height: 1.3;
+}
+
+.flows-overview-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--tab-color);
+  background: var(--tab-light);
+  padding: 2px 8px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+.flows-overview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.flows-overview-item {
+  font-size: 12px;
+  color: var(--gray-500);
+  line-height: 1.35;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.flows-overview-more {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--tab-color);
+  margin-top: 2px;
+}
+
+/* ========== FLOWS BREADCRUMB ========== */
+.flows-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+.flows-back-btn {
+  background: none;
+  border: none;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--tab-color);
+  cursor: pointer;
+  padding: 0;
+  transition: opacity .15s;
+}
+.flows-back-btn:hover { opacity: 0.7; }
+.flows-breadcrumb-sep { color: var(--gray-300); }
+.flows-breadcrumb-current { font-weight: 600; color: var(--gray-800); }
+.flows-breadcrumb-count { margin-left: auto; font-size: 12px; color: var(--gray-400); }
+
+/* Dark mode */
+html.dark .flows-overview-card { background: var(--gray-200); border-color: var(--gray-300); }
+html.dark .flows-overview-card:hover { border-color: var(--tab-color); }
+html.dark .flows-overview-name { color: var(--gray-900); }
+html.dark .flows-overview-item { color: var(--gray-600); }
+html.dark .flows-breadcrumb-current { color: var(--gray-800); }
+html.dark .module-chip { background: var(--gray-200); border-color: var(--gray-300); color: var(--gray-700); }
+html.dark .module-chip--fav { background: var(--gray-200); border-color: #4a3000; color: #fbbf24; }
+html.dark .module-chip--fav.active { background: #d97706; border-color: #d97706; color: #fff; }
 
 
 /* ========== FLOWS TAB ========== */
@@ -1752,12 +1869,6 @@ footer {
 }
 .decode-primary-label { color: var(--tab-dark); }
 .decode-primary-code  { color: var(--tab-color); }
-
-/* Flows module filter chips */
-.module-chip.active {
-  background: var(--tab-color);
-  border-color: var(--tab-color);
-}
 
 /* ========== CLICKABLE RELATED CARDS ========== */
 .clickable-card {
