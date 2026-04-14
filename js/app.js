@@ -68,10 +68,155 @@ function txIntent(tx) {
   return null;
 }
 
+// ========== SYNONYM EXPANSION ==========
+const SYNONYMS = {
+  'gl':  ['general ledger', 'g/l', 'ledger'],
+  'ap':  ['accounts payable', 'vendor payment', 'vendor invoice'],
+  'ar':  ['accounts receivable', 'customer payment', 'customer invoice'],
+  'fi':  ['finance', 'financial accounting', 'financial'],
+  'co':  ['controlling', 'cost center', 'cost accounting'],
+  'mm':  ['materials management', 'materials', 'procurement', 'purchasing'],
+  'sd':  ['sales distribution', 'sales', 'order management', 'sales order'],
+  'hr':  ['human resources', 'personnel', 'payroll', 'hcm', 'human capital'],
+  'hcm': ['human capital management', 'human resources', 'hr', 'personnel'],
+  'wm':  ['warehouse management', 'warehouse', 'stock management'],
+  'ewm': ['extended warehouse management', 'warehouse'],
+  'pm':  ['plant maintenance', 'maintenance order', 'equipment'],
+  'pp':  ['production planning', 'production order', 'manufacturing'],
+  'bc':  ['basis', 'system administration', 'technical'],
+  'po':  ['purchase order', 'purchasing'],
+  'gr':  ['goods receipt', 'goods movement', 'migo'],
+  'gi':  ['goods issue', 'goods movement'],
+  'iv':  ['invoice verification', 'vendor invoice', 'miro'],
+  'fb':  ['financial document', 'finance posting'],
+  'me':  ['purchasing', 'procurement', 'purchase order'],
+  'se':  ['abap', 'development', 'technical'],
+  'sm':  ['system', 'basis', 'technical', 'administration'],
+  'su':  ['user', 'security', 'authorization', 'roles'],
+  'pfcg': ['role maintenance', 'authorization roles', 'security'],
+  'su01': ['user maintenance', 'user administration'],
+  'general ledger': ['gl', 'g/l'],
+  'accounts payable': ['ap'],
+  'accounts receivable': ['ar'],
+  'purchase order': ['po'],
+  'goods receipt': ['gr'],
+  'goods issue': ['gi'],
+  'vendor': ['ap', 'supplier', 'accounts payable'],
+  'customer': ['ar', 'accounts receivable'],
+  'invoice': ['iv', 'billing', 'miro'],
+  'payroll': ['hr', 'hcm', 'pc00'],
+  'authorization': ['su', 'security', 'role', 'pfcg'],
+  'role': ['authorization', 'pfcg', 'security'],
+  'transport': ['stms', 'change request', 'workbench'],
+  'batch job': ['sm36', 'sm37', 'background processing', 'job'],
+  'background': ['batch', 'sm36', 'sm37'],
+  'workflow': ['swi', 'business workflow'],
+  'material': ['mm', 'materials management', 'stock'],
+  'stock': ['mm', 'inventory', 'warehouse', 'wm'],
+  'cost center': ['co', 'controlling', 'ksh'],
+  'profit center': ['co', 'controlling', 'ke'],
+};
+
+function expandQuery(q) {
+  const terms = new Set([q]);
+  const words = q.split(/\s+/);
+  // Single word synonyms
+  for (const w of words) {
+    if (SYNONYMS[w]) SYNONYMS[w].forEach(s => terms.add(s));
+  }
+  // Multi-word phrase synonyms (check 2–3 word slices)
+  for (let i = 0; i < words.length; i++) {
+    const phrase2 = words.slice(i, i + 2).join(' ');
+    const phrase3 = words.slice(i, i + 3).join(' ');
+    if (SYNONYMS[phrase2]) SYNONYMS[phrase2].forEach(s => terms.add(s));
+    if (SYNONYMS[phrase3]) SYNONYMS[phrase3].forEach(s => terms.add(s));
+  }
+  return [...terms];
+}
+
+// ========== STEMMING ==========
+function stem(word) {
+  const w = word.toLowerCase();
+  if (w.length < 5) return w;
+  if (w.endsWith('ing')) return w.slice(0, -3);
+  if (w.endsWith('ings')) return w.slice(0, -4);
+  if (w.endsWith('tion')) return w.slice(0, -4);
+  if (w.endsWith('tions')) return w.slice(0, -5);
+  if (w.endsWith('ment')) return w.slice(0, -4);
+  if (w.endsWith('ments')) return w.slice(0, -5);
+  if (w.endsWith('ness')) return w.slice(0, -4);
+  if (w.endsWith('ies')) return w.slice(0, -3) + 'y';
+  if (w.endsWith('ied')) return w.slice(0, -3) + 'y';
+  if (w.endsWith('ed')) return w.slice(0, -2);
+  if (w.endsWith('er')) return w.slice(0, -2);
+  if (w.endsWith('ers')) return w.slice(0, -3);
+  if (w.endsWith('s') && !w.endsWith('ss')) return w.slice(0, -1);
+  return w;
+}
+
+function stemWords(words) {
+  return words.map(stem);
+}
+
+// ========== INVERTED TOKEN INDEX ==========
+let txIndex = null; // Map<stemmed-token, Set<txIdx>>
+
+function buildTxIndex() {
+  txIndex = new Map();
+  for (let i = 0; i < transactions.length; i++) {
+    const tx = transactions[i];
+    const tokens = new Set();
+    // Tokenize all searchable fields
+    const fields = [
+      tx.code.toLowerCase(),
+      tx.name.toLowerCase(),
+      tx.description.toLowerCase(),
+      tx.category.toLowerCase(),
+      ...(tx.tags || []).map(t => t.toLowerCase())
+    ];
+    for (const field of fields) {
+      for (const raw of field.split(/\s+|[-/]/)) {
+        if (raw.length < 2) continue;
+        tokens.add(raw);
+        tokens.add(stem(raw));
+      }
+    }
+    for (const token of tokens) {
+      if (!txIndex.has(token)) txIndex.set(token, new Set());
+      txIndex.get(token).add(i);
+    }
+  }
+}
+
+function txCandidates(query) {
+  if (!txIndex) return transactions.map((_, i) => i);
+  const words = query.toLowerCase().split(/\s+/).filter(w => w.length > 1);
+  if (words.length === 0) return [];
+  const stemmed = stemWords(words);
+
+  // Expand synonyms into additional tokens
+  const allTerms = new Set([...words, ...stemmed]);
+  for (const w of words) {
+    if (SYNONYMS[w]) SYNONYMS[w].forEach(s => {
+      s.split(/\s+/).forEach(t => { allTerms.add(t); allTerms.add(stem(t)); });
+    });
+  }
+
+  // Union of all matching index sets
+  const candidates = new Set();
+  for (const term of allTerms) {
+    const hits = txIndex.get(term);
+    if (hits) hits.forEach(idx => candidates.add(idx));
+  }
+  return [...candidates];
+}
+
 // ========== SEARCH SCORING ==========
 function scoreTransaction(tx, query) {
   const q = query.toLowerCase().trim();
   const words = q.split(/\s+/);
+  const stemmedWords = stemWords(words);
+  const expanded = expandQuery(q); // includes synonyms
   let score = 0;
 
   const codeL = tx.code.toLowerCase();
@@ -89,6 +234,17 @@ function scoreTransaction(tx, query) {
   const ti = txIntent(tx);
   if (qi && ti && qi === ti) score += 28;
 
+  // Synonym/expanded query matches (scored lower than direct to avoid noise)
+  for (const exp of expanded) {
+    if (exp === q) continue; // already scored above
+    if (nameL.includes(exp)) score += 12;
+    if (catL.includes(exp)) score += 8;
+    for (const tag of tagsL) {
+      if (tag === exp) score += 22;
+      else if (tag.includes(exp) && exp.length > 3) score += 10;
+    }
+  }
+
   // Longest matching tag phrase (multi-word tags are high quality signals)
   for (const tag of tagsL) {
     if (q === tag) score += 50;
@@ -96,8 +252,9 @@ function scoreTransaction(tx, query) {
     else if (tag.includes(q) && q.length > 4) score += 20;
   }
 
-  // Each word match
-  for (const w of words) {
+  // Each word match (original + stemmed)
+  const allWords = [...new Set([...words, ...stemmedWords])];
+  for (const w of allWords) {
     if (w.length < 2) continue;
     if (nameL.includes(w)) score += 20;
     if (descL.includes(w)) score += 6;
@@ -166,10 +323,11 @@ function matchReason(tx, query) {
 
 function findTransactions(query) {
   if (!query.trim()) return [];
-  const scored = transactions.map(tx => ({
-    tx,
-    score: scoreTransaction(tx, query)
-  })).filter(r => r.score > 0)
+  // Use inverted index to narrow candidates, then score only those
+  const candidateIdxs = txCandidates(query);
+  const scored = candidateIdxs
+    .map(i => ({ tx: transactions[i], score: scoreTransaction(transactions[i], query) }))
+    .filter(r => r.score > 0)
     .sort((a, b) => b.score - a.score);
   return scored;
 }
@@ -325,6 +483,9 @@ function renderTxCard(tx, reason, isOrigTop = false) {
 function scoreTable(tbl, query) {
   const q = query.toLowerCase().trim();
   const words = q.split(/\s+/);
+  const stemmedWords = stemWords(words);
+  const allWords = [...new Set([...words, ...stemmedWords])];
+  const expanded = expandQuery(q);
   let score = 0;
 
   const nameL = tbl.name.toLowerCase();
@@ -348,8 +509,19 @@ function scoreTable(tbl, query) {
     else if (tag.includes(q) && q.length > 3) score += 18;
   }
 
-  // Word-level matches
-  for (const w of words) {
+  // Synonym/expanded query matches
+  for (const exp of expanded) {
+    if (exp === q) continue;
+    if (titleL.includes(exp)) score += 14;
+    if (moduleL.includes(exp)) score += 8;
+    for (const tag of tagsL) {
+      if (tag === exp) score += 22;
+      else if (tag.includes(exp) && exp.length > 3) score += 10;
+    }
+  }
+
+  // Word-level matches (original + stemmed)
+  for (const w of allWords) {
     if (w.length < 2) continue;
     if (nameL.includes(w)) score += 30;
     if (titleL.includes(w)) score += 20;
@@ -536,16 +708,39 @@ function renderTables(query) {
 function scoreError(err, query) {
   const q = query.toLowerCase().trim();
   const words = q.split(/\s+/);
+  const stemmedWords = stemWords(words);
+  const allWords = [...new Set([...words, ...stemmedWords])];
+  const expanded = expandQuery(q);
   let score = 0;
+  const titleL = err.title.toLowerCase();
+  const descL = err.description.toLowerCase();
+
   for (const pat of err.pattern) {
-    if (q.includes(pat)) score += 40;
-    else if (pat.includes(q)) score += 20;
-    for (const w of words) {
-      if (pat.includes(w)) score += 10;
+    const patL = pat.toLowerCase();
+    if (patL === q) score += 100;
+    else if (q.includes(patL)) score += 80;
+    else if (patL.includes(q)) score += 50;
+    for (const w of allWords) {
+      if (w.length < 3) continue;
+      if (patL.includes(w)) score += 20;
+    }
+    for (const exp of expanded) {
+      if (exp === q) continue;
+      if (patL.includes(exp)) score += 12;
     }
   }
-  if (err.title.toLowerCase().includes(q)) score += 15;
-  if (err.description.toLowerCase().includes(q)) score += 5;
+  // Title matches
+  if (titleL === q) score += 80;
+  else if (titleL.includes(q)) score += 40;
+  for (const w of allWords) {
+    if (w.length < 3) continue;
+    if (titleL.includes(w)) score += 15;
+    if (descL.includes(w)) score += 6;
+  }
+  for (const exp of expanded) {
+    if (exp === q) continue;
+    if (titleL.includes(exp)) score += 10;
+  }
   return score;
 }
 
@@ -666,6 +861,9 @@ let activeFlowSearch = '';
 function scoreFlow(flow, query) {
   const q = query.toLowerCase().trim();
   const words = q.split(/\s+/);
+  const stemmedWords = stemWords(words);
+  const allWords = [...new Set([...words, ...stemmedWords])];
+  const expanded = expandQuery(q);
   let score = 0;
 
   const titleL = flow.title.toLowerCase();
@@ -689,8 +887,19 @@ function scoreFlow(flow, query) {
     else if (tag.includes(q) && q.length > 3) score += 18;
   }
 
-  // Word-level matches
-  for (const w of words) {
+  // Synonym/expanded query matches
+  for (const exp of expanded) {
+    if (exp === q) continue;
+    if (titleL.includes(exp)) score += 16;
+    if (moduleL.includes(exp)) score += 8;
+    for (const tag of tagsL) {
+      if (tag === exp) score += 22;
+      else if (tag.includes(exp) && exp.length > 3) score += 10;
+    }
+  }
+
+  // Word-level matches (original + stemmed)
+  for (const w of allWords) {
     if (w.length < 2) continue;
     if (titleL.includes(w)) score += 22;
     if (descL.includes(w)) score += 7;
@@ -702,12 +911,12 @@ function scoreFlow(flow, query) {
     }
   }
 
-  // Step action/reason text
+  // Step action/reason text (stemmed)
   if (flow.steps) {
     for (const step of flow.steps) {
       const actionL = (step.action || '').toLowerCase();
       const reasonL = (step.reason || '').toLowerCase();
-      for (const w of words) {
+      for (const w of allWords) {
         if (w.length < 3) continue;
         if (actionL.includes(w)) score += 4;
         if (reasonL.includes(w)) score += 2;
@@ -994,6 +1203,7 @@ function animateAllStats() {
 // ========== INIT ==========
 async function init() {
   await loadData();
+  buildTxIndex(); // build inverted index after data is loaded
   document.body.classList.remove('app-loading');
   animateAllStats();
 
