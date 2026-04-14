@@ -1119,9 +1119,8 @@ html.dark .flows-nav-saved.active { background: #d97706; border-color: #d97706; 
   top: 0; left: 0; right: 0;
   height: 3px;
   background: linear-gradient(90deg, #f59e0b, #fbbf24);
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
-.flows-overview-card { position: relative; }
+.flows-overview-card { position: relative; overflow: hidden; }
 
 html.dark .flows-overview-card--flow .fav-btn { color: var(--gray-500); }
 html.dark .flows-overview-card--flow .fav-btn.active { color: #f59e0b; }
