@@ -383,7 +383,7 @@ function renderFind(query) {
 
   const best = scored[bestIdx];
   const origTopCode = scored[0].tx.code;
-  const related = scored.filter((_, i) => i !== bestIdx).slice(0, 5);
+  const related = scored.filter((_, i) => i !== bestIdx).slice(0, 6);
 
   let html = `<div class="results-section">
     <div class="results-label">Best starting point</div>
@@ -685,7 +685,7 @@ function renderTables(query) {
 
   const best = scored[bestIdx];
   const origTopName = scored[0].tbl.name;
-  const related = scored.filter((_, i) => i !== bestIdx).slice(0, 5);
+  const related = scored.filter((_, i) => i !== bestIdx).slice(0, 6);
 
   let html = `<div class="results-section">
     <div class="results-label">Best match</div>
