@@ -1314,7 +1314,81 @@ body.app-loading .tab-stat-num {
   color: var(--gray-400);
   padding-top: 16px;
   border-top: 1px solid var(--gray-100);
+  margin-bottom: 0;
 }
+
+.about-story {
+  margin-bottom: 20px;
+}
+.about-story p {
+  font-size: 14px;
+  color: var(--gray-600);
+  line-height: 1.65;
+  margin: 0 0 10px;
+}
+.about-story p:last-child { margin-bottom: 0; }
+
+.about-divider {
+  height: 1px;
+  background: var(--gray-100);
+  margin: 20px 0;
+}
+
+.about-made-by {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.about-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  flex-shrink: 0;
+  border: 2px solid var(--gray-100);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+.about-made-by-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.about-made-by-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray-400);
+  font-weight: 600;
+}
+.about-made-by-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--gray-800);
+  line-height: 1.2;
+}
+.about-made-by-role {
+  font-size: 13px;
+  color: var(--gray-500);
+  margin-bottom: 6px;
+}
+.about-portfolio-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--blue);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+.about-portfolio-link:hover { opacity: 0.75; }
+
+html.dark .about-story p { color: var(--gray-400); }
+html.dark .about-made-by-name { color: var(--gray-100); }
+html.dark .about-made-by-role { color: var(--gray-400); }
+html.dark .about-divider { background: var(--gray-700); }
+html.dark .about-avatar { border-color: var(--gray-600); }
 
 /* ========== TABLE CARDS ========== */
 .table-best-card {

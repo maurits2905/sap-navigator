@@ -228,7 +228,7 @@
     <span class="footer-sep">·</span>
     <button class="footer-link footer-legal-btn" id="privacy-btn">Privacy Policy</button>
     <span class="footer-sep">·</span>
-    <a class="footer-link" href="https://github.com/maurits2905/sap-navigator" target="_blank" rel="noopener">GitHub</a>
+    <button class="footer-link footer-legal-btn" id="footer-about-btn">About</button>
   </div>
 </footer>
 
@@ -241,6 +241,12 @@
       <div class="modal-subtitle">A quick reference for SAP support, administration, and navigation.</div>
     </div>
     <div class="modal-body">
+
+      <div class="about-story">
+        <p>As an IT consultant working daily with SAP, I kept running into the same frustrating problem: knowing roughly what I needed to do, but spending too much time hunting down the right transaction code or table name. The documentation is scattered, the built-in search is limited, and asking a colleague breaks their flow too.</p>
+        <p>So I built SAP Navigator — a fast, offline-first search engine across multiple SAP datasets. Describe a task in plain language, enter a code directly, or browse structured troubleshooting flows. No login, no subscription, no waiting.</p>
+      </div>
+
       <div class="about-features">
         <div class="about-feature">
           <div class="about-feature-icon about-icon--find">
@@ -254,7 +260,7 @@
           </div>
           <div>
             <div class="about-feature-title">Transactions</div>
-            <div class="about-feature-desc">Describe a task or area in plain language — get the right transaction to start from, with related alternatives and a clear reason for each match. Searches across 16,000+ SAP transaction codes.</div>
+            <div class="about-feature-desc">Describe a task in plain language — get the right transaction with related alternatives and a reason for each match. Searches across 16,000+ SAP transaction codes.</div>
           </div>
         </div>
         <div class="about-feature">
@@ -268,7 +274,7 @@
           </div>
           <div>
             <div class="about-feature-title">Tables</div>
-            <div class="about-feature-desc">Look up SAP standard table names by name or keyword. Each result shows the table's purpose, key fields, and related tables — useful before naming your own custom tables or writing ABAP queries.</div>
+            <div class="about-feature-desc">Look up SAP standard table names by name or keyword — useful before writing ABAP queries or naming custom tables.</div>
           </div>
         </div>
         <div class="about-feature">
@@ -279,7 +285,7 @@
           </div>
           <div>
             <div class="about-feature-title">Decode</div>
-            <div class="about-feature-desc">Describe a symptom or error — get the likely category, a starting transaction, and numbered next steps to work through.</div>
+            <div class="about-feature-desc">Describe a symptom or error — get the likely category, a starting transaction, and numbered troubleshooting steps.</div>
           </div>
         </div>
         <div class="about-feature">
@@ -294,11 +300,28 @@
           </div>
           <div>
             <div class="about-feature-title">Flows</div>
-            <div class="about-feature-desc">Browse step-by-step process guides organised by module. Star the flows you return to often — they stay pinned at the top.</div>
+            <div class="about-feature-desc">Step-by-step process guides organised by module. Star the flows you return to often — they stay pinned at the top.</div>
           </div>
         </div>
       </div>
-      <p class="about-note">Everything runs locally — no backend, no tracking, no account needed.</p>
+
+      <p class="about-note">Everything runs in your browser — no backend, no tracking, no account needed.</p>
+
+      <div class="about-divider"></div>
+
+      <div class="about-made-by">
+        <img src="images/maurits.jpg" alt="Maurits Puggaard" class="about-avatar" onerror="this.style.display='none'">
+        <div class="about-made-by-text">
+          <div class="about-made-by-label">Made by</div>
+          <div class="about-made-by-name">Maurits Puggaard</div>
+          <div class="about-made-by-role">IT Consultant · SAP</div>
+          <a href="https://maurits2905.github.io/MauritsPuggaard/" target="_blank" rel="noopener" class="about-portfolio-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Portfolio &amp; Contact
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

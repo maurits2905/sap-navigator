@@ -1329,10 +1329,12 @@ async function init() {
 
   // About modal
   const aboutOverlay = document.getElementById('about-overlay');
-  document.getElementById('about-btn').addEventListener('click', () => {
+  function openAbout() {
     aboutOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
-  });
+  }
+  document.getElementById('about-btn').addEventListener('click', openAbout);
+  document.getElementById('footer-about-btn').addEventListener('click', openAbout);
   document.getElementById('about-close-btn').addEventListener('click', closeAbout);
   aboutOverlay.addEventListener('click', (e) => {
     if (e.target === aboutOverlay) closeAbout();
