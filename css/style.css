@@ -1457,18 +1457,19 @@ body.app-loading .tab-stat-num {
 .about-portfolio-link:hover { opacity: 0.7; }
 
 /* Dark mode */
-html.dark .about-story p { color: var(--gray-300); }
-html.dark .about-feature { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); }
-html.dark .about-feature-title { color: var(--gray-100); }
-html.dark .about-feature-desc { color: var(--gray-400); }
-html.dark .about-note { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); color: var(--gray-400); }
+/* Dark mode — grays are inverted, so higher number = lighter */
+html.dark .about-story p { color: var(--gray-700); }
+html.dark .about-feature { background: var(--gray-200); border-color: var(--gray-300); }
+html.dark .about-feature-title { color: var(--gray-900); }
+html.dark .about-feature-desc { color: var(--gray-600); }
+html.dark .about-note { background: var(--gray-200); border-color: var(--gray-300); color: var(--gray-600); }
 html.dark .about-people-label { color: var(--gray-500); }
-html.dark .about-person { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); }
-html.dark .about-person-name { color: var(--gray-100); }
-html.dark .about-person-role { color: var(--gray-400); }
-html.dark .about-divider { background: rgba(255,255,255,0.08); }
-html.dark .about-avatar { border-color: var(--gray-600); }
-html.dark .about-avatar-placeholder { background: rgba(255,255,255,0.08); color: var(--gray-300); border-color: var(--gray-600); }
+html.dark .about-person { background: var(--gray-200); border-color: var(--gray-300); }
+html.dark .about-person-name { color: var(--gray-900); }
+html.dark .about-person-role { color: var(--gray-600); }
+html.dark .about-divider { background: var(--gray-300); }
+html.dark .about-avatar { border-color: var(--gray-400); }
+html.dark .about-avatar-placeholder { background: var(--gray-300); color: var(--gray-700); border-color: var(--gray-400); }
 
 @media (max-width: 600px) {
   .about-features { grid-template-columns: 1fr; }
