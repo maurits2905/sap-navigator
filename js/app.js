@@ -1334,7 +1334,6 @@ async function init() {
     document.body.style.overflow = 'hidden';
   }
   document.getElementById('about-btn').addEventListener('click', openAbout);
-  document.getElementById('footer-about-btn').addEventListener('click', openAbout);
   document.getElementById('about-close-btn').addEventListener('click', closeAbout);
   aboutOverlay.addEventListener('click', (e) => {
     if (e.target === aboutOverlay) closeAbout();

@@ -1236,25 +1236,25 @@ body.app-loading .tab-stat-num {
 .hidden { display: none !important; }
 
 /* ========== ABOUT BUTTON ========== */
-.about-btn {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  border: 1.5px solid var(--gray-300);
+.about-pill {
+  height: 30px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--gray-200);
   background: none;
-  color: var(--gray-500);
+  color: var(--gray-600);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
   font-family: var(--font);
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-shrink: 0;
   transition: all .15s;
+  letter-spacing: 0.01em;
 }
 
-.about-btn:hover {
+.about-pill:hover {
   border-color: var(--blue);
   color: var(--blue);
   background: var(--blue-light);
@@ -2074,7 +2074,8 @@ header, .tab-hero, .best-card, .table-best-card, .tx-card, .table-card,
   }
   .logo-text span { display: none; } /* hide "Navigator", keep "SAP" */
   .tab-btn { padding: 6px 9px; font-size: 12.5px; }
-  .theme-btn, .about-btn { width: 26px; height: 26px; }
+  .theme-btn { width: 26px; height: 26px; }
+  .about-pill { height: 26px; padding: 0 10px; font-size: 12px; }
   .theme-btn svg { width: 13px; height: 13px; }
 
   /* Main */
