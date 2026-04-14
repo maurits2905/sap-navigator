@@ -1468,6 +1468,8 @@ body.app-loading .tab-stat-num {
 
 /* ========== FOOTER ========== */
 footer {
+  width: 100%;
+  box-sizing: border-box;
   border-top: 1px solid var(--gray-200);
   background: var(--white);
   padding: 16px 24px;
