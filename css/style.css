@@ -826,9 +826,9 @@ main {
 
 /* ========== ABOUT OPERATORS GRID ========== */
 .op-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 .op-row {
   display: flex;

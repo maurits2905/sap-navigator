@@ -527,9 +527,8 @@ function renderFind(query) {
       </div>`;
       return;
     }
-    const shown = opTx.slice(0, 15);
     resultsEl.innerHTML = renderOperatorBadge(opTx.length) +
-      `<div class="cards-grid">${shown.map(tx => renderTxCard(tx, '')).join('')}</div>`;
+      `<div class="cards-grid">${opTx.map(tx => renderTxCard(tx, '')).join('')}</div>`;
     return;
   }
 
@@ -856,9 +855,8 @@ function renderTables(query) {
       </div>`;
       return;
     }
-    const shown = opTbl.slice(0, 15);
     resultsEl.innerHTML = renderOperatorBadge(opTbl.length) +
-      `<div class="cards-grid">${shown.map(tbl => renderTableCard(tbl, '')).join('')}</div>`;
+      `<div class="cards-grid">${opTbl.map(tbl => renderTableCard(tbl, '')).join('')}</div>`;
     return;
   }
 

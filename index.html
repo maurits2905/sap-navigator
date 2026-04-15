@@ -335,28 +335,24 @@
         <div class="about-shortcuts-title">Search Operators</div>
         <div class="op-grid">
           <div class="op-row">
-            <div class="op-example"><code class="op-kbd">VA*</code></div>
-            <div class="op-desc">Wildcard — starts with VA</div>
+            <div class="op-example"><code class="op-kbd">*</code></div>
+            <div class="op-desc">Wildcard — e.g. <code>VA*</code> starts with VA, <code>*vendor*</code> contains "vendor"</div>
           </div>
           <div class="op-row">
-            <div class="op-example"><code class="op-kbd">*vendor*</code></div>
-            <div class="op-desc">Wildcard — contains "vendor"</div>
+            <div class="op-example"><code class="op-kbd">?</code></div>
+            <div class="op-desc">Single character — e.g. <code>SU0?</code> matches SU01, SU02…</div>
           </div>
           <div class="op-row">
-            <div class="op-example"><code class="op-kbd">SU0?</code></div>
-            <div class="op-desc">? matches any one character</div>
+            <div class="op-example"><code class="op-kbd">"&nbsp;"</code></div>
+            <div class="op-desc">Exact phrase — e.g. <code>"goods receipt"</code></div>
           </div>
           <div class="op-row">
-            <div class="op-example"><code class="op-kbd">"goods receipt"</code></div>
-            <div class="op-desc">Exact phrase match</div>
+            <div class="op-example"><code class="op-kbd">OR</code></div>
+            <div class="op-desc">Either term — e.g. <code>SU01 OR PFCG</code></div>
           </div>
           <div class="op-row">
-            <div class="op-example"><code class="op-kbd">SU01 OR PFCG</code></div>
-            <div class="op-desc">Either term</div>
-          </div>
-          <div class="op-row">
-            <div class="op-example"><code class="op-kbd">vendor NOT payment</code></div>
-            <div class="op-desc">Exclude results with "payment"</div>
+            <div class="op-example"><code class="op-kbd">NOT</code></div>
+            <div class="op-desc">Exclude — e.g. <code>vendor NOT payment</code></div>
           </div>
         </div>
       </div>
