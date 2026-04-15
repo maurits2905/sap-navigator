@@ -527,6 +527,14 @@ function renderFind(query) {
       </div>`;
       return;
     }
+    if (opTx.length > OP_RESULTS_CAP) {
+      resultsEl.innerHTML = `<div class="tab-empty">
+        <div class="tab-empty-icon">${TAB_ICON.find}</div>
+        <div class="tab-empty-title">Too many results (${opTx.length})</div>
+        <div class="tab-empty-desc">Add more specific criteria — e.g. <code>VA*</code>, <code>"goods receipt"</code>, or <code>MM* OR SD*</code>.</div>
+      </div>`;
+      return;
+    }
     let html = renderOperatorBadge(opTx.length);
     const pinned = findPinnedCode && opTx.find(tx => tx.code === findPinnedCode);
     if (pinned) {
@@ -871,6 +879,14 @@ function renderTables(query) {
       </div>`;
       return;
     }
+    if (opTbl.length > OP_RESULTS_CAP) {
+      resultsEl.innerHTML = `<div class="tab-empty">
+        <div class="tab-empty-icon">${TAB_ICON.tables}</div>
+        <div class="tab-empty-title">Too many results (${opTbl.length})</div>
+        <div class="tab-empty-desc">Add more specific criteria — e.g. <code>BK*</code>, <code>"purchase order"</code>, or <code>BKPF OR BSEG</code>.</div>
+      </div>`;
+      return;
+    }
     let html = renderOperatorBadge(opTbl.length);
     const pinnedTbl = tablePinnedName && opTbl.find(tbl => tbl.name === tablePinnedName);
     if (pinnedTbl) {
@@ -997,8 +1013,9 @@ function categoryClass(cat) {
   return 'system';
 }
 
-const DECODE_INITIAL = 3;
-const DECODE_MAX     = 10;
+const DECODE_INITIAL  = 3;
+const DECODE_MAX      = 10;
+const OP_RESULTS_CAP  = 300; // max cards rendered in operator search to avoid freezing
 
 function buildDecodeCard(err, idx) {
   const primaryTx  = transactions.find(t => t.code === err.primaryTransaction);
