@@ -1541,6 +1541,60 @@ function switchTab(tabId, noUrl = false) {
   moveIndicator(tabId);
   animateTabStat(tabId);
   if (!noUrl) updateUrl();
+  // Refresh cross-tab badges for the newly active tab's current query
+  const TAB_INPUT_IDS = { find: 'find-input', tables: 'tables-input', decode: 'decode-input', flows: 'flows-input' };
+  updateTabBadges(document.getElementById(TAB_INPUT_IDS[tabId])?.value || '');
+}
+
+// ========== CROSS-TAB RESULT BADGES ==========
+function updateTabBadges(query) {
+  const q = (query || '').trim().toLowerCase();
+  const activeTab = document.body.dataset.tab;
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    const tab = btn.dataset.tab;
+    btn.querySelector('.tab-count')?.remove();
+    if (tab === activeTab || !q) return;
+
+    let count = 0;
+    if (hasOperatorSyntax(query)) {
+      const getters = {
+        find:   () => operatorFilter(transactions, tx  => [tx.code, tx.name, tx.description, tx.category || ''], query).length,
+        tables: () => operatorFilter(tables,       tbl => [tbl.name, tbl.title, tbl.description, tbl.module || ''], query).length,
+        decode: () => operatorFilter(errors,       err => [err.title, err.description, err.category || ''], query).length,
+        flows:  () => operatorFilter(flows,        f   => [f.title, f.description, f.category || '', ...(f.tags || [])], query).length,
+      };
+      count = getters[tab]?.() ?? 0;
+    } else {
+      switch (tab) {
+        case 'find':
+          count = transactions.filter(tx =>
+            tx.code.toLowerCase().includes(q) || tx.name.toLowerCase().includes(q) || tx.description.toLowerCase().includes(q)
+          ).length; break;
+        case 'tables':
+          count = tables.filter(tbl =>
+            tbl.name.toLowerCase().includes(q) || tbl.title.toLowerCase().includes(q) || tbl.description.toLowerCase().includes(q)
+          ).length; break;
+        case 'decode':
+          count = errors.filter(err =>
+            err.title.toLowerCase().includes(q) || err.description.toLowerCase().includes(q)
+          ).length; break;
+        case 'flows':
+          count = flows.filter(f =>
+            f.title.toLowerCase().includes(q) || f.description.toLowerCase().includes(q) ||
+            (f.tags || []).some(t => t.toLowerCase().includes(q)) ||
+            (f.startingTransaction || '').toLowerCase() === q
+          ).length; break;
+      }
+    }
+
+    if (count > 0) {
+      const badge = document.createElement('span');
+      badge.className = 'tab-count';
+      badge.textContent = count > 999 ? '999+' : count;
+      btn.appendChild(badge);
+    }
+  });
 }
 
 // ========== EXAMPLE TOGGLE ==========
@@ -1637,7 +1691,7 @@ async function init() {
   // Find tab
   const findInput = document.getElementById('find-input');
   const findClear = document.getElementById('find-clear');
-  const debouncedFind = debounce(q => { renderFind(q); updateUrl(); }, 180);
+  const debouncedFind = debounce(q => { renderFind(q); updateUrl(); updateTabBadges(q); }, 180);
 
   findInput.addEventListener('input', () => {
     findPinnedCode = null;
@@ -1648,6 +1702,7 @@ async function init() {
     findPinnedCode = null;
     findInput.value = '';
     renderFind('');
+    updateTabBadges('');
     findInput.focus();
   });
 
@@ -1662,7 +1717,7 @@ async function init() {
   // Tables tab
   const tablesInput = document.getElementById('tables-input');
   const tablesClear = document.getElementById('tables-clear');
-  const debouncedTables = debounce(q => { renderTables(q); updateUrl(); }, 180);
+  const debouncedTables = debounce(q => { renderTables(q); updateUrl(); updateTabBadges(q); }, 180);
 
   tablesInput.addEventListener('input', () => {
     tablePinnedName = null;
@@ -1673,6 +1728,7 @@ async function init() {
     tablePinnedName = null;
     tablesInput.value = '';
     renderTables('');
+    updateTabBadges('');
     tablesInput.focus();
   });
 
@@ -1687,7 +1743,7 @@ async function init() {
   // Decode tab
   const decodeInput = document.getElementById('decode-input');
   const decodeClear = document.getElementById('decode-clear');
-  const debouncedDecode = debounce(q => { renderDecode(q); updateUrl(); }, 180);
+  const debouncedDecode = debounce(q => { renderDecode(q); updateUrl(); updateTabBadges(q); }, 180);
 
   decodeInput.addEventListener('input', () => {
     if (decodeInput.value.trim()) decodeInput.closest('.search-wrap').classList.add('searching');
@@ -1696,6 +1752,7 @@ async function init() {
   decodeClear.addEventListener('click', () => {
     decodeInput.value = '';
     renderDecode('');
+    updateTabBadges('');
     decodeInput.focus();
   });
 
@@ -1711,7 +1768,7 @@ async function init() {
   const flowsInput = document.getElementById('flows-input');
   const flowsClear = document.getElementById('flows-clear');
   const debouncedFlows = debounce(q => {
-    activeFlowSearch = q; renderFlows(); updateUrl();
+    activeFlowSearch = q; renderFlows(); updateUrl(); updateTabBadges(q);
   }, 180);
 
   flowsInput.addEventListener('input', () => {
@@ -1722,6 +1779,7 @@ async function init() {
     flowsInput.value = '';
     activeFlowSearch = '';
     renderFlows();
+    updateTabBadges('');
     flowsInput.focus();
   });
 

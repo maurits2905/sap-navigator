@@ -195,6 +195,27 @@ nav.tabs {
 .tab-btn:hover { color: var(--gray-800); background: transparent; }
 .tab-btn.active { color: var(--blue); background: transparent; font-weight: 600; }
 
+/* Cross-tab result count badge */
+.tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  min-width: 16px;
+  padding: 2px 5px;
+  border-radius: 8px;
+  background: var(--gray-200);
+  color: var(--gray-500);
+  margin-left: 5px;
+  vertical-align: middle;
+  transition: background .15s;
+}
+.tab-btn:hover .tab-count {
+  background: var(--gray-300);
+}
+
 #tab-indicator {
   position: absolute;
   top: 50%;
