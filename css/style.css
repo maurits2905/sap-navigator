@@ -264,7 +264,7 @@ main {
   box-shadow: var(--shadow-sm);
   margin-bottom: 16px;
   position: relative;
-  overflow: hidden;
+  /* overflow must stay visible so the history dropdown can extend below the card */
 }
 
 .tab-hero::before {
@@ -274,6 +274,8 @@ main {
   height: 3px;
   background: linear-gradient(90deg, var(--tab-color), var(--tab-mid));
   transition: background .3s;
+  /* match the card's top corners so the bar still looks clipped */
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
 .tab-hero-header {
