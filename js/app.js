@@ -1221,6 +1221,51 @@ function renderFlowOverviewCard(flow, searchMode = false) {
   </div>`;
 }
 
+// ========== URL STATE ==========
+let openFlowId = null; // tracks which flow modal is open for URL sync
+
+function updateUrl() {
+  const params = new URLSearchParams();
+  const tab = document.body.dataset.tab || 'find';
+
+  if (tab !== 'find') params.set('tab', tab);
+
+  const inputMap = { find: 'find-input', tables: 'tables-input', decode: 'decode-input', flows: 'flows-input' };
+  const input = document.getElementById(inputMap[tab]);
+  if (input && input.value.trim()) params.set('q', input.value.trim());
+
+  if (openFlowId) params.set('flow', openFlowId);
+
+  const str = params.toString();
+  history.replaceState(null, '', location.pathname + (str ? '?' + str : ''));
+}
+
+function applyUrlParams() {
+  const params = new URLSearchParams(location.search);
+  const tab   = params.get('tab')  || 'find';
+  const q     = params.get('q')    || '';
+  const flowId = params.get('flow') || '';
+
+  // Switch tab (suppress URL write — we're reading it, not writing)
+  if (tab !== 'find') switchTab(tab, true);
+
+  // Fill search query and trigger render
+  if (q) {
+    const inputMap = { find: 'find-input', tables: 'tables-input', decode: 'decode-input', flows: 'flows-input' };
+    const input = document.getElementById(inputMap[tab]);
+    if (input) {
+      input.value = q;
+      if (tab === 'find')        { findPinnedCode = null; renderFind(q); }
+      else if (tab === 'tables') { tablePinnedName = null; renderTables(q); }
+      else if (tab === 'decode') renderDecode(q);
+      else if (tab === 'flows')  { activeFlowSearch = q; renderFlows(); }
+    }
+  }
+
+  // Open flow modal if specified
+  if (flowId) openFlowModal(flowId);
+}
+
 // ========== FLOW MODAL ==========
 function openFlowModal(flowId) {
   const flow = flows.find(f => f.id === flowId);
@@ -1249,6 +1294,8 @@ function openFlowModal(flowId) {
   stepsHtml += '</div>';
   modalBody.innerHTML = stepsHtml;
 
+  openFlowId = flowId;
+  updateUrl();
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1256,6 +1303,8 @@ function openFlowModal(flowId) {
 function closeModal() {
   document.getElementById('modal-overlay').classList.remove('open');
   document.body.style.overflow = '';
+  openFlowId = null;
+  updateUrl();
 }
 
 function closeAbout() {
@@ -1274,7 +1323,7 @@ function moveIndicator(tabId, instant) {
   if (instant) requestAnimationFrame(() => { indicator.style.transition = ''; });
 }
 
-function switchTab(tabId) {
+function switchTab(tabId, noUrl = false) {
   document.body.dataset.tab = tabId;
   document.documentElement.dataset.tab = tabId;
   document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -1285,6 +1334,7 @@ function switchTab(tabId) {
   });
   moveIndicator(tabId);
   animateTabStat(tabId);
+  if (!noUrl) updateUrl();
 }
 
 // ========== EXAMPLE TOGGLE ==========
@@ -1381,7 +1431,7 @@ async function init() {
   // Find tab
   const findInput = document.getElementById('find-input');
   const findClear = document.getElementById('find-clear');
-  const debouncedFind = debounce(q => renderFind(q), 180);
+  const debouncedFind = debounce(q => { renderFind(q); updateUrl(); }, 180);
 
   findInput.addEventListener('input', () => {
     findPinnedCode = null;
@@ -1406,7 +1456,7 @@ async function init() {
   // Tables tab
   const tablesInput = document.getElementById('tables-input');
   const tablesClear = document.getElementById('tables-clear');
-  const debouncedTables = debounce(q => renderTables(q), 180);
+  const debouncedTables = debounce(q => { renderTables(q); updateUrl(); }, 180);
 
   tablesInput.addEventListener('input', () => {
     tablePinnedName = null;
@@ -1431,7 +1481,7 @@ async function init() {
   // Decode tab
   const decodeInput = document.getElementById('decode-input');
   const decodeClear = document.getElementById('decode-clear');
-  const debouncedDecode = debounce(q => renderDecode(q), 180);
+  const debouncedDecode = debounce(q => { renderDecode(q); updateUrl(); }, 180);
 
   decodeInput.addEventListener('input', () => {
     if (decodeInput.value.trim()) decodeInput.closest('.search-wrap').classList.add('searching');
@@ -1457,6 +1507,7 @@ async function init() {
   const debouncedFlows = debounce(q => {
     activeFlowSearch = q;
     renderFlows();
+    updateUrl();
   }, 180);
 
   flowsInput.addEventListener('input', () => {
@@ -1535,10 +1586,14 @@ async function init() {
     }
   });
 
-  // Initial empty states
+  // Initial empty states (fallback if no URL params)
   renderFind('');
   renderTables('');
   renderDecode('');
+
+  // Shareable URL: apply params from address bar on load, keep in sync on back/forward
+  applyUrlParams();
+  window.addEventListener('popstate', applyUrlParams);
 }
 
 document.addEventListener('DOMContentLoaded', init);
