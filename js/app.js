@@ -1534,6 +1534,31 @@ async function init() {
   });
   document.getElementById('modal-close-btn').addEventListener('click', closeModal);
 
+  // Logo — reset app to clean home state and strip URL params
+  document.querySelector('.logo').addEventListener('click', e => {
+    e.preventDefault();
+    // Clear inputs
+    ['find-input', 'tables-input', 'decode-input', 'flows-input'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.value = ''; el.closest('.search-wrap').classList.remove('searching'); }
+    });
+    // Reset state
+    findPinnedCode  = null;
+    tablePinnedName = null;
+    activeFlowSearch = '';
+    openFlowId = null;
+    // Close any open modals/overlays
+    closeModal();
+    // Switch to find tab without writing URL (we'll clear it below)
+    switchTab('find', true);
+    // Re-render empty states
+    renderFind(''); renderTables(''); renderDecode(''); renderFlows();
+    // Strip all URL params
+    history.replaceState(null, '', location.pathname);
+    // Focus the search
+    document.getElementById('find-input')?.focus();
+  });
+
   // Theme toggle
   document.getElementById('theme-btn').addEventListener('click', () => {
     document.documentElement.classList.toggle('dark');
