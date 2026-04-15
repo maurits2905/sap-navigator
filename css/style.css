@@ -888,6 +888,28 @@ main {
 
 .flow-link-btn:hover { background: var(--blue-light); }
 
+/* ========== SEARCH CORRECTION / DID YOU MEAN ========== */
+.search-correction {
+  font-size: 13px;
+  color: var(--gray-500);
+  margin-top: 10px;
+}
+.search-correction--banner {
+  background: var(--tab-light);
+  border-left: 3px solid var(--tab-color);
+  border-radius: var(--radius-sm);
+  padding: 9px 14px;
+  margin-bottom: 16px;
+  color: var(--gray-700);
+  transition: background .3s, border-color .3s;
+}
+.search-correction-link {
+  color: var(--tab-color);
+  font-weight: 600;
+  text-decoration: none;
+}
+.search-correction-link:hover { text-decoration: underline; }
+
 /* ========== SEE ALSO STRIP (Find best card) ========== */
 .see-also {
   margin-top: 14px;

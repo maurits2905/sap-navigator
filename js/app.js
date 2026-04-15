@@ -390,13 +390,37 @@ function matchReason(tx, query) {
 
 function findTransactions(query) {
   if (!query.trim()) return [];
-  const q = correctTypos(query); // silently fix typos before index lookup + scoring
-  const candidateIdxs = txCandidates(q);
+  const candidateIdxs = txCandidates(query);
   const scored = candidateIdxs
-    .map(i => ({ tx: transactions[i], score: scoreTransaction(transactions[i], q) }))
+    .map(i => ({ tx: transactions[i], score: scoreTransaction(transactions[i], query) }))
     .filter(r => r.score > 0)
     .sort((a, b) => b.score - a.score);
   return scored;
+}
+
+// Fill a search input and fire its input event (used by "Did you mean?" links)
+function fillSearch(inputId, value) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  input.value = value;
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+  input.focus();
+}
+
+// Build a "Did you mean / Showing results for" snippet
+function correctionHint(original, corrected, inputId) {
+  if (!corrected || corrected === original) return '';
+  return `<div class="search-correction">
+    Did you mean <a class="search-correction-link" href="#" onclick="fillSearch('${inputId}','${escHtml(corrected)}');return false;">${escHtml(corrected)}</a>?
+  </div>`;
+}
+function correctionBanner(original, corrected, inputId) {
+  if (!corrected || corrected === original) return '';
+  return `<div class="search-correction search-correction--banner">
+    Showing results for <strong>${escHtml(corrected)}</strong>
+    &nbsp;·&nbsp;
+    <a class="search-correction-link" href="#" onclick="fillSearch('${inputId}','${escHtml(original)}');return false;">search instead for "${escHtml(original)}"</a>
+  </div>`;
 }
 
 // ========== PINNED RESULT STATE ==========
@@ -428,7 +452,8 @@ function renderFind(query) {
     return;
   }
 
-  const scored = findTransactions(query);
+  const corrected = correctTypos(query);
+  const scored = findTransactions(corrected);
   emptyEl.classList.add('hidden');
 
   if (scored.length === 0) {
@@ -437,6 +462,7 @@ function renderFind(query) {
         <div class="tab-empty-icon">${TAB_ICON.find}</div>
         <div class="tab-empty-title">No results found</div>
         <div class="tab-empty-desc">Try a different keyword, enter a transaction code directly, or rephrase the task.</div>
+        ${correctionHint(query, corrected, 'find-input')}
       </div>`;
     return;
   }
@@ -452,9 +478,10 @@ function renderFind(query) {
   const origTopCode = scored[0].tx.code;
   const related = scored.filter((_, i) => i !== bestIdx).slice(0, 6);
 
-  let html = `<div class="results-section">
+  let html = correctionBanner(query, corrected, 'find-input');
+  html += `<div class="results-section">
     <div class="results-label">Best starting point</div>
-    ${renderBestCard(best.tx, matchReason(best.tx, query))}
+    ${renderBestCard(best.tx, matchReason(best.tx, corrected))}
   </div>`;
 
   if (related.length > 0) {
@@ -637,9 +664,8 @@ function matchTableReason(tbl, query) {
 
 function findTables(query) {
   if (!query.trim()) return [];
-  const q = correctTypos(query);
   return tables
-    .map(tbl => ({ tbl, score: scoreTable(tbl, q) }))
+    .map(tbl => ({ tbl, score: scoreTable(tbl, query) }))
     .filter(r => r.score > 0)
     .sort((a, b) => b.score - a.score);
 }
@@ -731,7 +757,8 @@ function renderTables(query) {
     return;
   }
 
-  const scored = findTables(query);
+  const corrected = correctTypos(query);
+  const scored = findTables(corrected);
   emptyEl.classList.add('hidden');
 
   if (scored.length === 0) {
@@ -740,6 +767,7 @@ function renderTables(query) {
         <div class="tab-empty-icon">${TAB_ICON.tables}</div>
         <div class="tab-empty-title">No tables found</div>
         <div class="tab-empty-desc">Try a table name like BKPF, or describe the data — e.g. "vendor", "purchase order", "cost center".</div>
+        ${correctionHint(query, corrected, 'tables-input')}
       </div>`;
     return;
   }
@@ -755,16 +783,17 @@ function renderTables(query) {
   const origTopName = scored[0].tbl.name;
   const related = scored.filter((_, i) => i !== bestIdx).slice(0, 6);
 
-  let html = `<div class="results-section">
+  let html = correctionBanner(query, corrected, 'tables-input');
+  html += `<div class="results-section">
     <div class="results-label">Best match</div>
-    ${renderBestTableCard(best.tbl, matchTableReason(best.tbl, query))}
+    ${renderBestTableCard(best.tbl, matchTableReason(best.tbl, corrected))}
   </div>`;
 
   if (related.length > 0) {
     html += `<div class="results-section">
       <div class="results-label">Related tables</div>
       <div class="cards-grid">
-        ${related.map(r => renderTableCard(r.tbl, matchTableReason(r.tbl, query), bestIdx !== 0 && r.tbl.name === origTopName)).join('')}
+        ${related.map(r => renderTableCard(r.tbl, matchTableReason(r.tbl, corrected), bestIdx !== 0 && r.tbl.name === origTopName)).join('')}
       </div>
     </div>`;
   }
@@ -814,9 +843,8 @@ function scoreError(err, query) {
 
 function findErrors(query) {
   if (!query.trim()) return [];
-  const q = correctTypos(query);
   return errors
-    .map(e => ({ err: e, score: scoreError(e, q) }))
+    .map(e => ({ err: e, score: scoreError(e, query) }))
     .filter(r => r.score > 0)
     .sort((a, b) => b.score - a.score);
 }
@@ -848,7 +876,8 @@ function renderDecode(query) {
     return;
   }
 
-  const matched = findErrors(query);
+  const corrected = correctTypos(query);
+  const matched = findErrors(corrected);
   emptyEl.classList.add('hidden');
 
   if (matched.length === 0) {
@@ -857,12 +886,14 @@ function renderDecode(query) {
         <div class="tab-empty-icon">${TAB_ICON.decode}</div>
         <div class="tab-empty-title">No matches found</div>
         <div class="tab-empty-desc">Try describing the symptom differently — e.g. "user has no access", "service 404", "job failed".</div>
+        ${correctionHint(query, corrected, 'decode-input')}
       </div>`;
     return;
   }
 
+  let html = correctionBanner(query, corrected, 'decode-input');
+
   const top = matched.slice(0, 3);
-  let html = '';
 
   for (const [idx, { err }] of top.entries()) {
     const primaryTx = transactions.find(t => t.code === err.primaryTransaction);
@@ -1057,18 +1088,21 @@ function renderFlows() {
 
   // ── Search mode ──────────────────────────────────────────────────
   if (activeFlowSearch.trim()) {
-    const q = correctTypos(activeFlowSearch);
+    const corrected = correctTypos(activeFlowSearch);
     const scored = flows
-      .map(f => ({ f, score: scoreFlow(f, q) }))
+      .map(f => ({ f, score: scoreFlow(f, corrected) }))
       .filter(r => r.score > 0)
       .sort((a, b) => b.score - a.score);
     const countLabel = scored.length === 0 ? 'No results' : `${scored.length} result${scored.length !== 1 ? 's' : ''}`;
     const nav = flowsNav('← Back', 'clearFlowSearch()', countLabel, countLabel);
+    const hint = scored.length === 0 ? correctionHint(activeFlowSearch, corrected, 'flows-input') : '';
+    const banner = scored.length > 0 ? correctionBanner(activeFlowSearch, corrected, 'flows-input') : '';
     container.innerHTML = nav + (scored.length === 0
       ? `<div class="tab-empty"><div class="tab-empty-icon">${TAB_ICON.flows}</div>
          <div class="tab-empty-title">No flows found</div>
-         <div class="tab-empty-desc">Try a different keyword — e.g. "user access", "payment run", "goods receipt".</div></div>`
-      : `<div class="flows-overview-grid">${scored.map(r => renderFlowOverviewCard(r.f, true)).join('')}</div>`);
+         <div class="tab-empty-desc">Try a different keyword — e.g. "user access", "payment run", "goods receipt".</div>
+         ${hint}</div>`
+      : banner + `<div class="flows-overview-grid">${scored.map(r => renderFlowOverviewCard(r.f, true)).join('')}</div>`);
     return;
   }
 
