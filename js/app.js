@@ -868,11 +868,78 @@ function categoryClass(cat) {
   return 'system';
 }
 
+const DECODE_INITIAL = 3;
+const DECODE_MAX     = 10;
+
+function buildDecodeCard(err, idx) {
+  const primaryTx  = transactions.find(t => t.code === err.primaryTransaction);
+  const relatedTxs = (err.relatedTransactions || [])
+    .map(code => transactions.find(t => t.code === code)).filter(Boolean);
+  const linkedFlow = err.linkedFlow ? flows.find(f => f.id === err.linkedFlow) : null;
+  const catClass   = categoryClass(err.category);
+  const cardId     = `dc-${idx}`;
+
+  let detail = '';
+  if (err.steps && err.steps.length) {
+    detail += `<div class="decode-steps">
+      <div class="decode-steps-label">Troubleshooting steps</div>
+      <ul class="step-list">
+        ${err.steps.map((s, i) => `
+          <li class="step-item">
+            <span class="step-num">${i + 1}</span>
+            <span>${escHtml(s)}</span>
+          </li>`).join('')}
+      </ul>
+    </div>`;
+  }
+  if (relatedTxs.length) {
+    detail += `<div class="decode-related">
+      <div class="decode-steps-label">Related transactions</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
+        ${relatedTxs.map(t => `<span class="flow-tx-badge" title="${escHtml(t.name)}">${escHtml(t.code)}</span>`).join('')}
+      </div>
+    </div>`;
+  }
+  if (linkedFlow) {
+    detail += `<div class="decode-flow-link">
+      <button class="flow-link-btn" onclick="openFlowModal('${linkedFlow.id}')">
+        → View full troubleshooting flow: ${escHtml(linkedFlow.title)}
+      </button>
+    </div>`;
+  }
+
+  const hasDetail = detail.length > 0;
+  return `<div class="decode-card" id="${cardId}" tabindex="0" data-nav-card>
+    <div class="decode-summary"${hasDetail ? ` onclick="toggleDecodeCard('${cardId}')"` : ''}>
+      <div class="decode-header">
+        <div class="decode-title">${escHtml(err.title)}</div>
+        <span class="category-badge ${catClass}">${escHtml(err.category)}</span>
+      </div>
+      <div class="decode-desc">${escHtml(err.description)}</div>
+      ${primaryTx ? `<div class="decode-primary">
+        <span class="decode-primary-label">Start here</span>
+        <span class="decode-primary-code">${escHtml(primaryTx.code)}</span>
+        <span class="decode-primary-name">${escHtml(primaryTx.name)}</span>
+      </div>` : ''}
+      ${hasDetail ? `<div class="decode-toggle">
+        <span class="decode-toggle-label">Show steps</span>
+        <svg class="decode-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>` : ''}
+    </div>
+    ${hasDetail ? `<div class="decode-detail">${detail}</div>` : ''}
+  </div>`;
+}
+
+function showDecodeMore() {
+  document.getElementById('decode-more-cards')?.classList.remove('hidden');
+  document.querySelector('.decode-show-more')?.remove();
+}
+
 function renderDecode(query) {
   document.getElementById('decode-input').closest('.search-wrap').classList.remove('searching');
   const resultsEl = document.getElementById('decode-results');
-  const emptyEl = document.getElementById('decode-empty');
-  const clearBtn = document.getElementById('decode-clear');
+  const emptyEl   = document.getElementById('decode-empty');
+  const clearBtn  = document.getElementById('decode-clear');
 
   clearBtn.classList.toggle('visible', query.length > 0);
 
@@ -883,7 +950,7 @@ function renderDecode(query) {
   }
 
   const corrected = correctTypos(query);
-  const matched = findErrors(corrected);
+  const matched   = findErrors(corrected);
   emptyEl.classList.add('hidden');
 
   if (matched.length === 0) {
@@ -899,68 +966,18 @@ function renderDecode(query) {
 
   let html = correctionBanner(query, corrected, 'decode-input');
 
-  const top = matched.slice(0, 3);
+  const visible = matched.slice(0, DECODE_INITIAL);
+  const extra   = matched.slice(DECODE_INITIAL, DECODE_MAX);
 
-  for (const [idx, { err }] of top.entries()) {
-    const primaryTx = transactions.find(t => t.code === err.primaryTransaction);
-    const relatedTxs = (err.relatedTransactions || [])
-      .map(code => transactions.find(t => t.code === code))
-      .filter(Boolean);
-    const linkedFlow = err.linkedFlow ? flows.find(f => f.id === err.linkedFlow) : null;
-    const catClass = categoryClass(err.category);
-    const cardId = `dc-${idx}`;
+  visible.forEach(({ err }, idx) => { html += buildDecodeCard(err, idx); });
 
-    // Build the collapsible detail section
-    let detail = '';
-    if (err.steps && err.steps.length) {
-      detail += `<div class="decode-steps">
-        <div class="decode-steps-label">Troubleshooting steps</div>
-        <ul class="step-list">
-          ${err.steps.map((s, i) => `
-            <li class="step-item">
-              <span class="step-num">${i + 1}</span>
-              <span>${escHtml(s)}</span>
-            </li>`).join('')}
-        </ul>
-      </div>`;
-    }
-    if (relatedTxs.length) {
-      detail += `<div class="decode-related">
-        <div class="decode-steps-label">Related transactions</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
-          ${relatedTxs.map(t => `<span class="flow-tx-badge" title="${escHtml(t.name)}">${escHtml(t.code)}</span>`).join('')}
-        </div>
-      </div>`;
-    }
-    if (linkedFlow) {
-      detail += `<div class="decode-flow-link">
-        <button class="flow-link-btn" onclick="openFlowModal('${linkedFlow.id}')">
-          → View full troubleshooting flow: ${escHtml(linkedFlow.title)}
-        </button>
-      </div>`;
-    }
-
-    const hasDetail = detail.length > 0;
-
-    html += `<div class="decode-card" id="${cardId}" tabindex="0" data-nav-card>
-      <div class="decode-summary"${hasDetail ? ` onclick="toggleDecodeCard('${cardId}')"` : ''}>
-        <div class="decode-header">
-          <div class="decode-title">${escHtml(err.title)}</div>
-          <span class="category-badge ${catClass}">${escHtml(err.category)}</span>
-        </div>
-        <div class="decode-desc">${escHtml(err.description)}</div>
-        ${primaryTx ? `<div class="decode-primary">
-          <span class="decode-primary-label">Start here</span>
-          <span class="decode-primary-code">${escHtml(primaryTx.code)}</span>
-          <span class="decode-primary-name">${escHtml(primaryTx.name)}</span>
-        </div>` : ''}
-        ${hasDetail ? `<div class="decode-toggle">
-          <span class="decode-toggle-label">Show steps</span>
-          <svg class="decode-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>` : ''}
-      </div>
-      ${hasDetail ? `<div class="decode-detail">${detail}</div>` : ''}
-    </div>`;
+  if (extra.length > 0) {
+    html += `<div id="decode-more-cards" class="hidden">`;
+    extra.forEach(({ err }, i) => { html += buildDecodeCard(err, DECODE_INITIAL + i); });
+    html += `</div>`;
+    html += `<button class="decode-show-more" onclick="showDecodeMore()">
+      Show ${extra.length} more result${extra.length !== 1 ? 's' : ''}
+    </button>`;
   }
 
   resultsEl.innerHTML = html;
