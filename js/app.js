@@ -609,6 +609,21 @@ function findRelatedFlowForTx(tx) {
   ) || null;
 }
 
+// Returns ALL flows that reference this transaction (for the best-card section)
+function findAllRelatedFlowsForTx(tx) {
+  const codeL = tx.code.toLowerCase();
+  const seen = new Set();
+  const results = [];
+  function add(f) {
+    if (f && !seen.has(f.id)) { seen.add(f.id); results.push(f); }
+  }
+  if (tx.relatedFlow) add(flows.find(f => f.id === tx.relatedFlow));
+  flows.forEach(f => {
+    if (f.startingTransaction === tx.code || f.tags.some(t => t.toLowerCase() === codeL)) add(f);
+  });
+  return results;
+}
+
 function quickFind(code) {
   const findInput = document.getElementById('find-input');
   findInput.value = code;
@@ -620,7 +635,7 @@ function quickFind(code) {
 function renderBestCard(tx, reason, showBadge = true) {
   const seeAlsoCodes = tx.seeAlso || [];
   const seeAlsoTxs = seeAlsoCodes.map(c => transactions.find(t => t.code === c)).filter(Boolean);
-  const relatedFlow = findRelatedFlowForTx(tx);
+  const relatedFlows = findAllRelatedFlowsForTx(tx);
 
   let extras = '';
 
@@ -631,11 +646,18 @@ function renderBestCard(tx, reason, showBadge = true) {
     extras += `<div class="see-also"><span class="see-also-label">Also see:</span><div class="see-also-chips">${chips}</div></div>`;
   }
 
-  if (relatedFlow) {
-    extras += `<div class="related-flow-hint">
-      <button class="flow-link-btn" onclick="openFlowModal('${escHtml(relatedFlow.id)}')">
-        → Related troubleshooting flow: ${escHtml(relatedFlow.title)}
-      </button>
+  if (relatedFlows.length > 0) {
+    const items = relatedFlows.map(f => `
+      <button class="related-flow-item" onclick="openFlowModal('${escHtml(f.id)}')">
+        <span class="related-flow-item-title">→ ${escHtml(f.title)}</span>
+        <span class="related-flow-item-meta">
+          <span class="related-flow-steps">${f.steps.length} step${f.steps.length !== 1 ? 's' : ''}</span>
+          <span class="related-flow-cat">${escHtml(f.category)}</span>
+        </span>
+      </button>`).join('');
+    extras += `<div class="related-flows-section">
+      <div class="related-flows-label">Related troubleshooting flows</div>
+      <div class="related-flows-list">${items}</div>
     </div>`;
   }
 

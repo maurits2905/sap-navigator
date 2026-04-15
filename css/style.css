@@ -1037,9 +1037,82 @@ main {
   color: var(--gray-500);
 }
 
-/* ========== RELATED FLOW HINT (Find best card) ========== */
-.related-flow-hint {
-  margin-top: 10px;
+/* ========== RELATED FLOWS SECTION (Find best card) ========== */
+.related-flows-section {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--gray-100);
+}
+
+.related-flows-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-bottom: 8px;
+}
+
+.related-flows-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.related-flow-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--gray-200);
+  background: var(--gray-50);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font);
+  transition: background .15s, border-color .15s, transform .1s;
+}
+
+.related-flow-item:hover {
+  background: var(--blue-light);
+  border-color: var(--blue-mid);
+  transform: translateX(3px);
+}
+
+.related-flow-item-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--blue-dark);
+  flex: 1;
+  line-height: 1.4;
+}
+
+.related-flow-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.related-flow-steps {
+  font-size: 11px;
+  color: var(--gray-400);
+  background: var(--gray-100);
+  border-radius: 10px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.related-flow-cat {
+  font-size: 10.5px;
+  color: var(--gray-500);
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  padding: 2px 6px;
+  white-space: nowrap;
 }
 
 /* Compact variant used on regular tx-cards in the grid */
@@ -2162,6 +2235,13 @@ footer {
 }
 .flow-link-btn:hover { background: var(--tab-light); }
 
+/* Related flows section — tab-colour theming */
+.related-flow-item-title { color: var(--tab-dark); }
+.related-flow-item:hover {
+  background: var(--tab-light);
+  border-color: var(--tab-mid);
+}
+
 /* Decode "Start here" strip — amber makes great semantic sense */
 .decode-primary {
   background: var(--tab-light);
@@ -2679,6 +2759,11 @@ header, .tab-hero, .best-card, .table-best-card, .tx-card, .table-card,
   /* See also chips — smaller */
   .seealso-chip { font-size: 11px; padding: 3px 8px; }
   .table-chip { font-size: 11px; padding: 3px 8px; }
+
+  /* Related flows section — hide category badge, shrink title on narrow screens */
+  .related-flow-cat { display: none; }
+  .related-flow-item-title { font-size: 12px; }
+  .related-flow-item { padding: 8px 10px; }
 
   /* Copy button always visible on mobile (no hover) */
   .copy-btn { opacity: 1; pointer-events: auto; }
