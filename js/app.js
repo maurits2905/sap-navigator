@@ -430,11 +430,19 @@ let tablePinnedName  = null;
 function pinFindResult(code) {
   findPinnedCode = code;
   renderFind(document.getElementById('find-input').value);
+  requestAnimationFrame(() => {
+    document.getElementById('find-results')
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 }
 
 function pinTableResult(name) {
   tablePinnedName = name;
   renderTables(document.getElementById('tables-input').value);
+  requestAnimationFrame(() => {
+    document.getElementById('tables-results')
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 }
 
 // ========== SEARCH OPERATORS ==========

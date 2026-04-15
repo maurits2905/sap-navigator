@@ -557,6 +557,9 @@ main {
 /* ========== RESULTS SECTIONS ========== */
 .results { margin-top: 8px; }
 
+/* Offset scrollIntoView so the sticky header doesn't cover the top of results */
+#find-results, #tables-results { scroll-margin-top: 80px; }
+
 .results-section { margin-bottom: 24px; }
 
 .results-label {
