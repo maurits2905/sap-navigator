@@ -43,6 +43,73 @@ function toggleFavorite(flowId, btn) {
   renderFlows();
 }
 
+// ========== SEARCH HISTORY ==========
+const HISTORY_MAX = 8;
+
+function getHistory(tab) {
+  try { return JSON.parse(localStorage.getItem('sap-nav-history-' + tab) || '[]'); }
+  catch { return []; }
+}
+
+function saveToHistory(tab, query) {
+  const q = query.trim();
+  if (q.length < 2) return;
+  const list = getHistory(tab).filter(item => item !== q);
+  list.unshift(q);
+  localStorage.setItem('sap-nav-history-' + tab, JSON.stringify(list.slice(0, HISTORY_MAX)));
+}
+
+function removeFromHistory(tab, query) {
+  const list = getHistory(tab).filter(item => item !== query);
+  if (list.length) localStorage.setItem('sap-nav-history-' + tab, JSON.stringify(list));
+  else localStorage.removeItem('sap-nav-history-' + tab);
+}
+
+function clearHistory(tab) {
+  localStorage.removeItem('sap-nav-history-' + tab);
+}
+
+const CLOCK_SVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+
+function setupHistoryDropdown(tabId, input, onSelect) {
+  const wrap = input.closest('.search-wrap');
+  const dropdown = document.createElement('div');
+  dropdown.className = 'history-dropdown';
+  wrap.appendChild(dropdown);
+
+  function renderDropdown() {
+    const list = getHistory(tabId);
+    if (!list.length) { closeDropdown(); return; }
+    dropdown.innerHTML =
+      list.map(q =>
+        `<div class="history-item" data-q="${escHtml(q)}">${CLOCK_SVG}` +
+        `<span>${escHtml(q)}</span>` +
+        `<button class="history-remove" data-q="${escHtml(q)}" title="Remove">&#x2715;</button></div>`
+      ).join('') +
+      `<div class="history-footer"><button class="history-clear-all">Clear all</button></div>`;
+    dropdown.classList.add('open');
+  }
+
+  function closeDropdown() { dropdown.classList.remove('open'); }
+
+  // Show on focus, hide while user types something new
+  input.addEventListener('focus', renderDropdown);
+  input.addEventListener('input', closeDropdown);
+
+  // mousedown (not click) so it fires before blur; preventDefault keeps focus on input
+  dropdown.addEventListener('mousedown', e => {
+    e.preventDefault();
+    const removeBtn = e.target.closest('.history-remove');
+    if (removeBtn) { removeFromHistory(tabId, removeBtn.dataset.q); renderDropdown(); return; }
+    if (e.target.closest('.history-clear-all')) { clearHistory(tabId); closeDropdown(); return; }
+    const item = e.target.closest('.history-item');
+    if (item) { input.value = item.dataset.q; closeDropdown(); onSelect(item.dataset.q); }
+  });
+
+  // Click outside closes
+  document.addEventListener('click', e => { if (!wrap.contains(e.target)) closeDropdown(); });
+}
+
 // ========== INTENT DETECTION ==========
 const INTENT_MAP = {
   display: ['display', 'show', 'view', 'check', 'see', 'look', 'read', 'find', 'open'],
@@ -1431,7 +1498,16 @@ async function init() {
   // Find tab
   const findInput = document.getElementById('find-input');
   const findClear = document.getElementById('find-clear');
-  const debouncedFind = debounce(q => { renderFind(q); updateUrl(); }, 180);
+  const debouncedFind = debounce(q => {
+    renderFind(q); updateUrl();
+    if (q.trim().length >= 2) saveToHistory('find', q.trim());
+  }, 180);
+
+  setupHistoryDropdown('find', findInput, q => {
+    findPinnedCode = null;
+    findInput.closest('.search-wrap').classList.add('searching');
+    renderFind(q); updateUrl(); saveToHistory('find', q);
+  });
 
   findInput.addEventListener('input', () => {
     findPinnedCode = null;
@@ -1456,7 +1532,16 @@ async function init() {
   // Tables tab
   const tablesInput = document.getElementById('tables-input');
   const tablesClear = document.getElementById('tables-clear');
-  const debouncedTables = debounce(q => { renderTables(q); updateUrl(); }, 180);
+  const debouncedTables = debounce(q => {
+    renderTables(q); updateUrl();
+    if (q.trim().length >= 2) saveToHistory('tables', q.trim());
+  }, 180);
+
+  setupHistoryDropdown('tables', tablesInput, q => {
+    tablePinnedName = null;
+    tablesInput.closest('.search-wrap').classList.add('searching');
+    renderTables(q); updateUrl(); saveToHistory('tables', q);
+  });
 
   tablesInput.addEventListener('input', () => {
     tablePinnedName = null;
@@ -1481,7 +1566,15 @@ async function init() {
   // Decode tab
   const decodeInput = document.getElementById('decode-input');
   const decodeClear = document.getElementById('decode-clear');
-  const debouncedDecode = debounce(q => { renderDecode(q); updateUrl(); }, 180);
+  const debouncedDecode = debounce(q => {
+    renderDecode(q); updateUrl();
+    if (q.trim().length >= 2) saveToHistory('decode', q.trim());
+  }, 180);
+
+  setupHistoryDropdown('decode', decodeInput, q => {
+    decodeInput.closest('.search-wrap').classList.add('searching');
+    renderDecode(q); updateUrl(); saveToHistory('decode', q);
+  });
 
   decodeInput.addEventListener('input', () => {
     if (decodeInput.value.trim()) decodeInput.closest('.search-wrap').classList.add('searching');
@@ -1505,10 +1598,14 @@ async function init() {
   const flowsInput = document.getElementById('flows-input');
   const flowsClear = document.getElementById('flows-clear');
   const debouncedFlows = debounce(q => {
-    activeFlowSearch = q;
-    renderFlows();
-    updateUrl();
+    activeFlowSearch = q; renderFlows(); updateUrl();
+    if (q.trim().length >= 2) saveToHistory('flows', q.trim());
   }, 180);
+
+  setupHistoryDropdown('flows', flowsInput, q => {
+    flowsInput.closest('.search-wrap').classList.add('searching');
+    activeFlowSearch = q; renderFlows(); updateUrl(); saveToHistory('flows', q);
+  });
 
   flowsInput.addEventListener('input', () => {
     if (flowsInput.value.trim()) flowsInput.closest('.search-wrap').classList.add('searching');
