@@ -692,7 +692,7 @@ main {
   background: var(--white);
   border: 1px solid var(--gray-200);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 16px 16px 30px;
   box-shadow: var(--shadow-sm);
   transition: border-color .15s, box-shadow .15s, transform .1s;
 }

@@ -532,7 +532,7 @@ function renderFind(query) {
     if (pinned) {
       html += `<div class="results-section">
         <div class="results-label">Selected result</div>
-        ${renderBestCard(pinned, '')}
+        ${renderBestCard(pinned, '', false)}
       </div>`;
       const rest = opTx.filter(tx => tx.code !== findPinnedCode);
       if (rest.length > 0) {
@@ -609,7 +609,7 @@ function quickFind(code) {
   findInput.focus();
 }
 
-function renderBestCard(tx, reason) {
+function renderBestCard(tx, reason, showBadge = true) {
   const seeAlsoCodes = tx.seeAlso || [];
   const seeAlsoTxs = seeAlsoCodes.map(c => transactions.find(t => t.code === c)).filter(Boolean);
   const relatedFlow = findRelatedFlowForTx(tx);
@@ -633,7 +633,7 @@ function renderBestCard(tx, reason) {
 
   return `
   <div class="best-card">
-    <div class="best-badge">★ Best Starting Point</div>
+    ${showBadge ? '<div class="best-badge">★ Best Starting Point</div>' : ''}
     <div class="card-header">
       <div class="code-copy-row">
         <div class="card-code">${escHtml(tx.code)}</div>
@@ -643,7 +643,7 @@ function renderBestCard(tx, reason) {
     </div>
     <div class="card-name">${escHtml(tx.name)}</div>
     <div class="card-desc">${escHtml(tx.description)}</div>
-    <div class="card-reason">${escHtml(reason)}</div>
+    ${reason ? `<div class="card-reason">${escHtml(reason)}</div>` : ''}
     ${extras}
     ${tx.report ? `<div class="card-footer"><span class="card-report">Report: ${escHtml(tx.report)}</span></div>` : ''}
   </div>`;
