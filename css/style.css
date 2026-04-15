@@ -2418,6 +2418,32 @@ footer {
 .copy-btn.copied .copy-icon  { display: none; }
 .copy-btn.copied .check-icon { display: block; }
 
+/* ── Share button on best cards ── */
+.share-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--gray-200);
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  color: var(--gray-400);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color .15s, background .15s, border-color .15s;
+  padding: 0;
+}
+.share-btn:hover { color: var(--tab-color); border-color: var(--tab-mid); background: var(--tab-light); }
+.share-btn svg { width: 13px; height: 13px; }
+.share-btn .check-icon { display: none; }
+.share-btn .share-icon { display: block; }
+.share-btn.copied { color: #059669; background: #ecfdf5; border-color: #a7f3d0; pointer-events: none; }
+.share-btn.copied .share-icon { display: none; }
+.share-btn.copied .check-icon { display: block; }
+
 /* Flow modal step tx row — always show copy btn (no hover needed in modal) */
 .modal-step-tx-row {
   display: flex;

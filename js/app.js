@@ -671,6 +671,7 @@ function renderBestCard(tx, reason, showBadge = true) {
 
   return `
   <div class="best-card">
+    ${SHARE_BTN}
     ${showBadge ? '<div class="best-badge">★ Best Starting Point</div>' : ''}
     <div class="card-header">
       <div class="card-code copyable-code" onclick="event.stopPropagation();copyCode('${escHtml(tx.code)}',this)" title="Copy ${escHtml(tx.code)}">${escHtml(tx.code)}</div>
@@ -838,6 +839,7 @@ function renderBestTableCard(tbl, reason) {
 
   return `
   <div class="table-best-card">
+    ${SHARE_BTN}
     <div class="best-badge">★ Best Match</div>
     <div class="card-header">
       <div class="table-name copyable-code" onclick="event.stopPropagation();copyCode('${escHtml(tbl.name)}',this)" title="Copy ${escHtml(tbl.name)}">${escHtml(tbl.name)}</div>
@@ -1619,13 +1621,26 @@ function toggleExamples(btn) {
   btn.setAttribute('aria-expanded', isOpen);
 }
 
-// ========== COPY UTIL ==========
+// ========== COPY / SHARE UTILS ==========
 function copyCode(text, btn) {
   navigator.clipboard.writeText(text).then(() => {
     btn.classList.add('copied');
     setTimeout(() => btn.classList.remove('copied'), 1800);
   });
 }
+
+function shareCard(btn) {
+  navigator.clipboard.writeText(location.href).then(() => {
+    btn.classList.add('copied');
+    setTimeout(() => btn.classList.remove('copied'), 1800);
+  });
+}
+
+const SHARE_BTN =
+  `<button class="share-btn" onclick="shareCard(this)" title="Copy link to this result">
+    <svg class="share-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </button>`;
 
 const COPY_BTN = (code) =>
   `<button class="copy-btn" onclick="event.stopPropagation();copyCode('${escHtml(code)}',this)" title="Copy ${escHtml(code)}">
