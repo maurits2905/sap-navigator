@@ -1546,16 +1546,23 @@ function switchTab(tabId, noUrl = false) {
   updateTabBadges(document.getElementById(TAB_INPUT_IDS[tabId])?.value || '');
 }
 
-// ========== CROSS-TAB RESULT BADGES ==========
+// ========== CROSS-TAB RESULT HINTS ==========
+const TAB_LABELS = { find: 'Transactions', tables: 'Tables', decode: 'Decode', flows: 'Flows' };
+
 function updateTabBadges(query) {
   const q = (query || '').trim().toLowerCase();
   const activeTab = document.body.dataset.tab;
 
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    const tab = btn.dataset.tab;
-    btn.querySelector('.tab-count')?.remove();
-    if (tab === activeTab || !q) return;
+  // Clear all hint bars first
+  document.querySelectorAll('.cross-tab-hints').forEach(el => { el.innerHTML = ''; });
 
+  if (!q) return;
+
+  // Compute counts for all non-active tabs
+  const chips = [];
+  const otherTabs = ['find', 'tables', 'decode', 'flows'].filter(t => t !== activeTab);
+
+  otherTabs.forEach(tab => {
     let count = 0;
     if (hasOperatorSyntax(query)) {
       const getters = {
@@ -1587,14 +1594,22 @@ function updateTabBadges(query) {
           ).length; break;
       }
     }
-
-    if (count > 0) {
-      const badge = document.createElement('span');
-      badge.className = 'tab-count';
-      badge.textContent = count > 999 ? '999+' : count;
-      btn.appendChild(badge);
-    }
+    if (count > 0) chips.push({ tab, count });
   });
+
+  if (chips.length === 0) return;
+
+  // Render into the active tab's hints bar
+  const hintsEl = document.getElementById(`${activeTab}-cross-tabs`);
+  if (!hintsEl) return;
+
+  hintsEl.innerHTML =
+    `<span class="cross-tab-label">Also in:</span>` +
+    chips.map(({ tab, count }) =>
+      `<button class="cross-tab-chip" data-to-tab="${tab}" onclick="switchTab('${tab}')">
+        ${TAB_LABELS[tab]} <span class="cross-tab-n">${count > 999 ? '999+' : count}</span>
+      </button>`
+    ).join('');
 }
 
 // ========== EXAMPLE TOGGLE ==========
