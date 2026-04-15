@@ -1956,6 +1956,7 @@ html.dark kbd { background: var(--gray-200); border-color: var(--gray-400); colo
 html.dark .shortcut-desc { color: var(--gray-600); }
 html.dark .op-kbd { background: var(--gray-200); border-color: var(--gray-400); }
 html.dark .op-desc { color: var(--gray-600); }
+html.dark .copyable-code.copied { background: #052418 !important; color: #34d399 !important; }
 html.dark .about-people-label { color: var(--gray-500); }
 html.dark .about-person { background: var(--gray-200); border-color: var(--gray-300); }
 html.dark .about-person-name { color: var(--gray-900); }
@@ -2303,6 +2304,26 @@ footer {
   gap: 6px;
 }
 
+/* ── Copyable code badge (click-to-copy on result cards) ── */
+.copyable-code {
+  cursor: copy;
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  margin: -2px -6px;           /* offset so text position is unchanged */
+  transition: background .12s, color .12s;
+  display: inline-block;
+}
+
+.copyable-code:hover {
+  background: var(--tab-light);
+}
+
+.copyable-code.copied {
+  background: #ecfdf5 !important;
+  color: #059669     !important;
+}
+
+/* ── Small icon copy button (used only in flow modal steps) ── */
 .copy-btn {
   width: 26px;
   height: 26px;
@@ -2321,11 +2342,6 @@ footer {
   pointer-events: none;
 }
 
-/* Show copy button when parent card is hovered */
-.best-card:hover .copy-btn,
-.tx-card:hover .copy-btn,
-.table-best-card:hover .copy-btn,
-.table-card:hover .copy-btn,
 .modal-step-tx-row .copy-btn {
   opacity: 1;
   pointer-events: auto;
@@ -2769,8 +2785,6 @@ header, .tab-hero, .best-card, .table-best-card, .tx-card, .table-card,
   .related-flow-item { padding: 8px 10px; }
 
   /* Copy button always visible on mobile (no hover) */
-  .copy-btn { opacity: 1; pointer-events: auto; }
-
   /* "View details" hint — hide on mobile */
   .clickable-card::after { display: none; }
 }

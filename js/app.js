@@ -673,10 +673,7 @@ function renderBestCard(tx, reason, showBadge = true) {
   <div class="best-card">
     ${showBadge ? '<div class="best-badge">★ Best Starting Point</div>' : ''}
     <div class="card-header">
-      <div class="code-copy-row">
-        <div class="card-code">${escHtml(tx.code)}</div>
-        ${COPY_BTN(tx.code)}
-      </div>
+      <div class="card-code copyable-code" onclick="event.stopPropagation();copyCode('${escHtml(tx.code)}',this)" title="Copy ${escHtml(tx.code)}">${escHtml(tx.code)}</div>
       ${tx.category ? `<span class="card-cat-badge">${escHtml(tx.category)}</span>` : ''}
     </div>
     <div class="card-name">${escHtml(tx.name)}</div>
@@ -693,10 +690,7 @@ function renderTxCard(tx, reason, isOrigTop = false) {
   return `
   <div class="tx-card clickable-card" tabindex="0" data-nav-card onclick="pinFindResult('${escHtml(tx.code)}')">
     ${isOrigTop ? '<div class="orig-top-tag">★ Top pick</div>' : ''}
-    <div class="code-copy-row">
-      <div class="card-code">${escHtml(tx.code)}</div>
-      ${COPY_BTN(tx.code)}
-    </div>
+    <div class="card-code copyable-code" onclick="event.stopPropagation();copyCode('${escHtml(tx.code)}',this)" title="Copy ${escHtml(tx.code)}">${escHtml(tx.code)}</div>
     <div class="card-name">${escHtml(tx.name)}</div>
     <div class="card-desc">${escHtml(tx.description)}</div>
     ${reason ? `<div class="card-reason">${escHtml(reason)}</div>` : ''}
@@ -846,10 +840,7 @@ function renderBestTableCard(tbl, reason) {
   <div class="table-best-card">
     <div class="best-badge">★ Best Match</div>
     <div class="card-header">
-      <div class="code-copy-row">
-        <div class="table-name">${escHtml(tbl.name)}</div>
-        ${COPY_BTN(tbl.name)}
-      </div>
+      <div class="table-name copyable-code" onclick="event.stopPropagation();copyCode('${escHtml(tbl.name)}',this)" title="Copy ${escHtml(tbl.name)}">${escHtml(tbl.name)}</div>
       ${tbl.module ? `<span class="table-module-tag">${escHtml(tbl.module)}</span>` : ''}
     </div>
     <div class="table-title">${escHtml(tbl.title)}</div>
@@ -866,10 +857,7 @@ function renderTableCard(tbl, reason, isOrigTop = false) {
   <div class="table-card clickable-card" tabindex="0" data-nav-card onclick="pinTableResult('${escHtml(tbl.name)}')">
     ${isOrigTop ? '<div class="orig-top-tag">★ Top pick</div>' : ''}
     <div class="card-header">
-      <div class="code-copy-row">
-        <div class="table-name" style="font-size:15px">${escHtml(tbl.name)}</div>
-        ${COPY_BTN(tbl.name)}
-      </div>
+      <div class="table-name copyable-code" style="font-size:15px" onclick="event.stopPropagation();copyCode('${escHtml(tbl.name)}',this)" title="Copy ${escHtml(tbl.name)}">${escHtml(tbl.name)}</div>
       ${tbl.module ? `<span class="table-module-tag">${escHtml(tbl.module)}</span>` : ''}
     </div>
     <div class="table-title" style="font-size:13px">${escHtml(tbl.title)}</div>
