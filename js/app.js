@@ -158,6 +158,60 @@ function stemWords(words) {
   return words.map(stem);
 }
 
+// ========== FUZZY TYPO CORRECTION ==========
+// Damerau–Levenshtein (counts transpositions as 1 edit, not 2)
+// e.g. "dispaly" → "display" = 1, "purcahse" → "purchase" = 1
+function levenshtein(a, b, maxDist) {
+  const la = a.length, lb = b.length;
+  if (Math.abs(la - lb) > maxDist) return maxDist + 1;
+  if (la === 0) return lb;
+  if (lb === 0) return la;
+  // Three rotating row buffers — avoids 2D array allocation
+  const r0 = new Uint8Array(lb + 1);
+  const r1 = new Uint8Array(lb + 1);
+  const r2 = new Uint8Array(lb + 1);
+  for (let j = 0; j <= lb; j++) r1[j] = j;
+  let pr0 = r0, pr1 = r1, pr2 = r2;
+  for (let i = 1; i <= la; i++) {
+    pr2[0] = i;
+    let rowMin = i;
+    for (let j = 1; j <= lb; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      pr2[j] = Math.min(pr1[j] + 1, pr2[j - 1] + 1, pr1[j - 1] + cost);
+      // Transposition check (Damerau extension)
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1])
+        pr2[j] = Math.min(pr2[j], pr0[j - 2] + 1);
+      if (pr2[j] < rowMin) rowMin = pr2[j];
+    }
+    if (rowMin > maxDist) return maxDist + 1; // early exit — can't improve
+    const tmp = pr0; pr0 = pr1; pr1 = pr2; pr2 = tmp; // rotate
+  }
+  return pr1[lb];
+}
+
+let txVocab = null; // flat array of index keys — built once for fuzzy scan
+
+function correctTypos(query) {
+  if (!txVocab) return query;
+  const words = query.toLowerCase().split(/\s+/);
+  let changed = false;
+  const out = words.map(w => {
+    if (w.length < 5) return w;                  // too short to safely auto-correct
+    if (txIndex && txIndex.has(w)) return w;     // exact vocabulary hit — already correct
+    const maxDist = w.length >= 8 ? 2 : 1;      // allow 2 edits for longer words
+    let best = null, bestDist = maxDist + 1;
+    for (const token of txVocab) {
+      if (Math.abs(token.length - w.length) > maxDist) continue; // fast length gate
+      const d = levenshtein(w, token, maxDist);
+      if (d > 0 && d < bestDist) { bestDist = d; best = token; }
+      if (bestDist === 1 && maxDist === 1) break; // can't do better
+    }
+    if (best) { changed = true; return best; }
+    return w;
+  });
+  return changed ? out.join(' ') : query;
+}
+
 // ========== INVERTED TOKEN INDEX ==========
 let txIndex = null; // Map<stemmed-token, Set<txIdx>>
 
@@ -337,10 +391,10 @@ function matchReason(tx, query) {
 
 function findTransactions(query) {
   if (!query.trim()) return [];
-  // Use inverted index to narrow candidates, then score only those
-  const candidateIdxs = txCandidates(query);
+  const q = correctTypos(query); // silently fix typos before index lookup + scoring
+  const candidateIdxs = txCandidates(q);
   const scored = candidateIdxs
-    .map(i => ({ tx: transactions[i], score: scoreTransaction(transactions[i], query) }))
+    .map(i => ({ tx: transactions[i], score: scoreTransaction(transactions[i], q) }))
     .filter(r => r.score > 0)
     .sort((a, b) => b.score - a.score);
   return scored;
@@ -584,8 +638,9 @@ function matchTableReason(tbl, query) {
 
 function findTables(query) {
   if (!query.trim()) return [];
+  const q = correctTypos(query);
   return tables
-    .map(tbl => ({ tbl, score: scoreTable(tbl, query) }))
+    .map(tbl => ({ tbl, score: scoreTable(tbl, q) }))
     .filter(r => r.score > 0)
     .sort((a, b) => b.score - a.score);
 }
@@ -760,8 +815,9 @@ function scoreError(err, query) {
 
 function findErrors(query) {
   if (!query.trim()) return [];
+  const q = correctTypos(query);
   return errors
-    .map(e => ({ err: e, score: scoreError(e, query) }))
+    .map(e => ({ err: e, score: scoreError(e, q) }))
     .filter(r => r.score > 0)
     .sort((a, b) => b.score - a.score);
 }
@@ -1002,8 +1058,9 @@ function renderFlows() {
 
   // ── Search mode ──────────────────────────────────────────────────
   if (activeFlowSearch.trim()) {
+    const q = correctTypos(activeFlowSearch);
     const scored = flows
-      .map(f => ({ f, score: scoreFlow(f, activeFlowSearch) }))
+      .map(f => ({ f, score: scoreFlow(f, q) }))
       .filter(r => r.score > 0)
       .sort((a, b) => b.score - a.score);
     const countLabel = scored.length === 0 ? 'No results' : `${scored.length} result${scored.length !== 1 ? 's' : ''}`;
@@ -1273,7 +1330,8 @@ function animateAllStats() {
 // ========== INIT ==========
 async function init() {
   await loadData();
-  buildTxIndex(); // build inverted index after data is loaded
+  buildTxIndex();                    // build inverted index after data is loaded
+  txVocab = [...txIndex.keys()];    // flat vocab array for fuzzy typo correction
   document.body.classList.remove('app-loading');
   animateAllStats();
 
