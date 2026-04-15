@@ -973,6 +973,15 @@ main {
   margin-top: 10px;
 }
 
+/* Compact variant used on regular tx-cards in the grid */
+.card-flow-link {
+  margin-top: 8px;
+}
+.flow-link-btn--sm {
+  font-size: 12px;
+  padding: 4px 10px;
+}
+
 /* ========== MODULE FILTER BAR (Flows tab) ========== */
 /* ========== FLOWS NAV BAR ========== */
 .flows-nav {

@@ -555,6 +555,7 @@ function renderBestCard(tx, reason) {
 
 function renderTxCard(tx, reason, isOrigTop = false) {
   const hasFooter = tx.report || tx.category;
+  const relatedFlow = findRelatedFlowForTx(tx);
   return `
   <div class="tx-card clickable-card" tabindex="0" data-nav-card onclick="pinFindResult('${escHtml(tx.code)}')">
     ${isOrigTop ? '<div class="orig-top-tag">★ Top pick</div>' : ''}
@@ -565,6 +566,11 @@ function renderTxCard(tx, reason, isOrigTop = false) {
     <div class="card-name">${escHtml(tx.name)}</div>
     <div class="card-desc">${escHtml(tx.description)}</div>
     ${reason ? `<div class="card-reason">${escHtml(reason)}</div>` : ''}
+    ${relatedFlow ? `<div class="card-flow-link">
+      <button class="flow-link-btn flow-link-btn--sm" onclick="event.stopPropagation();openFlowModal('${escHtml(relatedFlow.id)}')">
+        → ${escHtml(relatedFlow.title)}
+      </button>
+    </div>` : ''}
     ${hasFooter ? `
     <div class="card-footer">
       <span class="card-report">${tx.report ? escHtml(tx.report) : ''}</span>
