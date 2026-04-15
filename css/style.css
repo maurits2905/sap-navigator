@@ -2732,7 +2732,8 @@ header, .tab-hero, .best-card, .table-best-card, .tx-card, .table-card,
   .tab-stat-lbl { font-size: 10px; }
 
   /* Search */
-  .search-wrap input { font-size: 14px; padding: 12px 14px 12px 42px; }
+  /* font-size: 16px prevents iOS Safari from auto-zooming on input focus */
+  .search-wrap input { font-size: 16px; padding: 12px 14px 12px 42px; }
 
   /* Results grids */
   .cards-grid { grid-template-columns: 1fr; }
