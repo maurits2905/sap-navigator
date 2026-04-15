@@ -204,7 +204,6 @@ function correctTypos(query) {
       if (Math.abs(token.length - w.length) > maxDist) continue; // fast length gate
       const d = levenshtein(w, token, maxDist);
       if (d > 0 && d < bestDist) { bestDist = d; best = token; }
-      if (bestDist === 1 && maxDist === 1) break; // can't do better
     }
     if (best) { changed = true; return best; }
     return w;
