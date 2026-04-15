@@ -190,7 +190,8 @@ function buildTxIndex() {
 
 function txCandidates(query) {
   if (!txIndex) return transactions.map((_, i) => i);
-  const words = query.toLowerCase().split(/\s+/).filter(w => w.length > 1);
+  // Allow single-char words (e.g. typing "S" for a code prefix)
+  const words = query.toLowerCase().split(/\s+/).filter(w => w.length > 0);
   if (words.length === 0) return [];
   const stemmed = stemWords(words);
 
@@ -202,13 +203,26 @@ function txCandidates(query) {
     });
   }
 
-  // Union of all matching index sets
   const candidates = new Set();
+
   for (const term of allTerms) {
-    const hits = txIndex.get(term);
-    if (hits) hits.forEach(idx => candidates.add(idx));
+    // 1. Exact index lookup — fast O(1)
+    const exact = txIndex.get(term);
+    if (exact) { exact.forEach(idx => candidates.add(idx)); continue; }
+
+    // 2. Prefix scan — handles partial codes ("SU0" → finds "su01")
+    //    and truncated words ("purcha" → finds "purchase")
+    //    Only for terms >= 2 chars to avoid scanning the whole index on "a"
+    if (term.length >= 2) {
+      for (const [token, indices] of txIndex) {
+        if (token.startsWith(term)) indices.forEach(idx => candidates.add(idx));
+      }
+    }
   }
-  return [...candidates];
+
+  // 3. Full fallback — handles single-char code prefixes ("S", "M", …)
+  //    Scoring will rank correctly; this just ensures nothing is gated out
+  return candidates.size > 0 ? [...candidates] : transactions.map((_, i) => i);
 }
 
 // ========== SEARCH SCORING ==========
