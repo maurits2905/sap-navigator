@@ -152,15 +152,13 @@ header {
 .logo-icon {
   width: 32px;
   height: 32px;
-  background: var(--blue);
+  background: var(--tab-color);
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 800;
-  font-size: 13px;
-  color: var(--white);
-  letter-spacing: -0.5px;
+  transition: background .2s;
+  flex-shrink: 0;
 }
 
 .logo-text {
