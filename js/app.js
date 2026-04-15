@@ -527,8 +527,24 @@ function renderFind(query) {
       </div>`;
       return;
     }
-    resultsEl.innerHTML = renderOperatorBadge(opTx.length) +
-      `<div class="cards-grid">${opTx.map(tx => renderTxCard(tx, '')).join('')}</div>`;
+    let html = renderOperatorBadge(opTx.length);
+    const pinned = findPinnedCode && opTx.find(tx => tx.code === findPinnedCode);
+    if (pinned) {
+      html += `<div class="results-section">
+        <div class="results-label">Selected result</div>
+        ${renderBestCard(pinned, '')}
+      </div>`;
+      const rest = opTx.filter(tx => tx.code !== findPinnedCode);
+      if (rest.length > 0) {
+        html += `<div class="results-section">
+          <div class="results-label">All results (${opTx.length})</div>
+          <div class="cards-grid">${rest.map(tx => renderTxCard(tx, '')).join('')}</div>
+        </div>`;
+      }
+    } else {
+      html += `<div class="cards-grid">${opTx.map(tx => renderTxCard(tx, '')).join('')}</div>`;
+    }
+    resultsEl.innerHTML = html;
     return;
   }
 
@@ -855,8 +871,24 @@ function renderTables(query) {
       </div>`;
       return;
     }
-    resultsEl.innerHTML = renderOperatorBadge(opTbl.length) +
-      `<div class="cards-grid">${opTbl.map(tbl => renderTableCard(tbl, '')).join('')}</div>`;
+    let html = renderOperatorBadge(opTbl.length);
+    const pinnedTbl = tablePinnedName && opTbl.find(tbl => tbl.name === tablePinnedName);
+    if (pinnedTbl) {
+      html += `<div class="results-section">
+        <div class="results-label">Selected result</div>
+        ${renderBestTableCard(pinnedTbl, '')}
+      </div>`;
+      const rest = opTbl.filter(tbl => tbl.name !== tablePinnedName);
+      if (rest.length > 0) {
+        html += `<div class="results-section">
+          <div class="results-label">All results (${opTbl.length})</div>
+          <div class="cards-grid">${rest.map(tbl => renderTableCard(tbl, '')).join('')}</div>
+        </div>`;
+      }
+    } else {
+      html += `<div class="cards-grid">${opTbl.map(tbl => renderTableCard(tbl, '')).join('')}</div>`;
+    }
+    resultsEl.innerHTML = html;
     return;
   }
 
