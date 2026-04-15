@@ -1496,6 +1496,15 @@ body.app-loading .tab-stat-num {
 .search-wrap.searching .search-icon   { visibility: hidden; }
 .search-wrap.searching .search-spinner { display: block; }
 
+/* ========== KEYBOARD NAV FOCUS RING ========== */
+/* Only show outline when navigating by keyboard, not on mouse click */
+[data-nav-card]:focus { outline: none; }
+[data-nav-card]:focus-visible {
+  outline: 2px solid var(--tab-color);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+
 /* ========== UTILITY ========== */
 .hidden { display: none !important; }
 
@@ -1626,6 +1635,68 @@ body.app-loading .tab-stat-num {
   margin-bottom: 0;
 }
 
+.about-shortcuts {
+  margin-top: 20px;
+}
+
+.about-shortcuts-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--gray-400);
+  margin-bottom: 10px;
+}
+
+.shortcut-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 12px;
+}
+
+.shortcut-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+}
+
+.shortcut-keys {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  min-width: 118px;
+}
+
+.sk-sep {
+  font-size: 11px;
+  color: var(--gray-400);
+  margin: 0 1px;
+}
+
+kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 7px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-300);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gray-700);
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.shortcut-desc {
+  font-size: 12.5px;
+  color: var(--gray-500);
+}
+
 .about-divider {
   height: 1px;
   background: var(--gray-100);
@@ -1727,6 +1798,8 @@ html.dark .about-feature { background: var(--gray-200); border-color: var(--gray
 html.dark .about-feature-title { color: var(--gray-900); }
 html.dark .about-feature-desc { color: var(--gray-600); }
 html.dark .about-note { background: var(--gray-200); border-color: var(--gray-300); color: var(--gray-600); }
+html.dark kbd { background: var(--gray-200); border-color: var(--gray-400); color: var(--gray-800); }
+html.dark .shortcut-desc { color: var(--gray-600); }
 html.dark .about-people-label { color: var(--gray-500); }
 html.dark .about-person { background: var(--gray-200); border-color: var(--gray-300); }
 html.dark .about-person-name { color: var(--gray-900); }

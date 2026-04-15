@@ -556,7 +556,7 @@ function renderBestCard(tx, reason) {
 function renderTxCard(tx, reason, isOrigTop = false) {
   const hasFooter = tx.report || tx.category;
   return `
-  <div class="tx-card clickable-card" onclick="pinFindResult('${escHtml(tx.code)}')">
+  <div class="tx-card clickable-card" tabindex="0" data-nav-card onclick="pinFindResult('${escHtml(tx.code)}')">
     ${isOrigTop ? '<div class="orig-top-tag">★ Top pick</div>' : ''}
     <div class="code-copy-row">
       <div class="card-code">${escHtml(tx.code)}</div>
@@ -723,7 +723,7 @@ function renderBestTableCard(tbl, reason) {
 function renderTableCard(tbl, reason, isOrigTop = false) {
   const keyFields = (tbl.keyFields || []).slice(0, 4);
   return `
-  <div class="table-card clickable-card" onclick="pinTableResult('${escHtml(tbl.name)}')">
+  <div class="table-card clickable-card" tabindex="0" data-nav-card onclick="pinTableResult('${escHtml(tbl.name)}')">
     ${isOrigTop ? '<div class="orig-top-tag">★ Top pick</div>' : ''}
     <div class="card-header">
       <div class="code-copy-row">
@@ -936,7 +936,7 @@ function renderDecode(query) {
 
     const hasDetail = detail.length > 0;
 
-    html += `<div class="decode-card" id="${cardId}">
+    html += `<div class="decode-card" id="${cardId}" tabindex="0" data-nav-card>
       <div class="decode-summary"${hasDetail ? ` onclick="toggleDecodeCard('${cardId}')"` : ''}>
         <div class="decode-header">
           <div class="decode-title">${escHtml(err.title)}</div>
@@ -1204,7 +1204,7 @@ function renderFlowOverviewCard(flow, searchMode = false) {
   const hoverAttrs = searchMode
     ? `onmouseenter="setFlowContextLabel('${escHtml(mod)}')" onmouseleave="resetFlowContextLabel()"`
     : '';
-  return `<div class="flows-overview-card flows-overview-card--flow ${isFav ? 'is-fav' : ''}" onclick="openFlowModal('${escHtml(flow.id)}')" ${hoverAttrs}>
+  return `<div class="flows-overview-card flows-overview-card--flow ${isFav ? 'is-fav' : ''}" tabindex="0" data-nav-card onclick="openFlowModal('${escHtml(flow.id)}')" ${hoverAttrs}>
     <div class="flows-overview-header">
       <span class="flows-overview-name">${escHtml(flow.title)}</span>
       <button class="fav-btn ${isFav ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite('${escHtml(flow.id)}', this)" title="${isFav ? 'Remove from saved' : 'Save flow'}">
@@ -1575,12 +1575,75 @@ async function init() {
     if (e.target === privacyOverlay) { privacyOverlay.classList.remove('open'); document.body.style.overflow = ''; }
   });
 
-  document.addEventListener('keydown', (e) => {
+  // ========== KEYBOARD SHORTCUTS ==========
+  document.addEventListener('keydown', e => {
+    const active  = document.activeElement;
+    const inInput = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+    const anyModalOpen = !!document.querySelector('.modal-overlay.open');
+    const TAB_INPUTS = { find: 'find-input', tables: 'tables-input', decode: 'decode-input', flows: 'flows-input' };
+
+    // Escape — close modal, or clear/blur search
     if (e.key === 'Escape') {
+      const hadModal = anyModalOpen;
       closeModal(); closeAbout();
       termsOverlay.classList.remove('open');
       privacyOverlay.classList.remove('open');
       document.body.style.overflow = '';
+      if (!hadModal && inInput) {
+        if (active.value) { active.value = ''; active.dispatchEvent(new Event('input')); }
+        else active.blur();
+      }
+      return;
+    }
+
+    if (anyModalOpen) return; // let modal handle its own keys
+
+    // Ctrl/Cmd+K or / — focus active tab's search
+    if ((e.key === 'k' && (e.ctrlKey || e.metaKey)) || (e.key === '/' && !inInput)) {
+      e.preventDefault();
+      const inp = document.getElementById(TAB_INPUTS[document.body.dataset.tab || 'find']);
+      if (inp) { inp.focus(); inp.select(); }
+      return;
+    }
+
+    // Alt+1-4 — switch tab and focus its search
+    if (e.altKey && !e.ctrlKey && !e.metaKey && ['1','2','3','4'].includes(e.key)) {
+      e.preventDefault();
+      const newTab = ['find', 'tables', 'decode', 'flows'][+e.key - 1];
+      switchTab(newTab);
+      document.getElementById(TAB_INPUTS[newTab])?.focus();
+      return;
+    }
+
+    // Arrow Down from search input — jump to first result card
+    if (e.key === 'ArrowDown' && inInput) {
+      e.preventDefault();
+      const panel = document.getElementById(document.body.dataset.tab || 'find');
+      panel?.querySelector('[data-nav-card]')?.focus();
+      return;
+    }
+
+    // Arrow Up/Down/Enter/Space on a result card
+    if (active?.hasAttribute('data-nav-card')) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        // Decode cards: click the inner summary; all others: click the card itself
+        const target = active.querySelector('.decode-summary[onclick]') || active;
+        target.click();
+        return;
+      }
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const panel = document.getElementById(document.body.dataset.tab || 'find');
+        const cards = panel ? [...panel.querySelectorAll('[data-nav-card]')] : [];
+        const idx   = cards.indexOf(active);
+        if (e.key === 'ArrowDown') {
+          cards[idx + 1]?.focus();
+        } else {
+          if (idx > 0) cards[idx - 1].focus();
+          else document.getElementById(TAB_INPUTS[document.body.dataset.tab || 'find'])?.focus();
+        }
+      }
     }
   });
 
