@@ -437,6 +437,69 @@ function pinTableResult(name) {
   renderTables(document.getElementById('tables-input').value);
 }
 
+// ========== SEARCH OPERATORS ==========
+// Converts a wildcard pattern (*, ?) into a RegExp.
+// VA*  → /^VA.*/i    *vendor*  → /.*vendor.*/i    SU0? → /^SU0.$/i
+function wildcardPattern(q) {
+  const esc = q.replace(/[.+^${}()|[\]\\]/g, '\\$&'); // escape regex metacharacters
+  const pat = esc.replace(/\*/g, '.*').replace(/\?/g, '.');
+  return new RegExp((q.startsWith('*') ? '' : '^') + pat + (q.endsWith('*') ? '' : '$'), 'i');
+}
+
+function hasOperatorSyntax(q) {
+  return /[*?]/.test(q) || /"[^"]*"/.test(q) || /\bNOT\b/.test(q) || / OR /i.test(q);
+}
+
+// Generic recursive filter.  getTexts(item) must return [primaryKey, ...searchableStrings].
+function operatorFilter(items, getTexts, query) {
+  const q = query.trim();
+
+  // OR — union of both sides
+  if (/ OR /i.test(q)) {
+    const parts = q.split(/ OR /i).map(p => p.trim());
+    const seen  = new Set();
+    return parts.flatMap(p => operatorFilter(items, getTexts, p))
+      .filter(item => { const k = getTexts(item)[0]; return !seen.has(k) && seen.add(k); });
+  }
+
+  // NOT — include minus exclude (both sides recurse so wildcards work on either side)
+  const notM = q.match(/^(.+?)\s+NOT\s+(.+)$/i);
+  if (notM) {
+    const excKeys = new Set(
+      operatorFilter(items, getTexts, notM[2].trim()).map(item => getTexts(item)[0])
+    );
+    return operatorFilter(items, getTexts, notM[1].trim())
+      .filter(item => !excKeys.has(getTexts(item)[0]));
+  }
+
+  // Exact phrase — all quoted strings must appear; remaining bare text also required
+  if (/"[^"]+"/.test(q)) {
+    const phrases = (q.match(/"([^"]+)"/g) || []).map(p => p.slice(1, -1).toLowerCase());
+    const rest    = q.replace(/"[^"]+"/g, '').trim().toLowerCase();
+    return items.filter(item => {
+      const text = getTexts(item).slice(1).join(' ').toLowerCase(); // skip primary key
+      return phrases.every(ph => text.includes(ph)) && (!rest || text.includes(rest));
+    });
+  }
+
+  // Wildcard (* or ?)
+  if (/[*?]/.test(q)) {
+    const re = wildcardPattern(q);
+    return items.filter(item => getTexts(item).some(t => re.test(t)));
+  }
+
+  // Plain fallback (reached when recursing into OR/NOT parts with no operators)
+  const lq = q.toLowerCase();
+  return items.filter(item => getTexts(item).some(t => t.toLowerCase().includes(lq)));
+}
+
+function renderOperatorBadge(count) {
+  return `<div class="op-result-label">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    Operator search &nbsp;·&nbsp; ${count} result${count !== 1 ? 's' : ''}
+  </div>`;
+}
+
 // ========== FIND TAB ==========
 function renderFind(query) {
   document.getElementById('find-input').closest('.search-wrap').classList.remove('searching');
@@ -449,6 +512,24 @@ function renderFind(query) {
   if (!query.trim()) {
     resultsEl.innerHTML = '';
     emptyEl.classList.remove('hidden');
+    return;
+  }
+
+  // Operator path — bypass typo correction and scoring
+  if (hasOperatorSyntax(query)) {
+    emptyEl.classList.add('hidden');
+    const opTx = operatorFilter(transactions, tx => [tx.code, tx.name, tx.description, tx.category || ''], query);
+    if (opTx.length === 0) {
+      resultsEl.innerHTML = `<div class="tab-empty">
+        <div class="tab-empty-icon">${TAB_ICON.find}</div>
+        <div class="tab-empty-title">No results found</div>
+        <div class="tab-empty-desc">No transactions match that operator pattern. Check syntax — e.g. <code>VA*</code>, <code>"goods receipt"</code>, <code>SU01 OR PFCG</code>.</div>
+      </div>`;
+      return;
+    }
+    const shown = opTx.slice(0, 15);
+    resultsEl.innerHTML = renderOperatorBadge(opTx.length) +
+      `<div class="cards-grid">${shown.map(tx => renderTxCard(tx, '')).join('')}</div>`;
     return;
   }
 
@@ -763,6 +844,24 @@ function renderTables(query) {
     return;
   }
 
+  // Operator path
+  if (hasOperatorSyntax(query)) {
+    emptyEl.classList.add('hidden');
+    const opTbl = operatorFilter(tables, tbl => [tbl.name, tbl.title, tbl.description, tbl.module || ''], query);
+    if (opTbl.length === 0) {
+      resultsEl.innerHTML = `<div class="tab-empty">
+        <div class="tab-empty-icon">${TAB_ICON.tables}</div>
+        <div class="tab-empty-title">No tables found</div>
+        <div class="tab-empty-desc">No tables match that operator pattern. Check syntax — e.g. <code>BK*</code>, <code>"purchase order"</code>, <code>BKPF OR BSEG</code>.</div>
+      </div>`;
+      return;
+    }
+    const shown = opTbl.slice(0, 15);
+    resultsEl.innerHTML = renderOperatorBadge(opTbl.length) +
+      `<div class="cards-grid">${shown.map(tbl => renderTableCard(tbl, '')).join('')}</div>`;
+    return;
+  }
+
   const corrected = correctTypos(query);
   const scored = findTables(corrected);
   emptyEl.classList.add('hidden');
@@ -946,6 +1045,25 @@ function renderDecode(query) {
   if (!query.trim()) {
     resultsEl.innerHTML = '';
     emptyEl.classList.remove('hidden');
+    return;
+  }
+
+  // Operator path
+  if (hasOperatorSyntax(query)) {
+    emptyEl.classList.add('hidden');
+    const opErr = operatorFilter(errors, err => [err.title, err.description, err.category || ''], query);
+    if (opErr.length === 0) {
+      resultsEl.innerHTML = `<div class="tab-empty">
+        <div class="tab-empty-icon">${TAB_ICON.decode}</div>
+        <div class="tab-empty-title">No matches found</div>
+        <div class="tab-empty-desc">No issues match that operator pattern. Try <code>"authorization"</code> or <code>performance NOT timeout</code>.</div>
+      </div>`;
+      return;
+    }
+    const shown = opErr.slice(0, DECODE_MAX);
+    let html = renderOperatorBadge(opErr.length);
+    shown.forEach((err, idx) => { html += buildDecodeCard(err, idx); });
+    resultsEl.innerHTML = html;
     return;
   }
 
