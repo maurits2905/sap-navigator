@@ -1,6 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <!-- Blue rounded background -->
   <rect width="192" height="192" rx="38" fill="#0066cc"/>
-  <text x="96" y="140" text-anchor="middle"
-        font-family="Arial, sans-serif" font-weight="700" font-size="108"
-        fill="white">S</text>
+  <!-- Compass circle (stroke only, matching header logo) -->
+  <circle cx="96" cy="86" r="50" fill="none" stroke="white" stroke-width="10"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Compass needle polygon -->
+  <polygon points="117,65 107,97 75,107 85,75" fill="white"
+           stroke="white" stroke-width="3" stroke-linejoin="round"/>
+  <!-- "SAP NAV" label -->
+  <text x="96" y="168" text-anchor="middle"
+        font-family="Arial, sans-serif" font-weight="700" font-size="26"
+        fill="white" letter-spacing="3">SAP NAV</text>
 </svg>

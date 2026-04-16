@@ -1,4 +1,4 @@
-const CACHE = 'sap-navigator-v1';
+const CACHE = 'sap-navigator-v2';
 
 const ASSETS = [
   '/',
