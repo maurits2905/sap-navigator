@@ -1990,6 +1990,19 @@ async function init() {
     }
   });
 
+  // ========== RESULT FADE-IN ==========
+  // Animate result containers whenever their content is replaced
+  ['find-results', 'tables-results', 'decode-results', 'flows-results'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    new MutationObserver(() => {
+      if (!el.innerHTML.trim()) return; // skip clearing
+      el.classList.remove('results-fade');
+      void el.offsetWidth;             // force reflow to restart animation
+      el.classList.add('results-fade');
+    }).observe(el, { childList: true });
+  });
+
   // Initial empty states (fallback if no URL params)
   renderFind('');
   renderTables('');

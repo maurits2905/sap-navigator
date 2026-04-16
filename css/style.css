@@ -609,6 +609,15 @@ main {
 /* Offset scrollIntoView so the sticky header doesn't cover the top of results */
 #find-results, #tables-results { scroll-margin-top: 80px; }
 
+/* ── Result fade-in ──────────────────────────────────────────────────────── */
+@keyframes resultsFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.results-fade {
+  animation: resultsFadeIn 0.18s ease;
+}
+
 .results-section { margin-bottom: 24px; }
 
 .results-label {
