@@ -1037,6 +1037,44 @@ const DECODE_INITIAL  = 3;
 const DECODE_MAX      = 10;
 const OP_RESULTS_CAP  = 300; // max cards rendered in operator search to avoid freezing
 
+// ── Hero word rotation ──────────────────────────────────────────────────────
+const HERO_WORDS = [
+  { text: 'transaction',  tab: 'find'   },
+  { text: 'table',        tab: 'tables' },
+  { text: 'error',        tab: 'decode' },
+  { text: 'flow',         tab: 'flows'  },
+  { text: 'problem',      tab: 'decode' },
+  { text: 'T-code',       tab: 'find'   },
+  { text: 'root cause',   tab: 'decode' },
+  { text: 'next step',    tab: 'flows'  },
+  { text: 'data table',   tab: 'tables' },
+  { text: 'shortcut',     tab: 'find'   },
+  { text: 'process',      tab: 'flows'  },
+  { text: 'quick fix',    tab: 'decode' },
+];
+let _heroWordIdx  = 0;
+let _heroInterval = null;
+
+function startHeroAnimation() {
+  if (_heroInterval) return;
+  _heroInterval = setInterval(() => {
+    const el = document.getElementById('home-typeword');
+    if (!el) return;
+    el.classList.add('fading');
+    setTimeout(() => {
+      _heroWordIdx = (_heroWordIdx + 1) % HERO_WORDS.length;
+      const { text, tab } = HERO_WORDS[_heroWordIdx];
+      el.textContent = text;
+      el.dataset.tab  = tab;
+      el.classList.remove('fading');
+    }, 220);
+  }, 2600);
+}
+
+function stopHeroAnimation() {
+  if (_heroInterval) { clearInterval(_heroInterval); _heroInterval = null; }
+}
+
 function buildDecodeCard(err, idx) {
   const primaryTx  = transactions.find(t => t.code === err.primaryTransaction);
   const relatedTxs = (err.relatedTransactions || [])
@@ -1433,8 +1471,12 @@ function renderFlowOverviewCard(flow, searchMode = false) {
 let openFlowId = null; // tracks which flow modal is open for URL sync
 
 function updateUrl() {
+  const tab = document.body.dataset.tab;
+  if (tab === 'home') {
+    history.replaceState(null, '', location.pathname);
+    return;
+  }
   const params = new URLSearchParams();
-  const tab = document.body.dataset.tab || 'find';
 
   if (tab !== 'find') params.set('tab', tab);
 
@@ -1450,12 +1492,13 @@ function updateUrl() {
 
 function applyUrlParams() {
   const params = new URLSearchParams(location.search);
-  const tab   = params.get('tab')  || 'find';
+  const hasParams = params.has('tab') || params.has('q') || params.has('flow');
+  const tab = params.get('tab') || (hasParams ? 'find' : 'home');
   const q     = params.get('q')    || '';
   const flowId = params.get('flow') || '';
 
   // Switch tab (suppress URL write — we're reading it, not writing)
-  if (tab !== 'find') switchTab(tab, true);
+  switchTab(tab, true);
 
   // Fill search query and trigger render
   if (q) {
@@ -1560,7 +1603,12 @@ function switchTab(tabId, noUrl = false) {
     panel.classList.toggle('active', panel.id === tabId);
   });
   moveIndicator(tabId);
-  animateTabStat(tabId);
+  if (tabId !== 'home') {
+    animateTabStat(tabId);
+    stopHeroAnimation();
+  } else {
+    startHeroAnimation();
+  }
   if (!noUrl) updateUrl();
   // Refresh cross-tab badges for the newly active tab's current query
   const TAB_INPUT_IDS = { find: 'find-input', tables: 'tables-input', decode: 'decode-input', flows: 'flows-input' };
@@ -1717,6 +1765,13 @@ function animateTabStat(tabId) {
 
 function animateAllStats() {
   for (const tabId of Object.keys(STAT_MAP)) animateTabStat(tabId);
+  // Home page stat counts
+  const fmtNum = n => n >= 1000 ? (n/1000).toFixed(1).replace(/\.0$/,'') + 'k+' : n.toString();
+  const setHome = (id, n) => { const el = document.getElementById(id); if (el) el.textContent = fmtNum(n); };
+  setHome('home-stat-tx',   transactions.length);
+  setHome('home-stat-tbl',  tables.length);
+  setHome('home-stat-err',  errors.length);
+  setHome('home-stat-flow', flows.length);
 }
 
 // ========== INIT ==========
@@ -1856,14 +1911,10 @@ async function init() {
     openFlowId = null;
     // Close any open modals/overlays
     closeModal();
-    // Switch to find tab without writing URL (we'll clear it below)
-    switchTab('find', true);
-    // Re-render empty states
+    // Go to home
+    switchTab('home');
+    // Re-render empty states silently
     renderFind(''); renderTables(''); renderDecode(''); renderFlows();
-    // Strip all URL params
-    history.replaceState(null, '', location.pathname);
-    // Focus the search
-    document.getElementById('find-input')?.focus();
   });
 
   // Theme toggle
@@ -2003,10 +2054,12 @@ async function init() {
     }).observe(el, { childList: true });
   });
 
-  // Initial empty states (fallback if no URL params)
+  // Initial empty states
   renderFind('');
   renderTables('');
   renderDecode('');
+  // Start hero animation (home is the default tab)
+  if (document.body.dataset.tab === 'home') startHeroAnimation();
 
   // Shareable URL: apply params from address bar on load, keep in sync on back/forward
   applyUrlParams();
