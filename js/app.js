@@ -1531,6 +1531,25 @@ function moveIndicator(tabId, instant) {
   if (instant) requestAnimationFrame(() => { indicator.style.transition = ''; });
 }
 
+function jumpToTab(btn) {
+  const tabId = btn.dataset.toTab;
+  const query = btn.dataset.query || '';
+  const inputMap   = { find: 'find-input', tables: 'tables-input', decode: 'decode-input', flows: 'flows-input' };
+  const inputEl = document.getElementById(inputMap[tabId]);
+  if (inputEl) {
+    inputEl.value = query;
+    inputEl.closest('.search-wrap')?.classList.toggle('searching', !!query.trim());
+  }
+  switchTab(tabId);
+  if (query.trim()) {
+    if (tabId === 'find')   { findPinnedCode = null;   renderFind(query); }
+    if (tabId === 'tables') { tablePinnedName = null;  renderTables(query); }
+    if (tabId === 'decode')                            renderDecode(query);
+    if (tabId === 'flows')  { activeFlowSearch = query; renderFlows(); }
+  }
+  inputEl?.focus();
+}
+
 function switchTab(tabId, noUrl = false) {
   document.body.dataset.tab = tabId;
   document.documentElement.dataset.tab = tabId;
@@ -1608,7 +1627,7 @@ function updateTabBadges(query) {
   hintsEl.innerHTML =
     `<span class="cross-tab-label">Also in:</span>` +
     chips.map(({ tab, count }) =>
-      `<button class="cross-tab-chip" data-to-tab="${tab}" onclick="switchTab('${tab}')">
+      `<button class="cross-tab-chip" data-to-tab="${tab}" data-query="${escHtml(query)}" onclick="jumpToTab(this)">
         ${TAB_LABELS[tab]} <span class="cross-tab-n">${count > 999 ? '999+' : count}</span>
       </button>`
     ).join('');
