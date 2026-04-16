@@ -1796,6 +1796,8 @@ html.dark .flows-breadcrumb-current { color: var(--gray-800); }
   position: sticky;
   top: 0;
   background: var(--white);
+  z-index: 10;
+  background: var(--white);
   border-bottom: 1px solid var(--gray-100);
   padding-bottom: 16px;
   margin-bottom: 0;
@@ -1999,6 +2001,218 @@ body.app-loading .tab-stat-num {
   font-size: 13.5px;
   color: rgba(255,255,255,0.55);
   position: relative;
+}
+
+.about-hero-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.about-hero-logo {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  backdrop-filter: blur(4px);
+}
+
+.about-hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  position: relative;
+}
+
+.about-hero-badge {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: rgba(255,255,255,0.75);
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+
+/* ── Section pattern ── */
+.about-section {
+  margin-bottom: 28px;
+}
+
+.about-sec-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--gray-400);
+  margin-bottom: 14px;
+}
+
+.about-sec-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--tab-light);
+  color: var(--tab-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid var(--tab-mid);
+}
+
+/* ── Keyboard shortcut list ── */
+.about-shortcut-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--gray-100);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--white);
+}
+
+.about-shortcut-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.about-shortcut-item:last-child { border-bottom: none; }
+
+.about-shortcut-item:nth-child(odd) { background: var(--gray-50); }
+.about-shortcut-item:nth-child(even) { background: var(--white); }
+
+.about-shortcut-keys {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  min-width: 150px;
+}
+
+.sk-plus {
+  font-size: 11px;
+  color: var(--gray-400);
+  font-weight: 600;
+  margin: 0 1px;
+}
+
+.sk-ctx {
+  font-size: 10.5px;
+  color: var(--gray-400);
+  font-style: italic;
+  margin-left: 2px;
+  white-space: nowrap;
+}
+
+.about-shortcut-desc {
+  font-size: 13px;
+  color: var(--gray-600);
+  line-height: 1.4;
+}
+
+/* ── Operator list ── */
+.about-op-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--gray-100);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--white);
+}
+
+.about-op-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.about-op-item:last-child { border-bottom: none; }
+.about-op-item:nth-child(odd) { background: var(--gray-50); }
+.about-op-item:nth-child(even) { background: var(--white); }
+
+.about-op-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  padding: 3px 8px;
+  background: var(--blue-light);
+  color: var(--blue);
+  border: 1px solid var(--blue-mid);
+  border-radius: 6px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  letter-spacing: 0.03em;
+}
+
+.about-op-text {
+  font-size: 13px;
+  color: var(--gray-600);
+  line-height: 1.45;
+}
+
+.about-op-text code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 11.5px;
+  background: var(--gray-100);
+  color: var(--gray-700);
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--gray-200);
+}
+
+/* ── Role badges ── */
+.about-person-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 5px 0 7px;
+}
+
+.about-role-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+}
+
+.about-role--creator {
+  background: var(--blue-light);
+  color: var(--blue);
+  border: 1px solid var(--blue-mid);
+}
+
+.about-role--contrib {
+  background: var(--green-light);
+  color: var(--green);
+  border: 1px solid #b3d9c5;
+}
+
+.about-role--job {
+  background: var(--gray-100);
+  color: var(--gray-500);
+  border: 1px solid var(--gray-200);
 }
 
 .about-story {
@@ -2337,6 +2551,24 @@ html.dark .about-person-role { color: var(--gray-600); }
 html.dark .about-divider { background: var(--gray-300); }
 html.dark .about-avatar { border-color: var(--gray-400); }
 html.dark .about-avatar-placeholder { background: var(--gray-300); color: var(--gray-700); border-color: var(--gray-400); }
+
+/* Dark mode — new about classes */
+html.dark .about-sec-icon { background: var(--gray-200); border-color: var(--gray-300); }
+html.dark .about-shortcut-list { background: var(--gray-200); border-color: var(--gray-300); }
+html.dark .about-shortcut-item { border-color: var(--gray-300); }
+html.dark .about-shortcut-item:nth-child(odd) { background: var(--gray-200); }
+html.dark .about-shortcut-item:nth-child(even) { background: var(--gray-100); }
+html.dark .about-shortcut-desc { color: var(--gray-700); }
+html.dark .about-op-list { background: var(--gray-200); border-color: var(--gray-300); }
+html.dark .about-op-item { border-color: var(--gray-300); }
+html.dark .about-op-item:nth-child(odd) { background: var(--gray-200); }
+html.dark .about-op-item:nth-child(even) { background: var(--gray-100); }
+html.dark .about-op-chip { background: #0d1e36; color: #4da6ff; border-color: #1c3456; }
+html.dark .about-op-text { color: var(--gray-700); }
+html.dark .about-op-text code { background: var(--gray-300); border-color: var(--gray-400); color: var(--gray-800); }
+html.dark .about-role--creator { background: #0d1e36; color: #4da6ff; border-color: #1c3456; }
+html.dark .about-role--contrib { background: #052418; color: #34d399; border-color: #0d4f38; }
+html.dark .about-role--job { background: var(--gray-300); color: var(--gray-700); border-color: var(--gray-400); }
 
 @media (max-width: 600px) {
   .about-features { grid-template-columns: 1fr; }
