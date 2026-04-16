@@ -2516,6 +2516,10 @@ footer {
   color: var(--gray-400);
 }
 
+.footer-copy {
+  color: var(--gray-500);
+}
+
 .footer-name {
   font-weight: 600;
   color: var(--gray-600);
@@ -3168,7 +3172,6 @@ header, .tab-hero, .best-card, .table-best-card, .tx-card, .table-card,
 
   /* Footer */
   .footer-inner { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 4px 10px; padding: 10px 12px; font-size: 12px; }
-  .footer-desc { display: none; }
   .footer-sep { display: none; }
 
   /* Results label */
