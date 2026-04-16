@@ -59,7 +59,7 @@
 
       <section class="home-hero">
         <div class="home-compass-mark">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="28" height="28">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" width="32" height="32">
             <circle cx="12" cy="12" r="10"/>
             <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor" stroke="none"/>
           </svg>
@@ -69,56 +69,62 @@
           <span class="home-typeword" id="home-typeword" data-tab="find">transaction</span>
         </h1>
         <p class="home-sub">The search engine built for SAP professionals — describe a task, look up a table, decode an error, or follow a guided process flow.</p>
+        <div class="home-stats-row">
+          <span class="home-stat-pill home-stat-pill--find"><span id="home-stat-tx">–</span> transactions</span>
+          <span class="home-stat-pill home-stat-pill--tables"><span id="home-stat-tbl">–</span> tables</span>
+          <span class="home-stat-pill home-stat-pill--decode"><span id="home-stat-err">–</span> errors</span>
+          <span class="home-stat-pill home-stat-pill--flows"><span id="home-stat-flow">–</span> flows</span>
+        </div>
       </section>
 
       <section class="home-sections">
 
         <button class="home-section-card home-section-card--find" onclick="switchTab('find')">
-          <div class="home-sc-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="20" y2="20"/><line x1="7.5" y1="9" x2="13.5" y2="9"/><line x1="7.5" y1="11.5" x2="13.5" y2="11.5"/><line x1="7.5" y1="14" x2="11" y2="14"/></svg>
-          </div>
-          <div class="home-sc-body">
+          <div class="home-sc-header">
+            <div class="home-sc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="20" y2="20"/><line x1="7.5" y1="9" x2="13.5" y2="9"/><line x1="7.5" y1="11.5" x2="13.5" y2="11.5"/><line x1="7.5" y1="14" x2="11" y2="14"/></svg>
+            </div>
             <div class="home-sc-title">Transactions</div>
-            <div class="home-sc-desc">Find the right T-code for any task. Search by plain language, keyword, or code prefix.</div>
-            <div class="home-sc-stat"><span id="home-stat-tx">–</span> transaction codes</div>
+            <div class="home-sc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
           </div>
-          <div class="home-sc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+          <div class="home-sc-desc">Find the right T-code for any task. Search by plain language, keyword, or code prefix.</div>
+          <div class="home-sc-stat"><span id="home-stat-tx-card">–</span> transaction codes</div>
         </button>
 
         <button class="home-section-card home-section-card--tables" onclick="switchTab('tables')">
-          <div class="home-sc-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="9" x2="9" y2="21"/></svg>
-          </div>
-          <div class="home-sc-body">
+          <div class="home-sc-header">
+            <div class="home-sc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="9" x2="9" y2="21"/></svg>
+            </div>
             <div class="home-sc-title">Tables</div>
-            <div class="home-sc-desc">Look up SAP standard tables by name or keyword — key fields, purpose, and related tables included.</div>
-            <div class="home-sc-stat"><span id="home-stat-tbl">–</span> database tables</div>
+            <div class="home-sc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
           </div>
-          <div class="home-sc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+          <div class="home-sc-desc">Look up SAP standard tables by name or keyword — key fields, purpose, and related tables included.</div>
+          <div class="home-sc-stat"><span id="home-stat-tbl-card">–</span> database tables</div>
         </button>
 
         <button class="home-section-card home-section-card--decode" onclick="switchTab('decode')">
-          <div class="home-sc-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="2 12 6 12 9 4 15 20 18 12 22 12"/></svg>
-          </div>
-          <div class="home-sc-body">
+          <div class="home-sc-header">
+            <div class="home-sc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="2 12 6 12 9 4 15 20 18 12 22 12"/></svg>
+            </div>
             <div class="home-sc-title">Decode</div>
-            <div class="home-sc-desc">Describe a symptom or error — get the likely cause, a starting transaction, and numbered next steps.</div>
-            <div class="home-sc-stat"><span id="home-stat-err">–</span> known errors &amp; symptoms</div>
+            <div class="home-sc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
           </div>
-          <div class="home-sc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+          <div class="home-sc-desc">Describe a symptom or error — get the likely cause, a starting transaction, and numbered next steps.</div>
+          <div class="home-sc-stat"><span id="home-stat-err-card">–</span> known errors &amp; symptoms</div>
         </button>
 
         <button class="home-section-card home-section-card--flows" onclick="switchTab('flows')">
-          <div class="home-sc-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="6" r="2.5"/><circle cx="19" cy="18" r="2.5"/><line x1="7.2" y1="10.9" x2="16.6" y2="7.1"/><line x1="7.2" y1="13.1" x2="16.6" y2="16.9"/></svg>
-          </div>
-          <div class="home-sc-body">
+          <div class="home-sc-header">
+            <div class="home-sc-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="6" r="2.5"/><circle cx="19" cy="18" r="2.5"/><line x1="7.2" y1="10.9" x2="16.6" y2="7.1"/><line x1="7.2" y1="13.1" x2="16.6" y2="16.9"/></svg>
+            </div>
             <div class="home-sc-title">Flows</div>
-            <div class="home-sc-desc">Step-by-step process guides by module. Star the ones you use most — they stay pinned at the top.</div>
-            <div class="home-sc-stat"><span id="home-stat-flow">–</span> guided process flows</div>
+            <div class="home-sc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
           </div>
-          <div class="home-sc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+          <div class="home-sc-desc">Step-by-step process guides by module. Star the ones you use most — they stay pinned at the top.</div>
+          <div class="home-sc-stat"><span id="home-stat-flow-card">–</span> guided process flows</div>
         </button>
 
       </section>

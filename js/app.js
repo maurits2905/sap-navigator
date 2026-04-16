@@ -1768,10 +1768,16 @@ function animateAllStats() {
   // Home page stat counts
   const fmtNum = n => n >= 1000 ? (n/1000).toFixed(1).replace(/\.0$/,'') + 'k+' : n.toString();
   const setHome = (id, n) => { const el = document.getElementById(id); if (el) el.textContent = fmtNum(n); };
+  // hero pills
   setHome('home-stat-tx',   transactions.length);
   setHome('home-stat-tbl',  tables.length);
   setHome('home-stat-err',  errors.length);
   setHome('home-stat-flow', flows.length);
+  // card badges
+  setHome('home-stat-tx-card',   transactions.length);
+  setHome('home-stat-tbl-card',  tables.length);
+  setHome('home-stat-err-card',  errors.length);
+  setHome('home-stat-flow-card', flows.length);
 }
 
 // ========== INIT ==========
