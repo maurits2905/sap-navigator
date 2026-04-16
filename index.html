@@ -557,7 +557,7 @@
 
       <div class="legal-section">
         <div class="legal-section-head"><span class="legal-num">1</span><h3>Nature of the Tool</h3></div>
-        <p>SAP Navigator is a free, browser-based reference tool for SAP professionals, administrators, and consultants. It runs entirely client-side with no server, no account, and no data collection. All content is bundled locally and served as a static site.</p>
+        <p>SAP Navigator is a free, browser-based reference tool for SAP professionals, administrators, and consultants. It runs entirely client-side with no server, no account, and no data collection. All content is bundled locally and served as a static site. The tool can also be installed as a Progressive Web App (PWA) on any device and used fully offline — no connectivity is required after the initial load.</p>
       </div>
       <div class="legal-section">
         <div class="legal-section-head"><span class="legal-num">2</span><h3>Permitted Use</h3></div>
@@ -661,8 +661,12 @@
             <code>sap-nav-theme</code>
             <span>Your light or dark mode preference</span>
           </div>
+          <div class="legal-storage-item">
+            <code>sap-navigator-v2</code>
+            <span>A service worker cache (CacheStorage) containing the app's static files — HTML, CSS, JavaScript, and data files — stored for offline and PWA use</span>
+          </div>
         </div>
-        <p>This data is stored solely to improve your experience across sessions. It is never transmitted anywhere. You can delete it at any time via your browser's site data or storage settings.</p>
+        <p>This data is stored solely to improve your experience across sessions and to enable offline use. It is never transmitted anywhere. You can delete it at any time via your browser's site data or storage settings, or by uninstalling the PWA if installed.</p>
       </div>
       <div class="legal-section">
         <div class="legal-section-head"><span class="legal-num legal-num--green">3</span><h3>Search &amp; Interaction Data</h3></div>
@@ -674,7 +678,7 @@
       </div>
       <div class="legal-section">
         <div class="legal-section-head"><span class="legal-num legal-num--green">5</span><h3>External Resources</h3></div>
-        <p>SAP Navigator loads the Inter typeface from Google Fonts. This causes your browser to make a request to Google's servers, which may result in Google logging your IP address as part of standard CDN infrastructure. This is outside the control of SAP Navigator's author. For details, see <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>. No other external scripts, fonts, trackers, or resources are loaded.</p>
+        <p>SAP Navigator loads the Inter typeface from Google Fonts. This causes your browser to make a request to Google's servers on each visit (the service worker only caches same-origin assets, so Google Fonts requests are not intercepted), which may result in Google logging your IP address as part of standard CDN infrastructure. This is outside the control of SAP Navigator's author. For details, see <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>. No other external scripts, fonts, trackers, or resources are loaded.</p>
       </div>
       <div class="legal-section">
         <div class="legal-section-head"><span class="legal-num legal-num--green">6</span><h3>Hosting &amp; Infrastructure</h3></div>
