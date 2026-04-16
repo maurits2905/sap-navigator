@@ -617,6 +617,9 @@ main {
    HOME / LANDING PAGE
 ══════════════════════════════════════════════════════ */
 
+/* Reset main's padding so home content starts immediately under header */
+body[data-tab="home"] main { padding-top: 0; padding-bottom: 0; }
+
 #home {
   background: radial-gradient(ellipse 100% 50% at 50% 0%,
     rgba(0,102,204,.06) 0%, transparent 65%);
@@ -629,7 +632,7 @@ html.dark #home {
 .home-wrap {
   max-width: 700px;
   margin: 0 auto;
-  padding: 48px 24px 52px;
+  padding: 36px 24px 52px;
   display: flex;
   flex-direction: column;
   align-items: center;
