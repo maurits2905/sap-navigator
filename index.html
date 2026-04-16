@@ -508,10 +508,10 @@
               <span class="about-role-badge about-role--creator">Creator</span>
               <span class="about-role-badge about-role--job">Developer</span>
             </div>
-            <a href="https://maurits2905.github.io/MauritsPuggaard/" target="_blank" rel="noopener" class="about-portfolio-link">
+            <button onclick="showPortfolioToast()" class="about-portfolio-link about-portfolio-link--btn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
               Portfolio &amp; Contact
-            </a>
+            </button>
           </div>
         </div>
         <div class="about-person">
@@ -699,7 +699,7 @@
       </div>
       <div class="legal-section">
         <div class="legal-section-head"><span class="legal-num legal-num--green">10</span><h3>Contact</h3></div>
-        <p>If you have any questions about this privacy policy or how SAP Navigator handles data, you can reach the author via <a href="https://maurits2905.github.io/MauritsPuggaard/" target="_blank" rel="noopener">Maurits Puggaard's portfolio</a>.</p>
+        <p>If you have any questions about this privacy policy or how SAP Navigator handles data, you can reach the author via <button onclick="showPortfolioToast()" class="about-portfolio-link about-portfolio-link--btn">Maurits Puggaard's portfolio</button>.</p>
       </div>
 
     </div>
@@ -729,5 +729,14 @@
     });
   }
 </script>
+
+<!-- ========== PORTFOLIO TOAST ========== -->
+<div id="portfolio-toast" class="portfolio-toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+  <div>
+    <div class="portfolio-toast-title">Portfolio under maintenance</div>
+    <div class="portfolio-toast-sub">Back up soon — check again later.</div>
+  </div>
+</div>
 </body>
 </html>

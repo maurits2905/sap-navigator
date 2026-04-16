@@ -1775,6 +1775,16 @@ function animateAllStats() {
   setHome('home-stat-flow', flows.length);
 }
 
+// ========== PORTFOLIO TOAST ==========
+let _portfolioToastTimer = null;
+function showPortfolioToast() {
+  const toast = document.getElementById('portfolio-toast');
+  if (!toast) return;
+  clearTimeout(_portfolioToastTimer);
+  toast.classList.add('show');
+  _portfolioToastTimer = setTimeout(() => toast.classList.remove('show'), 4000);
+}
+
 // ========== INIT ==========
 async function init() {
   await loadData();
