@@ -1982,6 +1982,11 @@ async function init() {
           else document.getElementById(TAB_INPUTS[document.body.dataset.tab || 'find'])?.focus();
         }
       }
+      // C — copy the code/name of the focused card
+      if ((e.key === 'c' || e.key === 'C') && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const codeEl = active.querySelector('.copyable-code');
+        if (codeEl) { e.preventDefault(); codeEl.click(); }
+      }
     }
   });
 
