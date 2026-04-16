@@ -1773,11 +1773,6 @@ function animateAllStats() {
   setHome('home-stat-tbl',  tables.length);
   setHome('home-stat-err',  errors.length);
   setHome('home-stat-flow', flows.length);
-  // card badges
-  setHome('home-stat-tx-card',   transactions.length);
-  setHome('home-stat-tbl-card',  tables.length);
-  setHome('home-stat-err-card',  errors.length);
-  setHome('home-stat-flow-card', flows.length);
 }
 
 // ========== INIT ==========
